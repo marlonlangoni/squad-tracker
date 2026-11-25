@@ -10,6 +10,7 @@ import Versus from './Versus.jsx';
 import Ranking from './Ranking.jsx';
 import Evolucao from './Evolucao.jsx';
 import { TipLayer, GlossaryDrawer } from './Glossary.jsx';
+import { useInstall, InstallButton, InstallDrawer } from './Install.jsx';
 
 const EASE = [0.16, 1, 0.3, 1];
 
@@ -41,6 +42,13 @@ export default function App() {
   const [hover, setHover] = useState(null);
   const [locked, setLocked] = useState(null);
   const [gloss, setGloss] = useState(false);
+  const inst = useInstall();
+  // Link de convite: ...?instalar abre a gaveta de instalação (menos quando já está aberto como app).
+  const [instOpen, setInstOpen] = useState(() => new URLSearchParams(location.search).has('instalar') && !inst.installed);
+  useEffect(() => {
+    const url = new URL(location.href);
+    if (url.searchParams.has('instalar')) { url.searchParams.delete('instalar'); history.replaceState(null, '', url.pathname + url.search + url.hash); }
+  }, []);
 
   useEffect(() => { loadSquad().then(setSquad).catch(e => setError(String(e))); }, []);
   useEffect(() => {
@@ -68,7 +76,7 @@ export default function App() {
 
   useEffect(() => {
     const onKey = e => {
-      if (e.key === 'Escape') { if (gloss) setGloss(false); else if (locked) setLocked(null); else if (route.page !== 'select') go('#/'); }
+      if (e.key === 'Escape') { if (instOpen) setInstOpen(false); else if (gloss) setGloss(false); else if (locked) setLocked(null); else if (route.page !== 'select') go('#/'); }
       if (!players.length || !locked) return;
       if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
         const i = players.findIndex(p => p.id === locked);
@@ -77,7 +85,7 @@ export default function App() {
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [players, locked, route.page, gloss]);
+  }, [players, locked, route.page, gloss, instOpen]);
 
   if (error) return <div className="state-msg">Não consegui carregar os dados ({error}).</div>;
 
@@ -105,6 +113,7 @@ export default function App() {
           <motion.div className="topbar-meta" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4, duration: 0.8 }}>
             <span className="chip"><span className="dot" /><span className="hide-sm">Competitivo · </span>{actLabel(squad.act)}</span>
             <span className="muted">Dados {ago(squad.updatedAt)}</span>
+            <InstallButton inst={inst} onOpen={() => setInstOpen(true)} />
             <button type="button" className="gloss-btn" onClick={() => setGloss(true)} aria-label="Abrir glossário" data-tip="Glossário: o que significa cada sigla">?</button>
           </motion.div>
         )}
@@ -162,6 +171,7 @@ export default function App() {
       </AnimatePresence>
 
       <GlossaryDrawer open={gloss} onClose={() => setGloss(false)} />
+      <InstallDrawer open={instOpen} onClose={() => setInstOpen(false)} inst={inst} />
       <TipLayer />
 
       <footer className="legal">
