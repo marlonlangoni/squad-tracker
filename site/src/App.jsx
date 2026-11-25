@@ -6,14 +6,29 @@ import PlayerCard from './PlayerCard.jsx';
 import LockPanel from './LockPanel.jsx';
 import SquadBar from './SquadBar.jsx';
 import Profile from './Profile.jsx';
+import Versus from './Versus.jsx';
+import Ranking from './Ranking.jsx';
 
 const EASE = [0.16, 1, 0.3, 1];
 
-// Rotas por hash (funciona no GitHub Pages sem configuração): #/  e  #/perfil/<id>
+// Rotas por hash (funciona no GitHub Pages sem configuração):
+// #/  ·  #/perfil/<id>  ·  #/versus/<a>/<b>  ·  #/ranking
 function parseHash() {
-  const m = /^#\/perfil\/(\w+)/.exec(location.hash);
-  return m ? { page: 'perfil', id: m[1] } : { page: 'select' };
+  const h = location.hash;
+  let m = /^#\/perfil\/(\w+)/.exec(h);
+  if (m) return { page: 'perfil', id: m[1] };
+  m = /^#\/versus(?:\/(\w+)\/(\w+))?/.exec(h);
+  if (m) return { page: 'versus', a: m[1] || 'l4', b: m[2] || 'mt' };
+  if (/^#\/ranking/.test(h)) return { page: 'ranking' };
+  return { page: 'select' };
 }
+
+const NAV = [
+  ['select', '#/', 'Squad'],
+  ['perfil', '#/perfil/l4', 'Perfil'],
+  ['versus', '#/versus', 'Versus'],
+  ['ranking', '#/ranking', 'Ranking'],
+];
 
 export default function App() {
   const [squad, setSquad] = useState(null);
@@ -52,7 +67,7 @@ export default function App() {
   if (error) return <div className="state-msg">Não consegui carregar os dados ({error}).</div>;
 
   const lockedPlayer = players.find(p => p.id === locked);
-  const routeKey = route.page === 'perfil' ? 'perfil' : 'select';
+  const routeKey = route.page;
 
   return (
     <div className="app" style={{ '--focus': focus?.color || 'var(--red)' }}>
@@ -63,6 +78,14 @@ export default function App() {
           <span className="brand-mark" aria-hidden="true" />
           <span className="brand-name">SQUAD<span>//</span>TRACKER</span>
         </motion.a>
+        <nav className="topnav" aria-label="Telas">
+          {NAV.map(([page, href, label]) => (
+            <a key={page} href={page === 'perfil' && route.page === 'perfil' ? location.hash : href} className={route.page === page ? 'on' : ''} aria-current={route.page === page ? 'page' : undefined}>
+              {label}
+              {route.page === page && <motion.span layoutId="nav-ink" className="topnav-ink" transition={{ type: 'spring', stiffness: 400, damping: 32 }} />}
+            </a>
+          ))}
+        </nav>
         {squad && (
           <motion.div className="topbar-meta" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4, duration: 0.8 }}>
             <span className="chip"><span className="dot" /><span className="hide-sm">Competitivo · </span>{actLabel(squad.act)}</span>
@@ -98,8 +121,12 @@ export default function App() {
 
             {squad && <SquadBar squad={squad} onProfile={() => go(`#/perfil/${locked || hover || players[0].id}`)} />}
           </motion.main>
-        ) : squad && profilePlayer ? (
+        ) : squad && routeKey === 'perfil' && profilePlayer ? (
           <Profile key="perfil" squad={squad} p={profilePlayer} />
+        ) : squad && routeKey === 'versus' ? (
+          <Versus key="versus" squad={squad} aId={route.a} bId={route.b} />
+        ) : squad && routeKey === 'ranking' ? (
+          <Ranking key="ranking" squad={squad} />
         ) : squad ? (
           <motion.main key="404" className="state-msg">Jogador não encontrado. <a href="#/">Voltar</a></motion.main>
         ) : null}

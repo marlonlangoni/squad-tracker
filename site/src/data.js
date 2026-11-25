@@ -158,6 +158,57 @@ function analyze(players, me) {
   return { strengths: strengths.slice(0, 4), weaknesses: weaknesses.slice(0, 4) };
 }
 
+// Grupos de métricas do Versus 1×1 (na ordem em que aparecem).
+export const VS_GROUPS = [
+  { t: 'Resultado', keys: ['win', 'rwin', 'trn'] },
+  { t: 'Combate', keys: ['kd', 'adr', 'dd', 'acs', 'hs', 'kast'] },
+  { t: 'Duelos', keys: ['fbpr', 'fdpr', 'esr', 'clutch', 'atkKD', 'defKD'] },
+  { t: 'Impacto', keys: ['multi', 'mvp', 'surv'] },
+];
+
+// Quem vence uma métrica: 1 = a, -1 = b, 0 = empate (diferença menor que 0,5%).
+export function cmp(k, a, b) {
+  const m = METRICS[k], va = a.d[k], vb = b.d[k];
+  if (va == null || vb == null || Number.isNaN(va) || Number.isNaN(vb)) return 0;
+  if (Math.abs(va - vb) <= Math.max(Math.abs(va), Math.abs(vb)) * 0.005) return 0;
+  return (va > vb) !== !!m.low ? 1 : -1;
+}
+
+// Títulos do squad: cada um vai para quem lidera a métrica.
+export const TITLES = [
+  { k: 'trn', t: 'Motor do time', ico: '◆', why: 'Maior Tracker Score do trio' },
+  { k: 'kd', t: 'Exterminador', ico: '✕', why: 'Melhor K/D' },
+  { k: 'hs', t: 'Rei do HS%', ico: '◎', why: 'Mais tiros na cabeça' },
+  { k: 'adr', t: 'Canhão de dano', ico: '✹', why: 'Mais dano por round' },
+  { k: 'dd', t: 'Dono das trocas', ico: '⇄', why: 'Melhor saldo de dano (DDΔ)' },
+  { k: 'fbpr', t: 'Abre-alas', ico: '➤', why: 'Mais First Bloods por round' },
+  { k: 'clutch', t: 'Sangue frio', ico: '❄', why: 'Mais clutches vencidos' },
+  { k: 'kast', t: 'Presença constante', ico: '●', why: 'Maior KAST' },
+  { k: 'win', t: 'Pé quente', ico: '▲', why: 'Maior taxa de vitórias' },
+  { k: 'mvp', t: 'MVP de carteirinha', ico: '★', why: 'Mais partidas como MVP' },
+  { k: 'multi', t: 'Multi-kill', ico: '≡', why: 'Mais rounds com 3+ abates' },
+  { k: 'surv', t: 'Sobrevivente', ico: '♥', why: 'Termina mais rounds vivo' },
+  { k: 'defKD', t: 'Muralha da defesa', ico: '▣', why: 'Melhor K/D defendendo' },
+  { k: 'atkKD', t: 'Rolo compressor', ico: '▶', why: 'Melhor K/D atacando' },
+];
+
+const RANK_KEYS = [...new Set(VS_GROUPS.flatMap(g => g.keys))];
+
+// Classificação geral: 3 pontos para o 1º de cada métrica, 2 para o 2º, 1 para o 3º.
+export function standings(players) {
+  const pts = Object.fromEntries(players.map(p => [p.id, { p, pts: 0, firsts: 0 }]));
+  const byKey = {};
+  for (const k of RANK_KEYS) {
+    const m = METRICS[k];
+    const order = players.filter(p => p.d[k] != null && !Number.isNaN(p.d[k]))
+      .sort((a, b) => (m.low ? a.d[k] - b.d[k] : b.d[k] - a.d[k]));
+    byKey[k] = order;
+    order.forEach((p, i) => { pts[p.id].pts += 3 - i; if (i === 0) pts[p.id].firsts++; });
+  }
+  const table = Object.values(pts).sort((a, b) => b.pts - a.pts || b.firsts - a.firsts);
+  return { table, byKey, keys: RANK_KEYS };
+}
+
 export const TIER_LIST = TIERS;
 export { rIdx, rName };
 

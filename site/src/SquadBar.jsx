@@ -3,7 +3,7 @@ import { asset } from './data.js';
 import { CountUp } from './ui.jsx';
 
 const EASE = [0.16, 1, 0.3, 1];
-const NAV = ['Versus 1×1', 'Ranking', 'Evolução'];
+const NAV = ['Evolução'];
 
 export default function SquadBar({ squad, onProfile }) {
   const { squadMap: m, bestDuo: duo, players } = squad;
@@ -32,6 +32,8 @@ export default function SquadBar({ squad, onProfile }) {
       )}
       <nav className="sb-nav" aria-label="Telas">
         <button type="button" className="sb-link" onClick={onProfile}>Perfil<em>abrir</em></button>
+        <a className="sb-link" href="#/versus">Versus 1×1<em>duelo</em></a>
+        <a className="sb-link" href="#/ranking">Ranking<em>títulos</em></a>
         {NAV.map(n => (
           <span key={n} className="sb-soon" title="Chega nas próximas fases">{n}<em>em breve</em></span>
         ))}
