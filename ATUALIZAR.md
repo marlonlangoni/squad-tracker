@@ -10,6 +10,28 @@ Site: https://marlonlangoni.github.io/squad-tracker/ (GitHub Pages, republica so
 
 Jogadores: Marlon `L4ngoni#1989` (id `l4`), Henrique `Mattin#1993` (id `mt`), Douglas `Snoop Dogglas#2908` (id `sd`).
 
+## Atualização automática (HenrikDev API)
+
+O workflow "Atualizar dados (HenrikDev)" (`.github/workflows/atualizar-dados.yml`) roda a cada 3 horas no GitHub:
+coleta com `tools/collect-henrik.mjs`, monta com `tools/build-data.mjs`, ajusta as metas e, se alguém jogou, faz commit e republica o site.
+Ele precisa do segredo `HENRIK_API_KEY` no repositório. Para rodar na hora: aba Actions > "Atualizar dados (HenrikDev)" > Run workflow.
+
+Para rodar no PC: a chave fica no arquivo `.env` da raiz (`HENRIK_API_KEY=HDEV-...`, fora do git). Depois:
+
+1. `node tools/collect-henrik.mjs`
+2. `node tools/build-data.mjs` (e os passos 7 a 10 abaixo, se quiser)
+
+`match-cache.json` guarda um resumo de cada partida já baixada, para cada execução só buscar as novas. Ele vai para o git.
+
+`trn-baseline.json` é o ponto de partida do ato atual: os números do Tracker.gg de 25/11/2026. A lista de partidas da Riot não volta até o começo do ato, então a coleta soma só as partidas jogadas depois desse momento. No ato seguinte esse arquivo deixa de valer sozinho, e tudo passa a vir da HenrikDev.
+
+O que a HenrikDev não tem: percentis ("top 20%"), Tracker Score e HS% por arma. Sem eles, o site compara vocês três entre si e mostra ACS no lugar do Tracker Score.
+Os textos de leitura (`reads`) continuam sendo escritos à mão (passo 7). A imagem de prévia do link (passo 9) também.
+
+## Coleta pelo navegador (Tracker.gg)
+
+Use só se quiser os percentis e o Tracker Score de volta. Depois do passo 6, rode `node tools/collect-henrik.mjs --base` e faça commit do `trn-baseline.json`: assim a coleta automática passa a somar as partidas novas em cima desses números.
+
 ## Passo a passo
 
 Use o navegador integrado (ferramentas `mcp__Claude_Browser__*`).

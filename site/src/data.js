@@ -196,6 +196,14 @@ export const TITLES = [
 
 const RANK_KEYS = [...new Set(VS_GROUPS.flatMap(g => g.keys))];
 
+// Na coleta pela HenrikDev API não existe Tracker Score (é do Tracker.gg): a métrica sai do Versus e do Ranking,
+// e o título "Motor do time" passa a ir para o maior ACS.
+function dropTrackerScore() {
+  for (const g of VS_GROUPS) { const i = g.keys.indexOf('trn'); if (i >= 0) g.keys.splice(i, 1); }
+  const i = RANK_KEYS.indexOf('trn'); if (i >= 0) RANK_KEYS.splice(i, 1);
+  const t = TITLES.find(x => x.k === 'trn'); if (t) Object.assign(t, { k: 'acs', why: 'Maior ACS do trio' });
+}
+
 // Classificação geral: 3 pontos para o 1º de cada métrica, 2 para o 2º, 1 para o 3º.
 export function standings(players) {
   const pts = Object.fromEntries(players.map(p => [p.id, { p, pts: 0, firsts: 0 }]));
@@ -226,6 +234,7 @@ export async function loadSquad() {
     const main = p.agents[0];
     return { ...meta, ...p, d, main, photo: photos.includes(meta.id), read: j.reads?.[meta.id], bestMap: [...p.maps].sort((a, b) => b.wr - a.wr)[0] };
   });
+  if (!players.some(p => p.d.trn != null)) dropTrackerScore();
 
   // mapa do squad: melhor win rate somando as partidas dos três
   const agg = {};

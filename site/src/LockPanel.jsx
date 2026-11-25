@@ -79,7 +79,7 @@ export default function LockPanel({ p, onClose, onOpen }) {
               {w && (
                 <div className="mini-weapon">
                   <img src={asset.weapon(w.n)} alt="" />
-                  <span><small>Arma principal</small><b>{w.n}</b><small>{w.k} abates · {w.h}% cabeça</small></span>
+                  <span><small>Arma principal</small><b>{w.n}</b><small>{w.k} abates{w.h != null ? ` · ${w.h}% cabeça` : ''}</small></span>
                 </div>
               )}
             </div>
