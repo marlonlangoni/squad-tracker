@@ -19,6 +19,10 @@ export const slug = n => {
 const jobs = [
   { dir: 'Agents Portraits', out: 'agents/portrait', w: 320, q: 82 },
   { dir: 'Agents Pose', out: 'agents/pose', h: 1100, q: 80 },
+  // mesma pose sem a margem transparente: o centro da imagem passa a ser o centro do personagem (usada no pódio)
+  { dir: 'Agents Pose', out: 'agents/pose-trim', h: 900, q: 80, trim: true },
+  // fotos de perfil dos jogadores (opcional): Assets/Players/l4.png, mt.png, sd.png
+  { dir: 'Players', out: 'players', h: 900, q: 85, trim: true },
   { dir: 'Classes icons', out: 'roles', w: 96, q: 90 },
   { dir: 'Ranks', out: 'ranks', w: 160, q: 90 },
   { dir: 'Weapons icons', out: 'weapons', w: 320, q: 85 },
@@ -35,7 +39,8 @@ for (const j of jobs) {
     if (!/\.(png|webp|jpe?g)$/i.test(f)) continue;
     const name = slug(path.parse(f).name);
     const dest = path.join(out, name + '.webp');
-    const img = sharp(path.join(src, f));
+    let img = sharp(path.join(src, f));
+    if (j.trim) img = sharp(await img.trim({ threshold: 1 }).toBuffer());
     const meta = await img.metadata();
     const resize = j.w ? { width: Math.min(j.w, meta.width) } : { height: Math.min(j.h, meta.height) };
     await img.resize(resize).webp({ quality: j.q, alphaQuality: 90, effort: 5 }).toFile(dest);
@@ -43,4 +48,10 @@ for (const j of jobs) {
   }
   console.log(`${j.out}: ok`);
 }
+// lista das fotos de jogador que existem, para o app saber quando usar foto em vez da arte do agente
+const pdir = path.join(OUT, 'players');
+fs.mkdirSync(pdir, { recursive: true });
+const photos = fs.readdirSync(pdir).filter(f => f.endsWith('.webp')).map(f => path.parse(f).name);
+fs.writeFileSync(path.join(pdir, 'manifest.json'), JSON.stringify(photos));
+console.log(`fotos de jogador: ${photos.length ? photos.join(', ') : 'nenhuma (usa a arte do agente)'}`);
 console.log(`${count} arquivos, ${(total / 1048576).toFixed(1)} MB no total`);

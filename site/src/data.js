@@ -13,6 +13,8 @@ export const slug = n => {
 };
 export const asset = {
   pose: a => `${BASE}assets/agents/pose/${slug(a)}.webp`,
+  poseTrim: a => `${BASE}assets/agents/pose-trim/${slug(a)}.webp`,
+  player: id => `${BASE}assets/players/${id}.webp`,
   portrait: a => `${BASE}assets/agents/portrait/${slug(a)}.webp`,
   role: r => `${BASE}assets/roles/${slug(r)}.webp`,
   rank: r => `${BASE}assets/ranks/${slug(r)}.webp`,
@@ -216,11 +218,13 @@ export async function loadSquad() {
   const r = await fetch(`${BASE}squad-data.json`, { cache: 'no-store' });
   if (!r.ok) throw new Error('HTTP ' + r.status);
   const j = await r.json();
+  // fotos de perfil dos jogadores (opcional; ver scripts/optimize-assets.mjs)
+  const photos = await fetch(`${BASE}assets/players/manifest.json`).then(x => (x.ok ? x.json() : [])).catch(() => []);
   const players = PLAYERS.map(meta => {
     const p = j.players[meta.id];
     const d = derive(p, j.act);
     const main = p.agents[0];
-    return { ...meta, ...p, d, main, read: j.reads?.[meta.id], bestMap: [...p.maps].sort((a, b) => b.wr - a.wr)[0] };
+    return { ...meta, ...p, d, main, photo: photos.includes(meta.id), read: j.reads?.[meta.id], bestMap: [...p.maps].sort((a, b) => b.wr - a.wr)[0] };
   });
 
   // mapa do squad: melhor win rate somando as partidas dos três

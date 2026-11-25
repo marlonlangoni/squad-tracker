@@ -15,7 +15,7 @@ function Podium({ table }) {
         const p = row.p;
         return (
           <div key={p.id} className={'pod pod-' + (place + 1)} style={{ '--pc': p.color, '--ac': p.main.c }}>
-            <motion.img className="pod-art" src={asset.pose(p.main.n)} alt="" draggable="false"
+            <motion.img className={'pod-art' + (p.photo ? ' is-photo' : '')} src={p.photo ? asset.player(p.id) : asset.poseTrim(p.main.n)} alt="" draggable="false"
               initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, ease: EASE, delay: 0.9 - place * 0.25 }} />
             <motion.div className="pod-block" initial={{ height: 0 }} animate={{ height: `${HEIGHT[place]}%` }} transition={{ duration: 1, ease: EASE, delay: 0.5 - place * 0.15 }}>
               <span className="pod-place">{PLACE[place]}</span>

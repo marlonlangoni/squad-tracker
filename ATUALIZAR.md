@@ -32,3 +32,11 @@ Use o navegador integrado (ferramentas `mcp__Claude_Browser__*`).
 - Página do Tracker.gg pedindo verificação (captcha) ou fora do ar: pare, não publique, e registre o motivo no resumo da execução.
 - Um jogador falhou: siga com os outros. O `build-data.mjs` mantém os valores antigos de quem faltar.
 - Ato novo (o resumo mostra `ATO NOVO`): publique normalmente e avise no resumo. O histórico de elo vem da página de performance.
+
+## Fotos de perfil dos jogadores (site 2.0)
+
+O pódio do Ranking usa a arte do agente principal de cada um. Para trocar por fotos de vocês:
+
+1. Coloque as fotos em `Assets/Players/` com o id no nome: `l4.png` (Marlon), `mt.png` (Henrique), `sd.png` (Douglas). PNG com fundo transparente fica melhor; o script corta a margem vazia e centraliza.
+2. Na pasta `site`, rode `npm run assets`.
+3. Faça commit e push. O site republica sozinho e o pódio passa a usar as fotos de quem tiver arquivo.

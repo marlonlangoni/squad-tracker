@@ -84,9 +84,13 @@
 .rk-rule { margin: 12px 0 0; font-size: 13px; }
 .podium { overflow-x: clip; overflow-clip-margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); align-items: end; gap: clamp(10px, 2vw, 24px); height: clamp(460px, 66vh, 620px); margin: 48px 0 28px; }
 .pod { position: relative; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; }
-.pod-art { position: absolute; left: 50%; bottom: calc(var(--h) - 4px); width: 100%; max-width: none; transform: translateX(-50%); pointer-events: none; filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.6)); mask-image: linear-gradient(180deg, #000 80%, transparent 100%); z-index: 1; }
-.pod-1 { --h: 46%; } .pod-2 { --h: 36%; } .pod-3 { --h: 28%; }
-.pod-1 .pod-art { width: 110%; }
+/* arte recortada (sem margem): fica centrada na coluna e em pé sobre o bloco, sem sair do quadro */
+.pod-art {
+  position: absolute; left: 0; right: 0; bottom: calc(var(--h) - 2px); z-index: 1;
+  width: 100%; height: var(--art); object-fit: contain; object-position: center bottom;
+  pointer-events: none; filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.6));
+}
+.pod-1 { --h: 46%; --art: 56%; } .pod-2 { --h: 36%; --art: 52%; } .pod-3 { --h: 28%; --art: 50%; }
 .pod-block { position: relative; z-index: 2; min-height: 0; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: 14px; text-align: center;
   background: linear-gradient(180deg, color-mix(in srgb, var(--pc) 45%, #121a2b), #0e1422 80%); border: 1px solid color-mix(in srgb, var(--pc) 60%, transparent); border-bottom: 0;
   clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); box-shadow: 0 -10px 40px -10px color-mix(in srgb, var(--pc) 50%, transparent); }
@@ -157,8 +161,7 @@
   .vlab { font-size: 10.5px; letter-spacing: 0.04em; }
   .verdict-cols { grid-template-columns: 1fr; }
   .podium { height: 380px; gap: 8px; }
-  .pod-art { width: 135%; }
-  .pod-1 .pod-art { width: 150%; }
+  .podium { height: 420px; }
   .pod-block small { display: none; }
   .rk-tr { grid-template-columns: 1fr repeat(3, 64px); }
   .rk-tr > span { padding: 8px 4px; }
