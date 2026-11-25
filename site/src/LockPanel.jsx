@@ -53,7 +53,7 @@ export default function LockPanel({ p, onClose, onOpen }) {
           <motion.div className="lock-metrics" variants={item}>
             <h3>Desempenho <span className="muted">· percentil no Tracker</span></h3>
             {METRICS.map(([k, lab, dec, suf, pk, tip]) => (
-              <div className="metric" key={k} title={tip}>
+              <div className="metric" key={k} data-tip={tip}>
                 <span className="metric-lab">{lab}</span>
                 <span className="metric-val"><CountUp value={d[k]} decimals={dec} suffix={suf} /></span>
                 <PctBar value={d[pk]} color="var(--pc)" />

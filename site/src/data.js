@@ -212,7 +212,7 @@ export function standings(players) {
 }
 
 export const TIER_LIST = TIERS;
-export { rIdx, rName };
+export { rIdx, rName, actKey };
 
 export async function loadSquad() {
   const r = await fetch(`${BASE}squad-data.json`, { cache: 'no-store' });
@@ -233,12 +233,121 @@ export async function loadSquad() {
   const squadMap = Object.values(agg).filter(m => m.w + m.l >= 8).sort((a, b) => b.w / (b.w + b.l) - a.w / (a.w + a.l))[0];
 
   for (const pl of players) pl.sw = analyze(players, pl);
+  for (const pl of players) pl.form = recentForm(pl);
+
+  // metas: partem do retrato salvo em goalsBase (mesmo ato); sem ele, partem dos números de hoje
+  const base = j.goalsBase && j.goalsBase.act === j.act ? j.goalsBase : null;
+  const basePlayers = players.map(pl => {
+    const b = base?.players?.[pl.id];
+    return b ? { ...pl, ...b, d: derive({ ...pl, ...b }, j.act) } : pl;
+  });
+  for (const bp of basePlayers) bp.sw = analyze(basePlayers, bp);
+  for (const pl of players) pl.goals = makeGoals(pl, basePlayers.find(b => b.id === pl.id), basePlayers);
 
   const duos = (j.teammates?.l4 || []).map(t => ({ ...t, with: PLAYERS.find(x => x.nick === t.nick) }));
   const bestDuo = [...duos].sort((a, b) => b.m - a.m)[0];
 
-  return { act: j.act, updatedAt: j.updatedAt, players, squadMap, bestDuo, duos };
+  return { act: j.act, updatedAt: j.updatedAt, goalsSetAt: base?.setAt || null, players, squadMap, bestDuo, duos };
 }
+
+/* ---------- forma recente (últimas partidas da página do Tracker) ---------- */
+function recentForm(p) {
+  const rows = (p.recent || []).map(r => ({ map: r[0], us: r[1], them: r[2], place: r[3], k: r[4], dth: r[5], a: r[6], dd: r[7], hs: r[8], acs: r[9] }))
+    .map(r => ({ ...r, res: r.us > r.them ? 'w' : r.us < r.them ? 'l' : 't' }));
+  if (!rows.length) return null;
+  const sum = f => rows.reduce((a, r) => a + f(r), 0);
+  let streak = 0; const first = rows[0].res;
+  for (const r of rows) { if (r.res === first && first !== 't') streak++; else break; }
+  return {
+    rows, n: rows.length,
+    wins: rows.filter(r => r.res === 'w').length,
+    kd: sum(r => r.k) / Math.max(1, sum(r => r.dth)),
+    hs: sum(r => r.hs) / rows.length,
+    dd: sum(r => r.dd) / rows.length,
+    acs: sum(r => r.acs) / rows.length,
+    streak: first === 't' ? 0 : streak, streakRes: first,
+  };
+}
+
+/* ---------- metas ---------- */
+const TIPS = {
+  hs: 'Mira na altura da cabeça o tempo todo. 10 minutos de Range antes de jogar e menos spray em distância longa.',
+  kd: 'Jogue os duelos com vantagem: busque trades, evite pegar o primeiro duelo sozinho e reposicione depois de cada abate.',
+  adr: 'Participe mais dos confrontos: use utilitária para dano e não fique tempo demais em ângulos sem ação.',
+  dd: 'Ganhe as trocas de dano: só aceite o duelo com escudo cheio e recue quando tomar dano primeiro.',
+  acs: 'Mais impacto por round: abates em momentos-chave, assistências com utilitária e presença nos retakes.',
+  kast: 'Seja útil todo round: jogue perto do time para ser trocado, use utilitária que gera assistência e evite mortes sem troca.',
+  fbpr: 'Abra mais rounds: entre com a utilitária do iniciador e pegue o primeiro duelo nos sites que você conhece melhor.',
+  fdpr: 'Morra menos na abertura: não pegue o primeiro peek sem informação e jogue o início do round mais recuado.',
+  esr: 'Escolha melhor os duelos de abertura: só entre com flash, drone ou informação do time.',
+  clutch: 'Nos clutches, isole os duelos um a um, use o som a seu favor e jogue com o tempo do spike.',
+  win: 'Comunicação e composição: feche o time com funções completas e jogue os mapas em que vocês vão melhor.',
+  rwin: 'Feche mais rounds: economia combinada com o time e retakes com utilitária guardada.',
+  multi: 'Busque rounds de impacto: posicione-se para pegar duelos seguidos e não recue depois do primeiro abate.',
+  surv: 'Sobreviva mais: saia do ângulo depois de atirar e não force duelos já perdidos.',
+  mvp: 'Seja o destaque mais vezes: combine dano alto com abates de abertura.',
+  atkKD: 'No ataque, entre em dupla e com utilitária: evite ser o primeiro a cruzar sem informação.',
+  defKD: 'Na defesa, varie os ângulos e recue depois do primeiro contato para buscar a troca.',
+};
+
+function makeGoals(pl, bp, basePlayers) {
+  // métricas que viram meta: os pontos fracos do retrato base (sem "função"), até 3
+  let keys = (bp.sw.weaknesses || []).map(w => w.k).filter(k => METRICS[k]);
+  if (keys.length < 2) {
+    const extra = ['hs', 'kast', 'adr', 'acs', 'dd', 'kd'].filter(k => !keys.includes(k) && METRICS[k].pk)
+      .sort((a, b) => (bp.d[METRICS[a].pk] ?? 50) - (bp.d[METRICS[b].pk] ?? 50));
+    keys = [...keys, ...extra].slice(0, 3);
+  }
+  keys = keys.slice(0, 3);
+  const recentKey = { kd: 'kd', hs: 'hs', dd: 'dd', acs: 'acs' };
+  return keys.map(k => {
+    const m = METRICS[k], from = bp.d[k];
+    const step = k === 'dd' ? 8 : Math.abs(from) * 0.08;
+    let target = m.low ? from - step : from + step;
+    // se um amigo está entre o valor atual e a meta, a meta vira "passar o amigo"
+    const rival = basePlayers.filter(o => o.id !== pl.id).map(o => ({ o, v: o.d[k] }))
+      .filter(x => (m.low ? x.v < from && x.v > target : x.v > from && x.v < target)).sort((a, b) => (m.low ? b.v - a.v : a.v - b.v))[0];
+    if (rival) target = rival.v + (m.low ? -1 : 1) * Math.pow(10, -m.d);
+    const r = Math.pow(10, m.d); target = Math.round(target * r) / r;
+    const now = pl.d[k];
+    const recent = recentKey[k] && pl.form ? pl.form[recentKey[k]] : null;
+    const prog = v => (v == null ? null : Math.max(0, Math.min(1, (m.low ? from - v : v - from) / Math.abs(target - from || 1))));
+    return {
+      k, label: m.l, d: m.d, u: m.u || '', low: !!m.low, from, target, now, recent,
+      rival: rival ? rival.o.nick : null,
+      progress: prog(now), recentProgress: prog(recent),
+      tip: TIPS[k] || m.g,
+    };
+  });
+}
+
+/* ---------- glossário ---------- */
+export const GLOSSARY = [
+  ['Elo', 'O rank que aparece no jogo (Ferro, Bronze, Prata, Ouro, Platina, Diamante, Ascendente, Imortal, Radiante), cada um com divisões 1, 2 e 3.'],
+  ['RR', 'Rank Rating: os pontos de 0 a 100 dentro da divisão. Ganha ao vencer, perde ao perder.'],
+  ['MMR', 'Nota escondida de habilidade que o jogo usa para montar as partidas. Se está acima do elo, você ganha mais RR por vitória e sobe mais rápido.'],
+  ['Ato / Episódio', 'As temporadas do competitivo. O elo é recalibrado a cada ato.'],
+  ['Percentil', 'Posição comparada aos jogadores do Tracker.gg. Percentil 80 = melhor que 80% (top 20%).'],
+  ['Tracker Score (TRN)', METRICS.trn.g],
+  ['K/D', METRICS.kd.g],
+  ['KAD', 'Abates mais assistências, divididos por mortes.'],
+  ['ADR', METRICS.adr.g],
+  ['DDΔ', METRICS.dd.g],
+  ['ACS', METRICS.acs.g],
+  ['HS%', METRICS.hs.g],
+  ['KAST', METRICS.kast.g],
+  ['First Blood (FB)', 'O primeiro abate do round.'],
+  ['First Death (FD)', 'Ser o primeiro a morrer no round.'],
+  ['Sucesso na entrada (ESR)', METRICS.esr.g],
+  ['Clutch', 'Vencer o round sendo o último vivo do time (1v1, 1v2…).'],
+  ['Trade (troca)', 'Quando um aliado mata quem acabou de te matar, logo em seguida.'],
+  ['Multi-kill', 'Round com 3 ou mais abates (3K, 4K, Ace).'],
+  ['Ace', 'Matar os 5 adversários no mesmo round.'],
+  ['MVP', 'Melhor jogador da partida (maior ACS). "Team MVP" é o melhor do time que perdeu.'],
+  ['Win %', METRICS.win.g],
+  ['Rounds vencidos', METRICS.rwin.g],
+  ['Sobrevivência', METRICS.surv.g],
+];
 
 export function ago(iso) {
   const ms = Date.now() - new Date(iso).getTime();

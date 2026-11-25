@@ -94,7 +94,7 @@ export default function Ranking({ squad }) {
           {keys.map(k => {
             const m = METRICS[k], order = byKey[k];
             return (
-              <div className="rk-tr" role="row" key={k} title={m.g}>
+              <div className="rk-tr" role="row" key={k} data-tip={m.g}>
                 <span role="rowheader">{m.l}{m.low ? <small> · menor é melhor</small> : null}</span>
                 {squad.players.map(p => {
                   const place = order.findIndex(o => o.id === p.id);

@@ -40,3 +40,11 @@ O pódio do Ranking usa a arte do agente principal de cada um. Para trocar por f
 1. Coloque as fotos em `Assets/Players/` com o id no nome: `l4.png` (Marlon), `mt.png` (Henrique), `sd.png` (Douglas). PNG com fundo transparente fica melhor; o script corta a margem vazia e centraliza.
 2. Na pasta `site`, rode `npm run assets`.
 3. Faça commit e push. O site republica sozinho e o pódio passa a usar as fotos de quem tiver arquivo.
+
+## Metas (site 2.0)
+
+As metas da tela Evolução partem de um retrato dos números salvo em `squad-data.json` (`goalsBase`). Cada atualização compara os números novos com esse retrato, e o anel de progresso avança.
+
+- Depois de rodar `node tools/build-data.mjs`, rode `node tools/snapshot-goals.mjs`. Ele só cria o retrato se ainda não existir um para o ato atual.
+- Ato novo ou metas batidas: `node tools/snapshot-goals.mjs --novo` recomeça as metas com os números de hoje.
+- Para o site receber os dados novos: faça commit e push do `squad-data.json`. O site republica sozinho.

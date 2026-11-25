@@ -8,11 +8,13 @@ import SquadBar from './SquadBar.jsx';
 import Profile from './Profile.jsx';
 import Versus from './Versus.jsx';
 import Ranking from './Ranking.jsx';
+import Evolucao from './Evolucao.jsx';
+import { TipLayer, GlossaryDrawer } from './Glossary.jsx';
 
 const EASE = [0.16, 1, 0.3, 1];
 
 // Rotas por hash (funciona no GitHub Pages sem configuração):
-// #/  ·  #/perfil/<id>  ·  #/versus/<a>/<b>  ·  #/ranking
+// #/  ·  #/perfil/<id>  ·  #/versus/<a>/<b>  ·  #/ranking  ·  #/evolucao
 function parseHash() {
   const h = location.hash;
   let m = /^#\/perfil\/(\w+)/.exec(h);
@@ -20,6 +22,7 @@ function parseHash() {
   m = /^#\/versus(?:\/(\w+)\/(\w+))?/.exec(h);
   if (m) return { page: 'versus', a: m[1] || 'l4', b: m[2] || 'mt' };
   if (/^#\/ranking/.test(h)) return { page: 'ranking' };
+  if (/^#\/evolucao/.test(h)) return { page: 'evolucao' };
   return { page: 'select' };
 }
 
@@ -28,6 +31,7 @@ const NAV = [
   ['perfil', '#/perfil/l4', 'Perfil'],
   ['versus', '#/versus', 'Versus'],
   ['ranking', '#/ranking', 'Ranking'],
+  ['evolucao', '#/evolucao', 'Evolução'],
 ];
 
 export default function App() {
@@ -36,6 +40,7 @@ export default function App() {
   const [route, setRoute] = useState(parseHash);
   const [hover, setHover] = useState(null);
   const [locked, setLocked] = useState(null);
+  const [gloss, setGloss] = useState(false);
 
   useEffect(() => { loadSquad().then(setSquad).catch(e => setError(String(e))); }, []);
   useEffect(() => {
@@ -53,7 +58,7 @@ export default function App() {
 
   useEffect(() => {
     const onKey = e => {
-      if (e.key === 'Escape') { if (locked) setLocked(null); else if (route.page !== 'select') go('#/'); }
+      if (e.key === 'Escape') { if (gloss) setGloss(false); else if (locked) setLocked(null); else if (route.page !== 'select') go('#/'); }
       if (!players.length || !locked) return;
       if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
         const i = players.findIndex(p => p.id === locked);
@@ -62,7 +67,7 @@ export default function App() {
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [players, locked, route.page]);
+  }, [players, locked, route.page, gloss]);
 
   if (error) return <div className="state-msg">Não consegui carregar os dados ({error}).</div>;
 
@@ -90,6 +95,7 @@ export default function App() {
           <motion.div className="topbar-meta" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4, duration: 0.8 }}>
             <span className="chip"><span className="dot" /><span className="hide-sm">Competitivo · </span>{actLabel(squad.act)}</span>
             <span className="muted">Dados {ago(squad.updatedAt)}</span>
+            <button type="button" className="gloss-btn" onClick={() => setGloss(true)} aria-label="Abrir glossário" data-tip="Glossário: o que significa cada sigla">?</button>
           </motion.div>
         )}
       </header>
@@ -127,6 +133,8 @@ export default function App() {
           <Versus key="versus" squad={squad} aId={route.a} bId={route.b} />
         ) : squad && routeKey === 'ranking' ? (
           <Ranking key="ranking" squad={squad} />
+        ) : squad && routeKey === 'evolucao' ? (
+          <Evolucao key="evolucao" squad={squad} />
         ) : squad ? (
           <motion.main key="404" className="state-msg">Jogador não encontrado. <a href="#/">Voltar</a></motion.main>
         ) : null}
@@ -142,6 +150,9 @@ export default function App() {
       <AnimatePresence>
         {lockedPlayer && routeKey === 'select' && <LockPanel key="panel" p={lockedPlayer} onClose={() => setLocked(null)} onOpen={() => go(`#/perfil/${lockedPlayer.id}`)} />}
       </AnimatePresence>
+
+      <GlossaryDrawer open={gloss} onClose={() => setGloss(false)} />
+      <TipLayer />
 
       <footer className="legal">
         Squad Tracker é um projeto de fãs, sem fins lucrativos, e não é endossado pela Riot Games. Valorant e todas as artes relacionadas são marcas e propriedade da Riot Games, Inc. Dados: Tracker.gg.

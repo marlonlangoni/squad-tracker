@@ -5,6 +5,7 @@ import App from './App.jsx';
 import './styles.css';
 import './profile.css';
 import './versus.css';
+import './evo.css';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

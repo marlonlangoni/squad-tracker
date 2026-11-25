@@ -110,7 +110,7 @@ function Overview({ p }) {
         {TILES.map(k => {
           const m = METRICS[k], pc = m.pk ? d[m.pk] : null;
           return (
-            <motion.div key={k} className="tile" title={m.g} variants={{ h: { opacity: 0, y: 14 }, s: { opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE } } }}>
+            <motion.div key={k} className="tile" data-tip={m.g} variants={{ h: { opacity: 0, y: 14 }, s: { opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE } } }}>
               <small>{m.l}</small>
               <b><CountUp value={d[k]} decimals={m.d} suffix={m.u || ''} /></b>
               {pc != null ? <><PctBar value={pc} color="var(--pc)" /><em>{pc >= 50 ? `top ${100 - pc}%` : `percentil ${pc}`}</em></> : <em>{m.g.split('(')[0]}</em>}

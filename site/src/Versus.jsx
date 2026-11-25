@@ -45,7 +45,7 @@ function Row({ k, a, b, onShow, index }) {
     <motion.div className={'vrow' + (w === 1 ? ' win-a' : w === -1 ? ' win-b' : ' tie')}
       initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.9 }}
       transition={{ duration: 0.55, ease: EASE, delay: (index % 3) * 0.05 }}
-      onViewportEnter={() => onShow(k)} title={m.g}>
+      onViewportEnter={() => onShow(k)} data-tip={m.g}>
       <span className="vval a">{val(va)}</span>
       <span className="vbar a"><motion.span style={{ background: a.color }} initial={{ width: 0 }} whileInView={{ width: bar(va) }} viewport={{ once: true }} transition={{ duration: 0.9, ease: EASE, delay: 0.15 }} /></span>
       <span className="vlab">{m.l}{m.low ? <small>menor é melhor</small> : null}</span>
