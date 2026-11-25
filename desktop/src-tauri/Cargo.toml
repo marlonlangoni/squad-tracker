@@ -1,0 +1,19 @@
+[package]
+name = "squad-tracker"
+version = "1.0.0"
+description = "Squad Tracker"
+edition = "2021"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+
+# Arquivo menor: o app só abre o site, não precisa de velocidade máxima.
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = "s"
+panic = "abort"
+strip = true
