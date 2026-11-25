@@ -3,9 +3,9 @@ import { asset } from './data.js';
 import { CountUp } from './ui.jsx';
 
 const EASE = [0.16, 1, 0.3, 1];
-const NAV = ['Perfil', 'Versus 1×1', 'Ranking', 'Evolução'];
+const NAV = ['Versus 1×1', 'Ranking', 'Evolução'];
 
-export default function SquadBar({ squad }) {
+export default function SquadBar({ squad, onProfile }) {
   const { squadMap: m, bestDuo: duo, players } = squad;
   const wins = players.reduce((a, p) => a + p.d.wins, 0);
   const games = players.reduce((a, p) => a + p.d.matches, 0);
@@ -30,7 +30,8 @@ export default function SquadBar({ squad }) {
           <span className="muted">{duo.m} partidas · {duo.wr}% de vitórias</span>
         </div>
       )}
-      <nav className="sb-nav" aria-label="Próximas telas">
+      <nav className="sb-nav" aria-label="Telas">
+        <button type="button" className="sb-link" onClick={onProfile}>Perfil<em>abrir</em></button>
         {NAV.map(n => (
           <span key={n} className="sb-soon" title="Chega nas próximas fases">{n}<em>em breve</em></span>
         ))}

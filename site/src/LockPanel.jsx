@@ -16,7 +16,7 @@ const METRICS = [
 ];
 
 // Painel que sobe quando um jogador é selecionado: prévia do que vira o perfil completo na próxima fase.
-export default function LockPanel({ p, onClose }) {
+export default function LockPanel({ p, onClose, onOpen }) {
   const d = p.d;
   const w = p.weapons?.[0];
   return (
@@ -91,7 +91,9 @@ export default function LockPanel({ p, onClose }) {
                 <small>{d.mmr.pos} de {d.mmr.rankPT.replace(/ \d$/, '')} · elo atual {rankPT(p.rank)}</small>
               </span>
             </div>
-            <p className="soon">Perfil completo, Versus 1×1, Ranking e Evolução chegam nas próximas fases.</p>
+            <button className="btn-primary" onClick={onOpen} autoFocus>
+              Abrir perfil completo <i aria-hidden="true">→</i>
+            </button>
           </motion.div>
         </motion.div>
       </motion.aside>

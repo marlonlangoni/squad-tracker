@@ -2,9 +2,9 @@ import { AnimatePresence, motion } from 'motion/react';
 import { asset } from './data.js';
 
 // Fundo: arte do mapa em foco com troca suave, grade de HUD, vinheta e partículas.
-export default function Background({ map }) {
+export default function Background({ map, dim }) {
   return (
-    <div className="bg" aria-hidden="true">
+    <div className={'bg' + (dim ? ' is-dim' : '')} aria-hidden="true">
       <AnimatePresence initial={false}>
         {map && (
           <motion.div

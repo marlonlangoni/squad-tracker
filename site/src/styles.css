@@ -99,7 +99,7 @@ button { font: inherit; color: inherit; }
 .title { margin: 0; font-family: var(--display); font-weight: 800; font-style: italic; line-height: 0.86; letter-spacing: 0.01em; font-size: clamp(50px, min(7vw, 11vh), 112px); }
 .title-line { display: block; overflow: hidden; padding: 0 0.06em 0.04em 0; }
 .title-line > span { display: inline-block; }
-.title-line:last-child > span { -webkit-text-stroke: 1.5px var(--text); color: transparent; }
+.title .title-line:last-child > span { -webkit-text-stroke: 1.5px var(--text); color: transparent; }
 
 .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(16px, 2.4vw, 32px); }
 .card-skel { height: clamp(440px, 60vh, 560px); background: linear-gradient(100deg, var(--bg-2) 30%, #182036 50%, var(--bg-2) 70%); background-size: 300% 100%; animation: shimmer 1.4s linear infinite; clip-path: polygon(0 0, calc(100% - 28px) 0, 100% 28px, 100% 100%, 28px 100%, 0 calc(100% - 28px)); }
