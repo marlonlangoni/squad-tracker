@@ -53,7 +53,7 @@ function Hero({ p, squad }) {
           <div><b className="w"><CountUp value={d.wins} /></b><small>Vitórias</small></div>
           <div><b className="l"><CountUp value={d.losses} /></b><small>Derrotas</small></div>
           {d.ties ? <div><b className="t"><CountUp value={d.ties} /></b><small>Empates</small></div> : null}
-          <div><b><CountUp value={d.trn} /></b><small>Tracker Score</small></div>
+          {d.trn != null ? <div><b><CountUp value={d.trn} /></b><small>Tracker Score</small></div> : <div><b><CountUp value={d.acs} /></b><small>ACS</small></div>}
         </div>
 
         <div className="hero-agent">
@@ -294,11 +294,11 @@ function Weapons({ p }) {
       <PanelHead title="Armas e mira" />
       <div className="wpn-top">
         <motion.img src={asset.weapon(top.n)} alt="" initial={{ x: 40, opacity: 0 }} whileInView={{ x: 0, opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.9, ease: EASE }} />
-        <div><small>Arma principal</small><b>{top.n}</b><span className="muted">{top.k} abates · {top.h}% na cabeça</span></div>
+        <div><small>Arma principal</small><b>{top.n}</b><span className="muted">{top.k} abates{top.h != null ? ` · ${top.h}% na cabeça` : ''}</span></div>
       </div>
       <ul className="wpn-list">
         {rest.map(w => (
-          <li key={w.n}><img src={asset.weapon(w.n)} alt="" /><b>{w.n}</b><span className="muted">{w.k} abates</span><span>{w.h}% cabeça</span></li>
+          <li key={w.n}><img src={asset.weapon(w.n)} alt="" /><b>{w.n}</b><span className="muted">{w.k} abates</span>{w.h != null && <span>{w.h}% cabeça</span>}</li>
         ))}
       </ul>
       <h3 className="mini-h">Onde os tiros pegam <span className="muted">· ato inteiro</span></h3>

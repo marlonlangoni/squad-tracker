@@ -1,5 +1,6 @@
 // Junta o que foi coletado em raw/ com o squad-data.json atual e grava o squad-data.json novo.
 // Uso (na pasta do projeto):  node tools/build-data.mjs
+// Os arquivos de raw/ vêm de tools/collect-henrik.mjs (automático) ou da coleta pelo navegador no Tracker.gg.
 // Arquivos lidos (todos opcionais; o que faltar mantém o valor anterior):
 //   raw/profile.json        saída de tools/collect-profile.js
 //   raw/overview-<id>.json  saída de tools/parse-page.js na página /overview?...&season=<id>  (id = l4, mt, sd)

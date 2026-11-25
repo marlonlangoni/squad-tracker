@@ -96,7 +96,9 @@ export default function PlayerCard({ p, index, dim, locked, onHover, onLock }) {
           <span className="pcard-stats">
             <span><b><CountUp value={d.kd} decimals={2} delay={0.9 + index * 0.13} /></b><small>K/D</small></span>
             <span><b><CountUp value={d.win} decimals={0} suffix="%" delay={0.9 + index * 0.13} /></b><small>Vitórias</small></span>
-            <span><b><CountUp value={d.trn} delay={0.9 + index * 0.13} /></b><small>Tracker Score</small></span>
+            {d.trn != null
+              ? <span><b><CountUp value={d.trn} delay={0.9 + index * 0.13} /></b><small>Tracker Score</small></span>
+              : <span><b><CountUp value={d.acs} delay={0.9 + index * 0.13} /></b><small>ACS</small></span>}
           </span>
           <span className="pcard-cta">{locked ? 'Selecionado' : 'Selecionar'}<i aria-hidden="true">→</i></span>
         </span>

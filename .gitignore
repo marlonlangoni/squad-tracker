@@ -7,3 +7,4 @@ site/dist/
 .claude/
 site/.claude/
 *.log
+.env
