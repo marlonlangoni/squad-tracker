@@ -1,0 +1,28 @@
+{
+  "name": "squad-tracker",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "predev": "node scripts/sync-data.mjs",
+    "dev": "vite",
+    "prebuild": "node scripts/sync-data.mjs",
+    "build": "vite build",
+    "preview": "vite preview",
+    "assets": "node scripts/optimize-assets.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "motion": "^14.14.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.3.0",
+    "sharp": "^0.35.5",
+    "vite": "^8.3.8"
+  },
+  "private": true
+}

@@ -1,0 +1,1948 @@
+{
+ "updatedAt": "2026-11-25T14:11:00-03:00",
+ "act": "V26: A6",
+ "seasonId": "d816f426-48ea-f052-117f-9697a155b319",
+ "readsAt": "2026-11-25",
+ "reads": {
+  "l4": {
+   "role": "Motor do time",
+   "text": "Maior Tracker Score do trio (690) e melhor saldo de dano (DDΔ +17,3 por round, top 20%). K/D de 1,13 (top 21%) e quem mais vence clutches: 70 no ato, com 67% dos 1v1. Ainda fez um Ace no Corrode nesta semana. O ponto a lapidar segue sendo a mira: 21,5% de headshot, 9 pontos abaixo do Henrique. Rende menos no ataque (K/D 1,08) do que na defesa (1,18) e jogou 18 agentes no ato. Sova (50 partidas, 56% WR) e Sage (82% WR) são onde mais ganha, e Controlador é a função mais fraca (46% WR)."
+  },
+  "mt": {
+   "role": "A mira do trio",
+   "text": "Headshot de 30,8% (top 11%) e uma das menores taxas de first death: joga disciplinado e quase não entrega round de graça. É quem mais troca companheiros e mais dá assistência (0,30 por round). O dano continua sendo o ponto fraco: ADR de 137,9 e ACS de 206 ficam abaixo da média do elo (bottom 43% e 38%). Controlador é a melhor função (59% WR; Miks 63% em 27 partidas) e Sentinela a pior (41%). Nas últimas 8 partidas o K/D caiu para 0,96."
+  },
+  "sd": {
+   "role": "Entrada agressiva",
+   "text": "O que mais abre round matando (0,137 First Blood por round), e o Round Win % está no top 24%: o time ganha rounds com ele criando espaço de Raze (46 partidas, 58,7% WR). O outro lado da moeda é que ele morre primeiro em 17% dos rounds (20% no ataque) e perde mais duelos de abertura do que ganha (ESR 44%). KAST de 63,3% (bottom 6%) e K/D de 0,79 (bottom 9%). Fase recente fraca: 9V-11D e K/D 0,75 nas últimas 20. Jogando com o Marlon, a dupla vence 58,5%."
+  }
+ },
+ "teammates": {
+  "l4": [
+   {
+    "nick": "Mattin",
+    "tag": "1993",
+    "m": 117,
+    "kd": 1.11,
+    "place": 5.2,
+    "wr": 55.8
+   },
+   {
+    "nick": "Snoop Dogglas",
+    "tag": "2908",
+    "m": 44,
+    "kd": 0.74,
+    "place": 7.1,
+    "wr": 58.5
+   }
+  ]
+ },
+ "players": {
+  "l4": {
+   "rank": "Platinum 3",
+   "peak": "Diamond 3",
+   "peakAct": "V25: ACT III",
+   "level": 382,
+   "playtime": 69,
+   "s": {
+    "matchesPlayed": 119,
+    "matchesWon": [
+     64,
+     96
+    ],
+    "matchesLost": 51,
+    "matchesTied": 4,
+    "matchesWinPct": [
+     53.782,
+     71
+    ],
+    "mVPs": 15,
+    "roundsPlayed": 2503,
+    "roundsWinPct": [
+     51.298,
+     71
+    ],
+    "scorePerRound": [
+     218.266,
+     57
+    ],
+    "kills": [
+     1889,
+     91
+    ],
+    "deaths": 1674,
+    "assists": 680,
+    "killsPerRound": 0.755,
+    "deathsPerRound": 0.669,
+    "assistsPerRound": 0.272,
+    "kDRatio": [
+     1.128,
+     79
+    ],
+    "kDARatio": 1.332,
+    "damagePerRound": [
+     145.291,
+     61
+    ],
+    "damageDeltaPerRound": [
+     17.28,
+     80
+    ],
+    "headshotsPercentage": [
+     21.505,
+     54
+    ],
+    "dealtHeadshots": 1229,
+    "dealtBodyshots": 4217,
+    "dealtLegshots": 269,
+    "firstBloods": 238,
+    "firstDeaths": 177,
+    "firstBloodsPerRound": 0.095,
+    "firstDeathsPerRound": 0.071,
+    "survived": 838,
+    "traded": 184,
+    "tradesAvenger": 186,
+    "kAST": [
+     71.35,
+     70
+    ],
+    "mostKillsInMatch": 33,
+    "flawless": 86,
+    "thrifty": 31,
+    "aces": 2,
+    "clutches": 70,
+    "clutchesLost": 316,
+    "clutches1v1": 47,
+    "clutches1v2": 15,
+    "clutches1v3": 7,
+    "clutches1v4": 1,
+    "clutches1v5": 0,
+    "clutchesLost1v1": 23,
+    "clutchesLost1v2": 66,
+    "clutchesLost1v3": 88,
+    "clutchesLost1v4": 96,
+    "clutchesLost1v5": 43,
+    "kills3K": 111,
+    "kills4K": 26,
+    "kills5K": 3,
+    "esr": 0.573,
+    "plantsPerRound": 0.247,
+    "attackKDRatio": 1.077,
+    "attackRoundsWinPct": 51.831,
+    "attackDamagePerRound": 139.014,
+    "attackKAST": 71.82,
+    "attackFirstBloodsPerRound": 0.08,
+    "attackFirstDeathsPerRound": 0.061,
+    "defenseKDRatio": 1.182,
+    "defenseRoundsWinPct": 50.762,
+    "defenseDamagePerRound": 151.614,
+    "defenseKAST": 70.89,
+    "defenseFirstBloodsPerRound": 0.111,
+    "defenseFirstDeathsPerRound": 0.08,
+    "trnPerformanceScore": 690
+   },
+   "agentCount": 18,
+   "agents": [
+    {
+     "n": "Sova",
+     "r": "Initiator",
+     "c": "#2688FF",
+     "m": 50,
+     "wr": 56,
+     "kd": 1.22,
+     "adr": 143.8,
+     "acs": 216.4
+    },
+    {
+     "n": "Sage",
+     "r": "Sentinel",
+     "c": "#52FFD0",
+     "m": 11,
+     "wr": 81.8,
+     "kd": 1.14,
+     "adr": 150.4,
+     "acs": 225.2
+    },
+    {
+     "n": "Omen",
+     "r": "Controller",
+     "c": "#8980EB",
+     "m": 10,
+     "wr": 40,
+     "kd": 1.06,
+     "adr": 142.8,
+     "acs": 218.3
+    },
+    {
+     "n": "Chamber",
+     "r": "Sentinel",
+     "c": "#d3564f",
+     "m": 9,
+     "wr": 44.4,
+     "kd": 1.28,
+     "adr": 162.4,
+     "acs": 245
+    },
+    {
+     "n": "Phoenix",
+     "r": "Duelist",
+     "c": "#FF6C40",
+     "m": 8,
+     "wr": 50,
+     "kd": 1.13,
+     "adr": 170.2,
+     "acs": 254.8
+    },
+    {
+     "n": "Raze",
+     "r": "Duelist",
+     "c": "#FF5589",
+     "m": 7,
+     "wr": 57.1,
+     "kd": 1.11,
+     "adr": 153,
+     "acs": 233.9
+    }
+   ],
+   "roles": [
+    {
+     "n": "Initiator",
+     "m": 54,
+     "wr": 55.6,
+     "kd": 1.19
+    },
+    {
+     "n": "Sentinel",
+     "m": 32,
+     "wr": 53.1,
+     "kd": 1.12
+    },
+    {
+     "n": "Duelist",
+     "m": 20,
+     "wr": 55,
+     "kd": 1.07
+    },
+    {
+     "n": "Controller",
+     "m": 13,
+     "wr": 46.2,
+     "kd": 1.02
+    }
+   ],
+   "maps": [
+    {
+     "n": "Lotus",
+     "wr": 64.7,
+     "w": 11,
+     "l": 5
+    },
+    {
+     "n": "Bind",
+     "wr": 64.3,
+     "w": 9,
+     "l": 5
+    },
+    {
+     "n": "Sunset",
+     "wr": 60,
+     "w": 12,
+     "l": 8
+    },
+    {
+     "n": "Abyss",
+     "wr": 52.9,
+     "w": 9,
+     "l": 8
+    },
+    {
+     "n": "Haven",
+     "wr": 50,
+     "w": 9,
+     "l": 8
+    },
+    {
+     "n": "Summit",
+     "wr": 43.8,
+     "w": 7,
+     "l": 8
+    },
+    {
+     "n": "Corrode",
+     "wr": 41.2,
+     "w": 7,
+     "l": 9
+    }
+   ],
+   "weapons": [
+    {
+     "n": "Vandal",
+     "h": 31,
+     "b": 65,
+     "l": 3,
+     "k": 817
+    },
+    {
+     "n": "Phantom",
+     "h": 27,
+     "b": 69,
+     "l": 3,
+     "k": 256
+    },
+    {
+     "n": "Operator",
+     "h": 14,
+     "b": 84,
+     "l": 3,
+     "k": 150
+    }
+   ],
+   "recent": [
+    [
+     "Bind",
+     15,
+     13,
+     "4th",
+     23,
+     20,
+     6,
+     41,
+     19,
+     256
+    ],
+    [
+     "Corrode",
+     13,
+     11,
+     "MVP",
+     33,
+     15,
+     5,
+     126,
+     26,
+     408
+    ],
+    [
+     "Lotus",
+     11,
+     13,
+     "6th",
+     17,
+     16,
+     5,
+     18,
+     24,
+     206
+    ],
+    [
+     "Haven",
+     13,
+     9,
+     "6th",
+     15,
+     16,
+     6,
+     2,
+     31,
+     184
+    ],
+    [
+     "Corrode",
+     13,
+     5,
+     "4th",
+     12,
+     11,
+     8,
+     26,
+     13,
+     201
+    ],
+    [
+     "Summit",
+     6,
+     13,
+     "8th",
+     11,
+     14,
+     2,
+     -44,
+     17,
+     170
+    ],
+    [
+     "Abyss",
+     13,
+     9,
+     "MVP",
+     26,
+     10,
+     7,
+     86,
+     26,
+     310
+    ],
+    [
+     "Bind",
+     13,
+     6,
+     "3rd",
+     16,
+     9,
+     7,
+     60,
+     17,
+     239
+    ],
+    [
+     "Bind",
+     13,
+     10,
+     "4th",
+     19,
+     14,
+     5,
+     27,
+     19,
+     231
+    ],
+    [
+     "Summit",
+     9,
+     13,
+     "8th",
+     15,
+     14,
+     4,
+     13,
+     35,
+     197
+    ],
+    [
+     "Corrode",
+     11,
+     13,
+     "MVP",
+     22,
+     16,
+     11,
+     60,
+     32,
+     260
+    ],
+    [
+     "Sunset",
+     11,
+     13,
+     "5th",
+     13,
+     14,
+     12,
+     9,
+     11,
+     172
+    ],
+    [
+     "Haven",
+     14,
+     14,
+     "3rd",
+     21,
+     17,
+     16,
+     42,
+     16,
+     232
+    ],
+    [
+     "Corrode",
+     13,
+     10,
+     "5th",
+     16,
+     13,
+     6,
+     43,
+     28,
+     196
+    ],
+    [
+     "Lotus",
+     9,
+     13,
+     "9th",
+     14,
+     16,
+     2,
+     -11,
+     19,
+     184
+    ],
+    [
+     "Abyss",
+     14,
+     12,
+     "MVP",
+     31,
+     15,
+     4,
+     90,
+     19,
+     330
+    ],
+    [
+     "Lotus",
+     14,
+     14,
+     "2nd",
+     27,
+     19,
+     6,
+     55,
+     16,
+     289
+    ],
+    [
+     "Sunset",
+     7,
+     13,
+     "10th",
+     9,
+     14,
+     3,
+     -55,
+     13,
+     122
+    ],
+    [
+     "Summit",
+     15,
+     15,
+     "10th",
+     13,
+     21,
+     9,
+     -30,
+     24,
+     123
+    ],
+    [
+     "Corrode",
+     13,
+     4,
+     "3rd",
+     12,
+     9,
+     7,
+     33,
+     17,
+     205
+    ]
+   ],
+   "history": [
+    [
+     "E3: A3",
+     "Gold 2",
+     55
+    ],
+    [
+     "E4: A1",
+     "Gold 3",
+     48.7
+    ],
+    [
+     "E4: A2",
+     "Gold 3",
+     46.1
+    ],
+    [
+     "E4: A3",
+     "Gold 3",
+     50.4
+    ],
+    [
+     "E5: A1",
+     "Platinum 3",
+     44.7
+    ],
+    [
+     "E6: A2",
+     "Platinum 3",
+     52.6
+    ],
+    [
+     "E6: A3",
+     "Diamond 2",
+     52.2
+    ],
+    [
+     "E7: A1",
+     "Diamond 1",
+     46.2
+    ],
+    [
+     "E7: A2",
+     "Platinum 2",
+     39.4
+    ],
+    [
+     "E9: A1",
+     "Platinum 1",
+     48.8
+    ],
+    [
+     "E9: A2",
+     "Platinum 3",
+     47.3
+    ],
+    [
+     "E9: A3",
+     "Diamond 1",
+     49.5
+    ],
+    [
+     "V25: A1",
+     "Diamond 1",
+     50.6
+    ],
+    [
+     "V25: A2",
+     "Diamond 1",
+     45.8
+    ],
+    [
+     "V25: A3",
+     "Diamond 3",
+     50.9
+    ],
+    [
+     "V25: A4",
+     "Diamond 1",
+     51.8
+    ],
+    [
+     "V25: A5",
+     "Diamond 1",
+     41.4
+    ],
+    [
+     "V25: A6",
+     "Diamond 2",
+     51.2
+    ],
+    [
+     "V26: A6",
+     "Platinum 3",
+     53.8
+    ]
+   ]
+  },
+  "mt": {
+   "rank": "Platinum 2",
+   "peak": "Diamond 2",
+   "peakAct": "V25: ACT VI",
+   "level": 389,
+   "playtime": 68,
+   "s": {
+    "matchesPlayed": 118,
+    "matchesWon": [
+     63,
+     96
+    ],
+    "matchesLost": 51,
+    "matchesTied": 4,
+    "matchesWinPct": [
+     53.39,
+     70
+    ],
+    "mVPs": 17,
+    "roundsPlayed": 2477,
+    "roundsWinPct": [
+     51.151,
+     69
+    ],
+    "scorePerRound": [
+     206.252,
+     38
+    ],
+    "kills": [
+     1829,
+     91
+    ],
+    "deaths": 1659,
+    "assists": 739,
+    "killsPerRound": 0.738,
+    "deathsPerRound": 0.67,
+    "assistsPerRound": 0.298,
+    "kDRatio": [
+     1.102,
+     75
+    ],
+    "kDARatio": 1.325,
+    "damagePerRound": [
+     137.873,
+     43
+    ],
+    "damageDeltaPerRound": [
+     9.807,
+     70
+    ],
+    "headshotsPercentage": [
+     30.763,
+     89
+    ],
+    "dealtHeadshots": 1524,
+    "dealtBodyshots": 3263,
+    "dealtLegshots": 167,
+    "firstBloods": 178,
+    "firstDeaths": 145,
+    "firstBloodsPerRound": 0.072,
+    "firstDeathsPerRound": 0.059,
+    "survived": 823,
+    "traded": 205,
+    "tradesAvenger": 267,
+    "kAST": [
+     71.34,
+     70
+    ],
+    "mostKillsInMatch": 29,
+    "flawless": 86,
+    "thrifty": 31,
+    "aces": 1,
+    "clutches": 55,
+    "clutchesLost": 293,
+    "clutches1v1": 35,
+    "clutches1v2": 12,
+    "clutches1v3": 5,
+    "clutches1v4": 3,
+    "clutches1v5": 0,
+    "clutchesLost1v1": 20,
+    "clutchesLost1v2": 57,
+    "clutchesLost1v3": 91,
+    "clutchesLost1v4": 82,
+    "clutchesLost1v5": 43,
+    "kills3K": 95,
+    "kills4K": 30,
+    "kills5K": 3,
+    "esr": 0.551,
+    "plantsPerRound": 0.26,
+    "attackKDRatio": 1.131,
+    "attackRoundsWinPct": 51.92,
+    "attackDamagePerRound": 138.326,
+    "attackKAST": 72.24,
+    "attackFirstBloodsPerRound": 0.071,
+    "attackFirstDeathsPerRound": 0.056,
+    "defenseKDRatio": 1.074,
+    "defenseRoundsWinPct": 50.367,
+    "defenseDamagePerRound": 137.412,
+    "defenseKAST": 70.42,
+    "defenseFirstBloodsPerRound": 0.073,
+    "defenseFirstDeathsPerRound": 0.061,
+    "trnPerformanceScore": 606
+   },
+   "agentCount": 14,
+   "agents": [
+    {
+     "n": "Miks",
+     "r": "Controller",
+     "c": "#FAB25B",
+     "m": 27,
+     "wr": 63,
+     "kd": 1.14,
+     "adr": 132.6,
+     "acs": 202
+    },
+    {
+     "n": "Iso",
+     "r": "Duelist",
+     "c": "#674BFF",
+     "m": 23,
+     "wr": 52.2,
+     "kd": 1.12,
+     "adr": 151.7,
+     "acs": 228
+    },
+    {
+     "n": "Gekko",
+     "r": "Initiator",
+     "c": "#c7f459",
+     "m": 15,
+     "wr": 66.7,
+     "kd": 1.28,
+     "adr": 147,
+     "acs": 222.5
+    },
+    {
+     "n": "Omen",
+     "r": "Controller",
+     "c": "#8980EB",
+     "m": 14,
+     "wr": 57.1,
+     "kd": 1.29,
+     "adr": 158.7,
+     "acs": 241.7
+    },
+    {
+     "n": "Sova",
+     "r": "Initiator",
+     "c": "#2688FF",
+     "m": 10,
+     "wr": 50,
+     "kd": 0.74,
+     "adr": 116.7,
+     "acs": 163.7
+    },
+    {
+     "n": "Killjoy",
+     "r": "Sentinel",
+     "c": "#FEC0CB",
+     "m": 6,
+     "wr": 66.7,
+     "kd": 1.21,
+     "adr": 136.4,
+     "acs": 193.1
+    }
+   ],
+   "roles": [
+    {
+     "n": "Controller",
+     "m": 44,
+     "wr": 59.1,
+     "kd": 1.17
+    },
+    {
+     "n": "Initiator",
+     "m": 34,
+     "wr": 52.9,
+     "kd": 1.05
+    },
+    {
+     "n": "Duelist",
+     "m": 23,
+     "wr": 52.2,
+     "kd": 1.12
+    },
+    {
+     "n": "Sentinel",
+     "m": 17,
+     "wr": 41.2,
+     "kd": 1.02
+    }
+   ],
+   "maps": [
+    {
+     "n": "Bind",
+     "wr": 69.2,
+     "w": 9,
+     "l": 4
+    },
+    {
+     "n": "Lotus",
+     "wr": 62.5,
+     "w": 10,
+     "l": 5
+    },
+    {
+     "n": "Sunset",
+     "wr": 60,
+     "w": 12,
+     "l": 8
+    },
+    {
+     "n": "Abyss",
+     "wr": 52.9,
+     "w": 9,
+     "l": 8
+    },
+    {
+     "n": "Haven",
+     "wr": 47.4,
+     "w": 9,
+     "l": 9
+    },
+    {
+     "n": "Summit",
+     "wr": 43.8,
+     "w": 7,
+     "l": 8
+    },
+    {
+     "n": "Corrode",
+     "wr": 41.2,
+     "w": 7,
+     "l": 9
+    }
+   ],
+   "weapons": [
+    {
+     "n": "Vandal",
+     "h": 43,
+     "b": 54,
+     "l": 3,
+     "k": 879
+    },
+    {
+     "n": "Phantom",
+     "h": 37,
+     "b": 61,
+     "l": 2,
+     "k": 434
+    },
+    {
+     "n": "Bulldog",
+     "h": 35,
+     "b": 62,
+     "l": 3,
+     "k": 130
+    }
+   ],
+   "recent": [
+    [
+     "Bind",
+     15,
+     13,
+     "5th",
+     18,
+     21,
+     16,
+     -15,
+     49,
+     199
+    ],
+    [
+     "Corrode",
+     13,
+     11,
+     "5th",
+     18,
+     15,
+     3,
+     36,
+     29,
+     214
+    ],
+    [
+     "Lotus",
+     11,
+     13,
+     "2nd",
+     18,
+     14,
+     10,
+     51,
+     31,
+     222
+    ],
+    [
+     "Haven",
+     13,
+     9,
+     "7th",
+     14,
+     14,
+     3,
+     2,
+     23,
+     168
+    ],
+    [
+     "Corrode",
+     13,
+     5,
+     "3rd",
+     14,
+     8,
+     7,
+     43,
+     24,
+     184
+    ],
+    [
+     "Summit",
+     6,
+     13,
+     "10th",
+     7,
+     14,
+     6,
+     -43,
+     13,
+     128
+    ],
+    [
+     "Abyss",
+     13,
+     9,
+     "5th",
+     15,
+     15,
+     4,
+     -27,
+     28,
+     180
+    ],
+    [
+     "Bind",
+     13,
+     6,
+     "7th",
+     5,
+     11,
+     12,
+     -33,
+     29,
+     108
+    ],
+    [
+     "Bind",
+     13,
+     10,
+     "MVP",
+     20,
+     11,
+     8,
+     57,
+     38,
+     232
+    ],
+    [
+     "Summit",
+     9,
+     13,
+     "MVP",
+     16,
+     15,
+     14,
+     9,
+     33,
+     223
+    ],
+    [
+     "Corrode",
+     11,
+     13,
+     "10th",
+     11,
+     15,
+     5,
+     -19,
+     40,
+     142
+    ],
+    [
+     "Sunset",
+     11,
+     13,
+     "8th",
+     14,
+     16,
+     4,
+     10,
+     33,
+     169
+    ],
+    [
+     "Haven",
+     14,
+     14,
+     "MVP",
+     29,
+     18,
+     13,
+     74,
+     27,
+     282
+    ],
+    [
+     "Corrode",
+     13,
+     10,
+     "8th",
+     14,
+     14,
+     4,
+     8,
+     35,
+     169
+    ],
+    [
+     "Lotus",
+     9,
+     13,
+     "6th",
+     17,
+     18,
+     9,
+     -11,
+     22,
+     204
+    ],
+    [
+     "Abyss",
+     14,
+     12,
+     "4th",
+     18,
+     19,
+     8,
+     -5,
+     26,
+     204
+    ],
+    [
+     "Lotus",
+     14,
+     14,
+     "6th",
+     21,
+     20,
+     6,
+     23,
+     29,
+     213
+    ],
+    [
+     "Sunset",
+     7,
+     13,
+     "5th",
+     12,
+     14,
+     6,
+     -12,
+     29,
+     176
+    ],
+    [
+     "Summit",
+     15,
+     15,
+     "7th",
+     22,
+     21,
+     5,
+     -23,
+     30,
+     191
+    ],
+    [
+     "Corrode",
+     13,
+     4,
+     "MVP",
+     19,
+     11,
+     6,
+     91,
+     28,
+     289
+    ]
+   ],
+   "history": [
+    [
+     "E3: A1",
+     "Bronze 1",
+     49.1
+    ],
+    [
+     "E3: A2",
+     "Bronze 3",
+     58.2
+    ],
+    [
+     "E3: A3",
+     "Silver 1",
+     50.9
+    ],
+    [
+     "E4: A1",
+     "Bronze 3",
+     58
+    ],
+    [
+     "E4: A2",
+     "Silver 2",
+     43
+    ],
+    [
+     "E4: A3",
+     "Gold 2",
+     62.3
+    ],
+    [
+     "E5: A1",
+     "Gold 3",
+     46.2
+    ],
+    [
+     "E5: A2",
+     "Gold 3",
+     42
+    ],
+    [
+     "E5: A3",
+     "Gold 3",
+     56
+    ],
+    [
+     "E6: A1",
+     "Gold 1",
+     46.5
+    ],
+    [
+     "E6: A2",
+     "Gold 1",
+     25
+    ],
+    [
+     "E6: A3",
+     "Gold 3",
+     51.4
+    ],
+    [
+     "E7: A1",
+     "Silver 3",
+     44.2
+    ],
+    [
+     "E7: A2",
+     "Silver 3",
+     40.7
+    ],
+    [
+     "E7: A3",
+     "Silver 1",
+     40
+    ],
+    [
+     "E8: A1",
+     "Gold 1",
+     50
+    ],
+    [
+     "E8: A2",
+     "Silver 3",
+     30.8
+    ],
+    [
+     "E8: A3",
+     "Gold 1",
+     47.5
+    ],
+    [
+     "E9: A1",
+     "Silver 3",
+     47.5
+    ],
+    [
+     "E9: A2",
+     "Silver 3",
+     50
+    ],
+    [
+     "E9: A3",
+     "Gold 3",
+     50
+    ],
+    [
+     "V25: A1",
+     "Gold 3",
+     47.1
+    ],
+    [
+     "V25: A2",
+     "Gold 3",
+     46.8
+    ],
+    [
+     "V25: A3",
+     "Platinum 3",
+     56.1
+    ],
+    [
+     "V25: A4",
+     "Platinum 3",
+     53.1
+    ],
+    [
+     "V25: A5",
+     "Platinum 3",
+     44.9
+    ],
+    [
+     "V25: A6",
+     "Diamond 2",
+     49.6
+    ],
+    [
+     "V26: A6",
+     "Platinum 2",
+     53.4
+    ]
+   ]
+  },
+  "sd": {
+   "rank": "Gold 3",
+   "peak": "Platinum 1",
+   "peakAct": "EPISODE 5: ACT III",
+   "level": 498,
+   "playtime": 38,
+   "s": {
+    "matchesPlayed": 66,
+    "matchesWon": [
+     34,
+     73
+    ],
+    "matchesLost": 27,
+    "matchesTied": 5,
+    "matchesWinPct": [
+     51.515,
+     61
+    ],
+    "mVPs": 3,
+    "roundsPlayed": 1380,
+    "roundsWinPct": [
+     51.667,
+     76
+    ],
+    "scorePerRound": [
+     196.476,
+     24
+    ],
+    "kills": [
+     867,
+     66
+    ],
+    "deaths": 1091,
+    "assists": 371,
+    "killsPerRound": 0.628,
+    "deathsPerRound": 0.791,
+    "assistsPerRound": 0.269,
+    "kDRatio": [
+     0.795,
+     9
+    ],
+    "kDARatio": 0.965,
+    "damagePerRound": [
+     132.427,
+     30
+    ],
+    "damageDeltaPerRound": [
+     -13.346,
+     23
+    ],
+    "headshotsPercentage": [
+     16.872,
+     31
+    ],
+    "dealtHeadshots": 589,
+    "dealtBodyshots": 2613,
+    "dealtLegshots": 289,
+    "firstBloods": 189,
+    "firstDeaths": 240,
+    "firstBloodsPerRound": 0.137,
+    "firstDeathsPerRound": 0.174,
+    "survived": 300,
+    "traded": 106,
+    "tradesAvenger": 73,
+    "kAST": [
+     63.33,
+     6
+    ],
+    "mostKillsInMatch": 25,
+    "flawless": 51,
+    "thrifty": 21,
+    "aces": 1,
+    "clutches": 14,
+    "clutchesLost": 94,
+    "clutches1v1": 7,
+    "clutches1v2": 6,
+    "clutches1v3": 0,
+    "clutches1v4": 0,
+    "clutches1v5": 0,
+    "clutchesLost1v1": 4,
+    "clutchesLost1v2": 22,
+    "clutchesLost1v3": 26,
+    "clutchesLost1v4": 31,
+    "clutchesLost1v5": 11,
+    "kills3K": 43,
+    "kills4K": 6,
+    "kills5K": 1,
+    "esr": 0.441,
+    "plantsPerRound": 0.022,
+    "attackKDRatio": 0.744,
+    "attackRoundsWinPct": 50.219,
+    "attackDamagePerRound": 125.758,
+    "attackKAST": 60.15,
+    "attackFirstBloodsPerRound": 0.143,
+    "attackFirstDeathsPerRound": 0.196,
+    "defenseKDRatio": 0.848,
+    "defenseRoundsWinPct": 53.094,
+    "defenseDamagePerRound": 139,
+    "defenseKAST": 66.47,
+    "defenseFirstBloodsPerRound": 0.131,
+    "defenseFirstDeathsPerRound": 0.153,
+    "trnPerformanceScore": 268
+   },
+   "agentCount": 10,
+   "agents": [
+    {
+     "n": "Raze",
+     "r": "Duelist",
+     "c": "#FF5589",
+     "m": 46,
+     "wr": 58.7,
+     "kd": 0.83,
+     "adr": 140.1,
+     "acs": 208.2
+    },
+    {
+     "n": "Vyse",
+     "r": "Sentinel",
+     "c": "#4D07DE",
+     "m": 5,
+     "wr": 60,
+     "kd": 0.79,
+     "adr": 113.7,
+     "acs": 168
+    },
+    {
+     "n": "Killjoy",
+     "r": "Sentinel",
+     "c": "#FEC0CB",
+     "m": 4,
+     "wr": 0,
+     "kd": 0.56,
+     "adr": 106.3,
+     "acs": 144.5
+    },
+    {
+     "n": "Reyna",
+     "r": "Duelist",
+     "c": "#f650d3",
+     "m": 3,
+     "wr": 0,
+     "kd": 0.71,
+     "adr": 125.7,
+     "acs": 189.5
+    },
+    {
+     "n": "Chamber",
+     "r": "Sentinel",
+     "c": "#d3564f",
+     "m": 2,
+     "wr": 50,
+     "kd": 0.82,
+     "adr": 109.4,
+     "acs": 169.1
+    },
+    {
+     "n": "Tejo",
+     "r": "Initiator",
+     "c": "#F7C673",
+     "m": 2,
+     "wr": 50,
+     "kd": 0.63,
+     "adr": 116.1,
+     "acs": 167.6
+    }
+   ],
+   "roles": [
+    {
+     "n": "Duelist",
+     "m": 50,
+     "wr": 56,
+     "kd": 0.83
+    },
+    {
+     "n": "Sentinel",
+     "m": 12,
+     "wr": 41.7,
+     "kd": 0.7
+    },
+    {
+     "n": "Initiator",
+     "m": 4,
+     "wr": 25,
+     "kd": 0.65
+    }
+   ],
+   "maps": [
+    {
+     "n": "Bind",
+     "wr": 80,
+     "w": 4,
+     "l": 1
+    },
+    {
+     "n": "Abyss",
+     "wr": 55.6,
+     "w": 5,
+     "l": 4
+    },
+    {
+     "n": "Lotus",
+     "wr": 54.5,
+     "w": 6,
+     "l": 3
+    },
+    {
+     "n": "Haven",
+     "wr": 53.8,
+     "w": 7,
+     "l": 5
+    },
+    {
+     "n": "Corrode",
+     "wr": 44.4,
+     "w": 4,
+     "l": 4
+    },
+    {
+     "n": "Sunset",
+     "wr": 44.4,
+     "w": 4,
+     "l": 5
+    },
+    {
+     "n": "Summit",
+     "wr": 40,
+     "w": 4,
+     "l": 5
+    }
+   ],
+   "weapons": [
+    {
+     "n": "Vandal",
+     "h": 34,
+     "b": 61,
+     "l": 5,
+     "k": 299
+    },
+    {
+     "n": "Phantom",
+     "h": 22,
+     "b": 69,
+     "l": 9,
+     "k": 159
+    },
+    {
+     "n": "Ghost",
+     "h": 35,
+     "b": 59,
+     "l": 6,
+     "k": 69
+    }
+   ],
+   "recent": [
+    [
+     "Lotus",
+     11,
+     13,
+     "10th",
+     11,
+     21,
+     6,
+     -58,
+     20,
+     141
+    ],
+    [
+     "Haven",
+     13,
+     9,
+     "2nd",
+     22,
+     16,
+     10,
+     71,
+     14,
+     318
+    ],
+    [
+     "Corrode",
+     13,
+     5,
+     "5th",
+     10,
+     10,
+     5,
+     14,
+     15,
+     169
+    ],
+    [
+     "Summit",
+     6,
+     13,
+     "6th",
+     14,
+     17,
+     1,
+     -31,
+     14,
+     212
+    ],
+    [
+     "Abyss",
+     13,
+     9,
+     "8th",
+     12,
+     21,
+     7,
+     -37,
+     11,
+     202
+    ],
+    [
+     "Bind",
+     13,
+     6,
+     "8th",
+     8,
+     16,
+     5,
+     -57,
+     7,
+     143
+    ],
+    [
+     "Lotus",
+     5,
+     0,
+     "MVP",
+     6,
+     2,
+     1,
+     135,
+     17,
+     310
+    ],
+    [
+     "Haven",
+     9,
+     13,
+     "9th",
+     11,
+     18,
+     8,
+     -40,
+     14,
+     186
+    ],
+    [
+     "Bind",
+     13,
+     10,
+     "5th",
+     18,
+     20,
+     5,
+     11,
+     18,
+     244
+    ],
+    [
+     "Summit",
+     9,
+     13,
+     "10th",
+     8,
+     18,
+     6,
+     -76,
+     15,
+     106
+    ],
+    [
+     "Corrode",
+     11,
+     13,
+     "8th",
+     16,
+     20,
+     9,
+     -1,
+     26,
+     220
+    ],
+    [
+     "Sunset",
+     11,
+     13,
+     "4th",
+     19,
+     19,
+     4,
+     11,
+     13,
+     243
+    ],
+    [
+     "Haven",
+     14,
+     14,
+     "9th",
+     16,
+     23,
+     10,
+     -29,
+     16,
+     189
+    ],
+    [
+     "Abyss",
+     14,
+     12,
+     "5th",
+     16,
+     21,
+     9,
+     -3,
+     18,
+     213
+    ],
+    [
+     "Lotus",
+     14,
+     14,
+     "5th",
+     20,
+     20,
+     11,
+     31,
+     17,
+     236
+    ],
+    [
+     "Sunset",
+     7,
+     13,
+     "8th",
+     9,
+     15,
+     4,
+     -33,
+     22,
+     147
+    ],
+    [
+     "Summit",
+     15,
+     15,
+     "8th",
+     19,
+     26,
+     12,
+     -19,
+     17,
+     216
+    ],
+    [
+     "Corrode",
+     13,
+     4,
+     "10th",
+     11,
+     14,
+     6,
+     -16,
+     28,
+     190
+    ],
+    [
+     "Corrode",
+     6,
+     13,
+     "10th",
+     1,
+     19,
+     9,
+     -114,
+     16,
+     58
+    ],
+    [
+     "Haven",
+     13,
+     8,
+     "6th",
+     19,
+     18,
+     8,
+     -5,
+     14,
+     267
+    ]
+   ],
+   "history": [
+    [
+     "E1: A3",
+     "Bronze 2",
+     42.3
+    ],
+    [
+     "E2: A1",
+     "Bronze 2",
+     31.8
+    ],
+    [
+     "E2: A2",
+     "Bronze 3",
+     50
+    ],
+    [
+     "E2: A3",
+     "Silver 1",
+     45.7
+    ],
+    [
+     "E3: A1",
+     "Gold 1",
+     50
+    ],
+    [
+     "E3: A2",
+     "Gold 2",
+     47.6
+    ],
+    [
+     "E3: A3",
+     "Gold 2",
+     46.2
+    ],
+    [
+     "E4: A1",
+     "Silver 3",
+     48.8
+    ],
+    [
+     "E4: A2",
+     "Silver 3",
+     46.2
+    ],
+    [
+     "E4: A3",
+     "Silver 3",
+     48.1
+    ],
+    [
+     "E5: A1",
+     "Platinum 1",
+     52
+    ],
+    [
+     "E5: A2",
+     "Platinum 1",
+     53.8
+    ],
+    [
+     "E5: A3",
+     "Platinum 1",
+     45.8
+    ],
+    [
+     "E6: A1",
+     "Gold 1",
+     51.6
+    ],
+    [
+     "E6: A2",
+     "Gold 2",
+     49.2
+    ],
+    [
+     "E6: A3",
+     "Gold 2",
+     46.1
+    ],
+    [
+     "E7: A1",
+     "Gold 2",
+     47.5
+    ],
+    [
+     "E7: A2",
+     "Gold 2",
+     42.4
+    ],
+    [
+     "E7: A3",
+     "Gold 1",
+     49.7
+    ],
+    [
+     "E8: A1",
+     "Silver 2",
+     46.2
+    ],
+    [
+     "E8: A2",
+     "Gold 1",
+     52.5
+    ],
+    [
+     "E8: A3",
+     "Gold 2",
+     47.8
+    ],
+    [
+     "E9: A1",
+     "Gold 1",
+     48.9
+    ],
+    [
+     "E9: A2",
+     "Gold 3",
+     49.3
+    ],
+    [
+     "E9: A3",
+     "Gold 3",
+     49.3
+    ],
+    [
+     "V25: A1",
+     "Gold 2",
+     48.4
+    ],
+    [
+     "V25: A2",
+     "Gold 2",
+     54.1
+    ],
+    [
+     "V25: A3",
+     "Gold 2",
+     45.5
+    ],
+    [
+     "V25: A6",
+     "Silver 3",
+     46.6
+    ],
+    [
+     "V26: A3",
+     "Gold 3",
+     52.4
+    ],
+    [
+     "V26: A4",
+     "Gold 2",
+     50.5
+    ],
+    [
+     "V26: A5",
+     "Gold 3",
+     52.7
+    ],
+    [
+     "V26: A6",
+     "Gold 3",
+     51.5
+    ]
+   ]
+  }
+ }
+}

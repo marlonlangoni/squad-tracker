@@ -1,0 +1,9 @@
+﻿# originais pesados (a versão otimizada fica em site/public/assets)
+/Assets/
+/raw/*
+!raw/.gitkeep
+node_modules/
+site/dist/
+.claude/
+site/.claude/
+*.log

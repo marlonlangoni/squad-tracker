@@ -1,0 +1,1073 @@
+<title>Squad Tracker Valorant</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: sticky stat-nav over a single 1200px column; tracker-style dark cards, percentile chips, player color coding */
+:root{
+  color-scheme: dark;
+  --bg:#0b0d12; --surface:#13161e; --surface-2:#1a1e29; --surface-3:#222736; --line:#262b3a;
+  --fg:#e9ecf3; --muted:#8a92a6; --faint:#5d6478;
+  --accent:#ff4655; --good:#3ddc97; --bad:#ff5a64; --mid:#f2b84b;
+  --p1:#ff8a3d; --p2:#4fb3ff; --p3:#c084fc;
+  --display:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
+  --body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+a{color:var(--p2)}
+.num,td,.stat-v{font-variant-numeric:tabular-nums}
+.wrap{max-width:1200px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);text-transform:uppercase;letter-spacing:.02em;margin:0;text-wrap:balance}
+h2{font-size:26px;font-weight:700}
+h3{font-size:18px;font-weight:600;letter-spacing:.04em}
+.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:600}
+.muted{color:var(--muted)}
+
+/* top bar */
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--surface);border-bottom:1px solid var(--line)}
+.topbar .wrap{display:flex;align-items:center;gap:16px;padding-block:10px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-mark{width:30px;height:30px;display:grid;place-items:center;background:var(--accent);clip-path:polygon(0 0,100% 0,100% 70%,70% 100%,0 100%)}
+.brand-mark svg{width:16px;height:16px}
+.brand h1{font-size:22px;line-height:1}
+.brand small{display:block;font-size:11px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;font-family:var(--body);font-weight:600}
+.nav{display:flex;gap:2px;overflow-x:auto;flex:1;min-width:0;scrollbar-width:none}
+.nav a{color:var(--muted);text-decoration:none;font-weight:600;font-size:13px;padding:8px 12px;border-radius:4px;white-space:nowrap}
+.nav a:hover,.nav a:focus-visible{color:var(--fg);background:var(--surface-2);outline:none}
+.live{display:flex;align-items:center;gap:10px;margin-left:auto}
+.status{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);max-width:340px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--faint);flex:none}
+.dot.ok{background:var(--good);box-shadow:0 0 0 3px color-mix(in srgb,var(--good) 25%,transparent)}
+.dot.busy{background:var(--mid);animation:pulse 1s infinite}
+.dot.err{background:var(--bad)}
+@keyframes pulse{50%{opacity:.35}}
+.btn{font:600 13px var(--body);color:var(--fg);background:var(--accent);border:0;border-radius:4px;padding:8px 14px;cursor:pointer;display:inline-flex;gap:8px;align-items:center}
+.btn:hover{filter:brightness(1.1)}
+.btn:disabled{opacity:.5;cursor:default}
+.btn:focus-visible,.seg button:focus-visible,select:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
+.btn.ghost{background:var(--surface-2);border:1px solid var(--line)}
+
+section{padding-block:28px}
+.sec-head{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:16px;flex-wrap:wrap}
+.sec-head p{margin:4px 0 0;color:var(--muted);max-width:68ch}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:6px}
+.card-h{padding:12px 16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:8px}
+.card-b{padding:16px}
+
+/* hero */
+.hero{padding-block:24px 8px}
+.hero-row{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap}
+.hero h2{font-size:clamp(30px,5vw,46px);line-height:1}
+.hero h2 span{color:var(--accent)}
+.act-pill{display:inline-flex;gap:8px;align-items:center;background:var(--surface-2);border:1px solid var(--line);padding:6px 10px;border-radius:4px;font-size:12px;font-weight:600}
+
+/* player cards */
+.players{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width:980px){.players{grid-template-columns:1fr}}
+.pcard{overflow:hidden}
+.pcard-top{display:flex;gap:14px;align-items:center;padding:16px;background:linear-gradient(120deg,color-mix(in srgb,var(--pc) 16%,var(--surface)) 0%,var(--surface) 70%);border-bottom:1px solid var(--line)}
+.avatar{width:52px;height:52px;border-radius:6px;display:grid;place-items:center;font:700 22px var(--display);color:#0b0d12;background:var(--pc);flex:none}
+.pname{min-width:0}
+.pname b{font:700 24px/1 var(--display);text-transform:uppercase;display:block}
+.pname .tag{color:var(--muted);font-size:12px}
+.pname a{color:var(--muted);font-size:12px;text-decoration:none;border-bottom:1px dotted var(--faint)}
+.pname a:hover{color:var(--fg)}
+.rankbox{margin-left:auto;text-align:right;display:flex;gap:10px;align-items:center}
+.rankbox .rn{font:700 16px/1.1 var(--display);text-transform:uppercase}
+.rankbox .pk{font-size:11px;color:var(--muted)}
+.emblem{width:42px;height:42px;flex:none}
+.prow{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--line)}
+.prow>div{padding:10px 14px;border-right:1px solid var(--line)}
+.prow>div:last-child{border-right:0}
+.stat-l{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:600}
+.stat-v{font:700 20px/1.2 var(--display)}
+.stat-v small{font:500 12px var(--body);color:var(--muted)}
+.pstats{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line)}
+.pstats>div{background:var(--surface);padding:10px 14px}
+.pct{font-size:11px;font-weight:600}
+.pct.g{color:var(--good)}.pct.m{color:var(--mid)}.pct.b{color:var(--bad)}
+.trn{display:flex;align-items:center;gap:12px;padding:12px 14px}
+.trn-bar{flex:1;height:8px;background:var(--surface-3);border-radius:4px;overflow:hidden}
+.trn-bar i{display:block;height:100%;background:var(--pc);border-radius:4px}
+.wl{display:flex;height:6px;border-radius:3px;overflow:hidden;margin-top:6px;background:var(--surface-3)}
+.wl i:first-child{background:var(--good)}.wl i:last-child{background:var(--bad)}
+
+/* term tooltips */
+.term{border-bottom:1px dotted var(--faint);cursor:help;position:relative}
+.term:focus-visible{outline:2px solid var(--p2);outline-offset:2px}
+.tip{position:fixed;z-index:50;max-width:280px;background:var(--surface-3);border:1px solid var(--line);color:var(--fg);padding:10px 12px;border-radius:6px;font-size:12px;line-height:1.45;box-shadow:0 10px 30px rgba(0,0,0,.45);pointer-events:none;text-transform:none;letter-spacing:0;font-weight:400}
+.tip b{display:block;font-family:var(--display);font-size:15px;text-transform:uppercase;margin-bottom:2px}
+
+/* comparison table */
+.scoreboard{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:16px}
+@media (max-width:640px){.scoreboard{grid-template-columns:1fr}}
+.sb{display:flex;align-items:center;gap:12px;padding:12px 14px}
+.sb .big{font:700 34px/1 var(--display);color:var(--pc)}
+.tbl-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:620px}
+th,td{padding:9px 12px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+thead th{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600;background:var(--surface-2)}
+tbody tr:hover td{background:var(--surface-2)}
+tr.grp td{font:600 12px var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--faint);background:var(--bg);padding-top:14px}
+td.best{color:var(--fg);font-weight:700}
+td .cell{display:inline-flex;align-items:center;gap:8px;justify-content:flex-end}
+td .crown{width:16px;height:16px;display:inline-grid;place-items:center;border-radius:3px;font-size:10px;font-weight:800;color:#0b0d12}
+td .bar{width:54px;height:4px;background:var(--surface-3);border-radius:2px;overflow:hidden}
+td .bar i{display:block;height:100%}
+td .pp{font-size:11px;font-weight:600;min-width:52px;text-align:right}
+
+/* h2h */
+.h2h-ctl{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+select{font:600 13px var(--body);color:var(--fg);background:var(--surface-2);border:1px solid var(--line);border-radius:4px;padding:7px 10px}
+.h2h-score{font:700 28px var(--display);display:flex;gap:12px;align-items:center;justify-content:center;padding:6px 0 14px}
+.h2h-row{display:grid;grid-template-columns:70px 1fr 140px 1fr 70px;gap:10px;align-items:center;padding:5px 0}
+.h2h-row .v{font-weight:700;font-variant-numeric:tabular-nums}
+.h2h-row .v.l{text-align:right}
+.h2h-row .lab{text-align:center;font-size:12px;color:var(--muted)}
+.h2h-row .hb{height:10px;background:var(--surface-3);border-radius:2px;overflow:hidden;display:flex}
+.h2h-row .hb.l{justify-content:flex-end}
+.h2h-row .hb i{display:block;height:100%;opacity:.45}
+.h2h-row .hb i.win{opacity:1}
+@media (max-width:560px){.h2h-row{grid-template-columns:52px 1fr 92px 1fr 52px;gap:6px}.h2h-row .lab{font-size:11px}}
+
+/* charts */
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+@media (max-width:860px){.grid2{grid-template-columns:1fr}}
+.chart{position:relative;height:300px}
+.chart.tall{height:360px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:2px;display:inline-block}
+.chart-note{font-size:12px;color:var(--muted);margin:10px 0 0}
+.chart-fallback{display:grid;place-items:center;height:100%;color:var(--muted);font-size:13px;text-align:center}
+
+/* strengths */
+.seg{display:inline-flex;background:var(--surface-2);border:1px solid var(--line);border-radius:5px;padding:3px;gap:2px;flex-wrap:wrap}
+.seg button{font:600 13px var(--body);color:var(--muted);background:transparent;border:0;padding:6px 12px;border-radius:3px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--surface-3);color:var(--fg)}
+.sw{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width:980px){.sw{grid-template-columns:1fr}}
+.sw.single{grid-template-columns:1fr}
+.sw-card .card-h b{font:700 20px var(--display);text-transform:uppercase;color:var(--pc)}
+.role-tag{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:3px;background:color-mix(in srgb,var(--pc) 18%,transparent);color:var(--pc)}
+.read{font-size:13.5px;color:#c9cfdc;margin:0 0 14px;line-height:1.6}
+.list-h{font:600 13px var(--display);letter-spacing:.12em;text-transform:uppercase;margin:14px 0 8px;display:flex;align-items:center;gap:8px}
+.list-h.g{color:var(--good)}.list-h.b{color:var(--bad)}
+.items{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;list-style:none}
+.items li{background:var(--surface-2);border:1px solid var(--line);border-radius:5px;padding:10px 12px}
+.items .it-top{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.items .it-top b{font-size:13px}
+.items .it-top span{font-weight:700;font-variant-numeric:tabular-nums;font-size:13px}
+.items p{margin:4px 0 0;font-size:12.5px;color:var(--muted)}
+.items .tipline{color:#c9cfdc}
+.items .tipline::before{content:"Dica: ";font-weight:700;color:var(--mid)}
+.stamp{font-size:11px;color:var(--faint);margin-top:12px}
+
+/* maps */
+.heat td{text-align:center}
+.heat td:first-child{text-align:left;font-weight:600}
+.heat .hc{display:block;border-radius:4px;padding:6px 4px;font-weight:700;color:#0b0d12}
+.heat .hc small{display:block;font-weight:600;font-size:11px;opacity:.75}
+.heat .na{color:var(--faint)}
+
+/* agents */
+.ag-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width:980px){.ag-grid{grid-template-columns:1fr}}
+.ag{display:grid;grid-template-columns:28px 1fr auto;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+.ag:last-child{border-bottom:0}
+.ag-ic{width:28px;height:28px;border-radius:4px;display:grid;place-items:center;font:700 13px var(--display);color:#0b0d12}
+.ag-n b{font-size:13px}
+.ag-n small{display:block;color:var(--muted);font-size:11px}
+.ag-s{text-align:right;font-size:12px;font-variant-numeric:tabular-nums}
+.ag-s b{font-size:13px}
+.ag-bar{height:3px;background:var(--surface-3);border-radius:2px;margin-top:4px;overflow:hidden}
+.ag-bar i{display:block;height:100%}
+.weap{display:flex;justify-content:space-between;font-size:12px;padding:6px 0;border-top:1px dashed var(--line)}
+.weap:first-of-type{border-top:0}
+
+/* glossary */
+.gloss{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:980px){.gloss{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:600px){.gloss{grid-template-columns:1fr}}
+.g-item{padding:14px 16px}
+.g-item dt{font:700 18px var(--display);text-transform:uppercase;display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.g-item dt small{font:600 11px var(--body);color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.g-item dd{margin:6px 0 0;color:#c9cfdc;font-size:13px}
+.g-item dd em{color:var(--muted);font-style:normal;display:block;margin-top:6px;font-size:12px}
+.g-item:target{border-color:var(--p2)}
+input[type=search]{font:500 14px var(--body);color:var(--fg);background:var(--surface-2);border:1px solid var(--line);border-radius:4px;padding:8px 12px;min-width:0;width:260px;max-width:100%}
+
+/* mmr */
+.mmr{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width:980px){.mmr{grid-template-columns:1fr}}
+.mmr-est{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+.mmr-est .big{font:700 28px/1 var(--display);text-transform:uppercase}
+.mmr-est .sub{font-size:12px;color:var(--muted)}
+.verdict{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:3px;margin:6px 0 12px}
+.verdict.up{background:color-mix(in srgb,var(--good) 18%,transparent);color:var(--good)}
+.verdict.eq{background:color-mix(in srgb,var(--mid) 18%,transparent);color:var(--mid)}
+.verdict.dn{background:color-mix(in srgb,var(--bad) 18%,transparent);color:var(--bad)}
+.ladder{position:relative;height:54px;margin:8px 0 4px}
+.ladder .track{position:absolute;left:0;right:0;top:18px;height:8px;background:var(--surface-3);border-radius:4px}
+.ladder .band{position:absolute;top:14px;height:16px;border-radius:4px;opacity:.35}
+.ladder .tickl{position:absolute;top:34px;transform:translateX(-50%);font-size:10px;color:var(--faint);white-space:nowrap}
+.ladder .tickl.major{color:var(--muted);font-weight:600}
+.ladder .tk{position:absolute;top:14px;width:1px;height:16px;background:var(--line)}
+.ladder .cur{position:absolute;top:12px;width:12px;height:12px;transform:translateX(-50%) rotate(45deg);border:2px solid var(--fg);background:var(--bg);margin-top:2px}
+.ladder .est{position:absolute;top:13px;width:18px;height:18px;transform:translateX(-50%);border-radius:50%;border:3px solid var(--bg)}
+.ladder-key{display:flex;gap:14px;font-size:11px;color:var(--muted);flex-wrap:wrap;margin-bottom:10px}
+.ladder-key i{display:inline-block;width:10px;height:10px;margin-right:5px;vertical-align:-1px}
+.factors{display:flex;flex-direction:column;gap:6px;margin:0 0 12px;padding:0;list-style:none}
+.factors li{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;padding:6px 10px;background:var(--surface-2);border-radius:4px}
+.factors b{font-variant-numeric:tabular-nums}
+.calc{border-top:1px dashed var(--line);padding-top:12px;margin-top:4px}
+.calc-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:12px;color:var(--muted)}
+.calc input{width:64px;font:600 13px var(--body);color:var(--fg);background:var(--surface-2);border:1px solid var(--line);border-radius:4px;padding:6px 8px}
+.calc input:focus-visible{outline:2px solid var(--p2);outline-offset:1px}
+.calc-out{font-size:12.5px;margin-top:8px;color:#c9cfdc;min-height:1.4em}
+.duos{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
+.duo{display:flex;gap:12px;align-items:center;padding:12px 16px}
+.duo .big{font:700 26px/1 var(--display)}
+.disclaimer{font-size:12px;color:var(--muted);margin-top:14px;max-width:90ch}
+.loading{padding:80px 0;text-align:center;color:var(--muted)}
+
+footer{padding-block:28px 40px;color:var(--faint);font-size:12px;border-top:1px solid var(--line);margin-top:20px}
+.banner{display:none;margin-top:14px;padding:10px 14px;border-radius:5px;border:1px solid var(--line);background:var(--surface-2);font-size:13px}
+.banner.on{display:block}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<header class="topbar">
+  <div class="wrap">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M2 3l5 10h2L4 3zM9 3l5 6V3z" fill="#0b0d12"/></svg></div>
+      <div><h1>Squad Tracker</h1><small>Valorant · Competitivo</small></div>
+    </div>
+    <nav class="nav" aria-label="Seções">
+      <a href="#visao">Visão geral</a>
+      <a href="#mmr">MMR</a>
+      <a href="#comparativo">Comparativo</a>
+      <a href="#graficos">Gráficos</a>
+      <a href="#fortes">Fortes & fracos</a>
+      <a href="#mapas">Mapas & agentes</a>
+      <a href="#glossario">Glossário</a>
+    </nav>
+    <div class="live">
+      <div class="status" id="status"><span class="dot" id="statusDot"></span><span id="statusText">Carregando…</span></div>
+      <button class="btn" id="refreshBtn" type="button" hidden>
+        <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M13.6 2.4v4h-4M2.4 13.6v-4h4M3.3 6a5 5 0 018.6-1.8l1.7 2.2M12.7 10a5 5 0 01-8.6 1.8L2.4 9.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Atualizar do Tracker.gg
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap hero" id="visao">
+    <div class="hero-row">
+      <div>
+        <div class="eyebrow">Análise do trio</div>
+        <h2>Marlon · Henrique · <span>Douglas</span></h2>
+      </div>
+      <div class="act-pill"><span class="muted">Ato</span><span id="actLabel">V26: A6</span><span class="muted">· Competitivo · PC</span></div>
+    </div>
+    <div class="banner" id="banner"></div>
+  </div>
+
+  <section class="wrap" aria-label="Jogadores">
+    <div class="players" id="players"><div class="loading">Carregando dados…</div></div>
+  </section>
+
+  <section class="wrap" id="mmr">
+    <div class="sec-head">
+      <div>
+        <h2>Onde está o MMR</h2>
+        <p>A Riot não mostra o MMR (o elo escondido que decide contra quem vocês jogam e quanto RR ganham). Esta é uma estimativa feita com o Win % do ato, o desempenho em duelos e o histórico de elo dos últimos atos.</p>
+      </div>
+    </div>
+    <div class="mmr" id="mmrCards"></div>
+    <div class="card" style="margin-top:16px"><div class="card-h"><h3>Histórico de elo</h3><span class="eyebrow">pico de cada ato</span></div><div class="card-b"><div class="chart tall"><canvas id="cHist" aria-label="Pico de elo por ato"></canvas></div><p class="chart-note">Cada ponto é o maior elo que a pessoa alcançou naquele ato. Atos sem ranqueada ficam em branco.</p></div></div>
+    <div class="duos" id="duos"></div>
+    <p class="disclaimer">Como ler: se o MMR estimado está acima do elo, as vitórias tendem a render mais RR do que as derrotas tiram, e o elo sobe até alcançar o MMR. Para confirmar, abra o Valorant em Carreira → Histórico de partidas, veja o RR das últimas 10 partidas e digite as médias no campo de cada card.</p>
+  </section>
+
+  <section class="wrap" id="comparativo">
+    <div class="sec-head">
+      <div>
+        <h2>Comparativo direto</h2>
+        <p>Cada linha mostra o valor de cada um, o percentil no Tracker.gg (quando existe) e quem lidera. Passe o mouse sobre as siglas para ver o que significam.</p>
+      </div>
+    </div>
+    <div class="scoreboard" id="scoreboard"></div>
+    <div class="card tbl-wrap"><table id="cmpTable"></table></div>
+
+    <div class="card" style="margin-top:16px">
+      <div class="card-h"><h3>Mano a mano</h3>
+        <div class="h2h-ctl">
+          <select id="h2hA" aria-label="Jogador da esquerda"></select>
+          <span class="muted">vs</span>
+          <select id="h2hB" aria-label="Jogador da direita"></select>
+        </div>
+      </div>
+      <div class="card-b"><div id="h2h"></div></div>
+    </div>
+  </section>
+
+  <section class="wrap" id="graficos">
+    <div class="sec-head">
+      <div>
+        <h2>Gráficos</h2>
+        <p>Visual rápido de onde cada um se destaca. Percentil 50 é a média dos jogadores do Tracker.gg; acima disso é melhor que a maioria.</p>
+      </div>
+      <div class="legend" id="legend"></div>
+    </div>
+    <div class="grid2">
+      <div class="card"><div class="card-h"><h3>Perfil de percentis</h3><span class="eyebrow">0–100</span></div><div class="card-b"><div class="chart tall"><canvas id="cRadar" aria-label="Radar de percentis"></canvas></div><p class="chart-note">Quanto maior a área, mais completo o jogador comparado à base do Tracker.gg.</p></div></div>
+      <div class="card"><div class="card-h"><h3>Duelo de entrada</h3><span class="eyebrow">por round</span></div><div class="card-b"><div class="chart tall"><canvas id="cEntry" aria-label="First bloods e first deaths por round"></canvas></div><p class="chart-note">Barra cheia = abre o round matando (First Blood). Barra listrada = é o primeiro a morrer (First Death).</p></div></div>
+      <div class="card"><div class="card-h"><h3>Onde os tiros pegam</h3><span class="eyebrow">ato inteiro</span></div><div class="card-b"><div class="chart"><canvas id="cHits" aria-label="Distribuição de acertos cabeça, corpo e perna"></canvas></div></div></div>
+      <div class="card"><div class="card-h"><h3>Ataque × Defesa</h3><span class="eyebrow">K/D por lado</span></div><div class="card-b"><div class="chart"><canvas id="cSides" aria-label="K/D no ataque e na defesa"></canvas></div></div></div>
+      <div class="card"><div class="card-h"><h3>Clutches</h3><span class="eyebrow">% vencidos por situação</span></div><div class="card-b"><div class="chart"><canvas id="cClutch" aria-label="Taxa de clutch por situação"></canvas></div><p class="chart-note" id="clutchNote"></p></div></div>
+      <div class="card"><div class="card-h"><h3>Vitórias por função</h3><span class="eyebrow">Win %</span></div><div class="card-b"><div class="chart"><canvas id="cRoles" aria-label="Win rate por função"></canvas></div><p class="chart-note">O número de partidas aparece ao passar o mouse; poucas partidas pesam pouco.</p></div></div>
+    </div>
+    <div class="card" style="margin-top:16px"><div class="card-h"><h3>Forma recente</h3><span class="eyebrow">ACS nas últimas partidas</span></div><div class="card-b"><div class="chart"><canvas id="cForm" aria-label="ACS nas últimas partidas"></canvas></div><p class="chart-note" id="formNote"></p></div></div>
+  </section>
+
+  <section class="wrap" id="fortes">
+    <div class="sec-head">
+      <div>
+        <h2>Pontos fortes e onde melhorar</h2>
+        <p>Calculado a partir dos percentis do Tracker.gg e da comparação entre vocês três. Recalcula sozinho quando os dados são atualizados.</p>
+      </div>
+      <div class="seg" id="swSeg" role="group" aria-label="Filtrar jogador"></div>
+    </div>
+    <div class="sw" id="sw"></div>
+  </section>
+
+  <section class="wrap" id="mapas">
+    <div class="sec-head">
+      <div>
+        <h2>Mapas & agentes</h2>
+        <p>Win % por mapa no ato atual. Verde forte é mapa para escolher; vermelho é mapa para treinar ou banir.</p>
+      </div>
+    </div>
+    <div class="card tbl-wrap"><table class="heat" id="heat"></table></div>
+    <div class="ag-grid" id="agents" style="margin-top:16px"></div>
+  </section>
+
+  <section class="wrap" id="glossario">
+    <div class="sec-head">
+      <div>
+        <h2>Glossário</h2>
+        <p>O que cada sigla e métrica quer dizer, e qual número é bom.</p>
+      </div>
+      <input type="search" id="gSearch" placeholder="Buscar termo (ex.: KAST)" aria-label="Buscar no glossário">
+    </div>
+    <dl class="gloss" id="gloss"></dl>
+  </section>
+
+  <footer>
+    <div class="wrap" id="foot"></div>
+  </footer>
+</main>
+
+<div class="tip" id="tip" hidden></div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
+<script>
+"use strict";
+/* ============ JOGADORES (os dados vêm de squad-data.json) ============ */
+const PLAYERS = [
+  {id:"l4", name:"Marlon", nick:"L4ngoni", tag:"1989", color:"var(--p1)", hex:"#ff8a3d"},
+  {id:"mt", name:"Henrique", nick:"Mattin", tag:"1993", color:"var(--p2)", hex:"#4fb3ff"},
+  {id:"sd", name:"Douglas", nick:"Snoop Dogglas", tag:"2908", color:"var(--p3)", hex:"#c084fc"},
+];
+let SNAP = null;   /* conteúdo de squad-data.json */
+
+/* ============ GLOSSÁRIO ============ */
+const GLOSS = [
+  {k:"kd", t:"K/D", full:"Kill / Death", d:"Abates divididos por mortes. 1,00 significa que você mata tanto quanto morre.", good:"Bom: acima de 1,10. Excelente: acima de 1,30."},
+  {k:"kda", t:"KDA / KAD", full:"Kills + Assists / Deaths", d:"Como o K/D, mas soma as assistências. Mostra participação nas mortes, não só abates.", good:"Bom: acima de 1,40."},
+  {k:"adr", t:"ADR", full:"Average Damage per Round", d:"Dano médio causado por round (o Tracker chama de Damage/Round). Mede pressão de dano, mesmo sem finalizar.", good:"Média geral fica perto de 135–145. Acima de 155 é alto."},
+  {k:"dd", t:"DDΔ", full:"Damage Delta por round", d:"Dano causado menos dano recebido, por round. Positivo quer dizer que você vence as trocas de tiro.", good:"Bom: acima de +10. Negativo: você está perdendo duelos."},
+  {k:"hs", t:"HS%", full:"Headshot %", d:"Porcentagem dos acertos que foram na cabeça. Tiro na cabeça mata com 1 bala de Vandal.", good:"Média: ~20%. Bom: 25%+. Muito bom: 30%+."},
+  {k:"kast", t:"KAST", full:"Kill · Assist · Survive · Trade", d:"Porcentagem de rounds em que você matou, deu assistência, sobreviveu ou foi trocado. Mede consistência: em quantos rounds você ajudou de alguma forma.", good:"Bom: 70%+. Abaixo de 65% indica muitos rounds 'vazios'."},
+  {k:"acs", t:"ACS", full:"Average Combat Score", d:"Pontuação de combate média por round, a mesma do placar do jogo. Soma abates, dano, multi-kills e assistências.", good:"Média: ~200–215. Bom: 230+."},
+  {k:"fb", t:"First Blood", full:"FB · primeiro abate", d:"Ser quem faz o primeiro abate do round. Dá vantagem numérica (5v4) logo no começo.", good:"Duelistas costumam ter os maiores valores."},
+  {k:"fd", t:"First Death", full:"FD · primeira morte", d:"Ser o primeiro a morrer no round. Deixa o time em 4v5. Quanto menor, melhor.", good:"Bom: abaixo de 0,08 por round."},
+  {k:"esr", t:"ESR", full:"Entry Success Rate", d:"First Bloods ÷ (First Bloods + First Deaths). De cada duelo de abertura que você participa, quantos você vence.", good:"Bom: acima de 55%. Abaixo de 50% perde mais do que ganha."},
+  {k:"clutch", t:"Clutch", full:"1v1 até 1v5", d:"Vencer o round sendo o último vivo do time. 'Clutch %' é clutches vencidos ÷ situações de clutch.", good:"1v1 acima de 60% é bom. 1v3+ é raro para todo mundo."},
+  {k:"trade", t:"Trade", full:"Troca", d:"Quando um aliado mata quem acabou de te matar. 'Vingou' é quando você troca um aliado. Jogar perto do time aumenta trades.", good:""},
+  {k:"multi", t:"Multi-kill", full:"3K · 4K · Ace", d:"Rounds com 3, 4 ou 5 abates do mesmo jogador. Ace é matar os 5 inimigos sozinho.", good:"Mostrado por partida no comparativo."},
+  {k:"flawless", t:"Flawless", full:"Round perfeito", d:"Round vencido sem nenhuma morte do seu time.", good:""},
+  {k:"thrifty", t:"Thrifty", full:"Round econômico", d:"Vencer um round gastando bem menos créditos que o inimigo (ex.: eco que ganha de full buy).", good:""},
+  {k:"trn", t:"Tracker Score", full:"0 a 1000", d:"Nota do Tracker.gg que junta Round Win %, KAST, ACS e DDΔ por round. Resume o impacto geral no ato.", good:"500 é na média; 650+ é muito bom."},
+  {k:"win", t:"Win %", full:"Vitórias de partida", d:"Porcentagem de partidas vencidas no ato. 'Round Win %' é a mesma ideia contada por round.", good:"Acima de 52% tende a subir de elo."},
+  {k:"pct", t:"Percentil", full:"Top X% / Bottom X%", d:"Sua posição comparada a todos os jogadores do Tracker.gg no mesmo modo e ato. Top 10% = melhor que 90% dos jogadores. Aqui mostramos o número de 0 a 100 (quanto maior, melhor).", good:""},
+  {k:"rank", t:"Rating / Peak", full:"Elo atual / maior elo", d:"Rating é o elo atual. Peak Rating é o maior elo já alcançado e em qual ato.", good:""},
+  {k:"side", t:"Ataque / Defesa", full:"Stats por lado", d:"Os mesmos números separados pelo lado que você joga. Mostra se você rende mais atacando o bomb ou segurando o site.", good:""},
+  {k:"surv", t:"Sobrevivência", full:"Rounds vivo", d:"Porcentagem dos rounds em que você terminou vivo. Muito baixa costuma vir junto de mortes cedo.", good:"Bom: 30%+."},
+  {k:"mvp", t:"MVP", full:"Melhor da partida", d:"Ter o maior placar da partida. Mostrado como % das partidas jogadas.", good:""},
+  {k:"roles", t:"Funções", full:"Duelista · Iniciador · Controlador · Sentinela", d:"Duelista entra primeiro e busca abates. Iniciador dá informação e prepara a entrada. Controlador usa smokes para cortar visão. Sentinela segura o site e protege flancos.", good:""},
+];
+const G = Object.fromEntries(GLOSS.map(g=>[g.k,g]));
+
+/* ============ HELPERS ============ */
+const $ = s=>document.querySelector(s);
+const V = x=>Array.isArray(x)?x[0]:x;
+const P = x=>Array.isArray(x)?x[1]:null;
+const esc = s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmt = (v,d=1)=>v==null||isNaN(v)?"–":Number(v).toLocaleString("pt-BR",{minimumFractionDigits:d,maximumFractionDigits:d});
+const lsGet = k=>{try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}};
+const lsSet = (k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+const ROLE_PT = {Duelist:"Duelista",Initiator:"Iniciador",Controller:"Controlador",Sentinel:"Sentinela"};
+const term = (k,label)=>`<span class="term" tabindex="0" data-term="${k}">${esc(label)}</span>`;
+function pctClass(p){ if(p==null) return ""; return p>=70?"g":p>=45?"m":"b"; }
+function pctText(p){ if(p==null) return ""; return p>=50?`Top ${Math.max(1,Math.round(100-p))}%`:`Bottom ${Math.round(p)}%`; }
+function profileUrl(p){ const s = (DATA||SNAP||{}).seasonId; return `https://tracker.gg/valorant/profile/riot/${encodeURIComponent(p.nick+"#"+p.tag)}/overview?playlist=competitive&platform=pc${s?"&season="+s:""}`; }
+const fmtDate = iso=>{ try{ const d=new Date(iso); return d.toLocaleDateString("pt-BR")+" às "+d.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"}); }catch(e){ return iso; } };
+const clamp = (x,a,b)=>Math.max(a,Math.min(b,x));
+
+const TIER = {Iron:["#6b6b6b","#3d3d3d"],Bronze:["#c08a55","#6d4b2b"],Silver:["#d8dde0","#7c868c"],Gold:["#f2c94c","#9a6f13"],Platinum:["#5bd1d7","#1d6d86"],Diamond:["#e09bff","#7b3fb8"],Ascendant:["#4ce08a","#1b7a47"],Immortal:["#ff5a7a","#8a1832"],Radiant:["#fff6b0","#c9a43a"]};
+function emblem(rankName,size=42){
+  const [tier,div] = String(rankName||"").split(" ");
+  const [c1,c2] = TIER[tier]||["#8a92a6","#3a4050"];
+  const id = "g"+Math.random().toString(36).slice(2,8);
+  return `<svg class="emblem" width="${size}" height="${size}" viewBox="0 0 42 42" aria-hidden="true"><defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${c1}"/><stop offset="1" stop-color="${c2}"/></linearGradient></defs><path d="M21 2l17 9v20l-17 9L4 31V11z" fill="url(#${id})"/><path d="M21 8l11 6v13l-11 6-11-6V14z" fill="#0b0d12" opacity=".35"/><text x="21" y="26" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,sans-serif" font-weight="700" font-size="14" fill="#fff">${esc(div||"")}</text></svg>`;
+}
+const RANK_PT = {Iron:"Ferro",Bronze:"Bronze",Silver:"Prata",Gold:"Ouro",Platinum:"Platina",Diamond:"Diamante",Ascendant:"Ascendente",Immortal:"Imortal",Radiant:"Radiante"};
+const rankPT = r=>{ const [t,d]=String(r||"").split(" "); return (RANK_PT[t]||t||"–")+(d?" "+d:""); };
+
+/* ============ ESTADO ============ */
+let DATA = null;
+let LIVE_AT = null;
+
+/* ============ MMR (estimativa) ============ */
+const TIERS = ["Iron","Bronze","Silver","Gold","Platinum","Diamond","Ascendant","Immortal","Radiant"];
+function rIdx(r){ const [t,d] = String(r||"").split(" "); const ti = TIERS.indexOf(t); if(ti<0) return null; if(t==="Radiant") return 24; return ti*3 + (+d||1) - 1; }
+function rName(i){ i = Math.floor(i); if(i>=24) return "Radiant"; i = Math.max(0,i); return TIERS[Math.floor(i/3)]+" "+(i%3+1); }
+function actKey(a){ const m = /^(E|V)(\d+):\s*A(\d+)/.exec(a||""); if(!m) return 0; return m[1]==="E" ? (+m[2])*10+(+m[3]) : 100+((+m[2])-25)*10+(+m[3]); }
+function estimateMMR(id){
+  const p = DATA[id], d = derive(id);
+  const base = rIdx(p.rank) + 0.5;   /* RR atual desconhecido: meio da divisão */
+  const form = clamp((d.win-50)*0.15, -1, 1);
+  const perf = clamp((((d.ddP??50)+(d.kdP??50))/2 - 50)/50*0.6, -0.6, 0.6);
+  const prev = (p.history||[]).filter(h=>h[0]!==DATA.act).sort((a,b)=>actKey(a[0])-actKey(b[0])).slice(-6).map(h=>rIdx(h[1])).filter(x=>x!=null).sort((a,b)=>a-b);
+  const med = prev.length ? (prev.length%2 ? prev[(prev.length-1)/2] : (prev[prev.length/2-1]+prev[prev.length/2])/2) + 0.5 : base;
+  const hist = clamp((med-base)*0.25, -1, 1);
+  const est = base + form + perf + hist;
+  return {base, form, perf, hist, est, lo:est-0.5, hi:est+0.5, med, diff:est-base, n:prev.length};
+}
+function divPos(x){ const f = x - Math.floor(x); return f<0.34?"começo de":f<0.67?"meio de":"final de"; }
+
+function derive(id){
+  const p = DATA[id], s = p.s, v = k=>V(s[k]);
+  const rounds = v("roundsPlayed"), m = v("matchesPlayed");
+  const c = v("clutches"), cl = v("clutchesLost");
+  const tot = v("dealtHeadshots")+v("dealtBodyshots")+v("dealtLegshots");
+  return {
+    trn:v("trnPerformanceScore"),
+    win:v("matchesWinPct"), winP:P(s.matchesWinPct),
+    rwin:v("roundsWinPct"), rwinP:P(s.roundsWinPct),
+    kd:v("kDRatio"), kdP:P(s.kDRatio),
+    kda:v("kDARatio"),
+    adr:v("damagePerRound"), adrP:P(s.damagePerRound),
+    dd:v("damageDeltaPerRound"), ddP:P(s.damageDeltaPerRound),
+    hs:v("headshotsPercentage"), hsP:P(s.headshotsPercentage),
+    kast:v("kAST"), kastP:P(s.kAST),
+    acs:v("scorePerRound"), acsP:P(s.scorePerRound),
+    kpr:v("killsPerRound"), apr:v("assistsPerRound"),
+    fbpr:v("firstBloodsPerRound"), fdpr:v("firstDeathsPerRound"),
+    esr:v("firstBloods")/(v("firstBloods")+v("firstDeaths"))*100,
+    clutch:c/(c+cl)*100,
+    c1v1:v("clutches1v1")/(v("clutches1v1")+v("clutchesLost1v1"))*100,
+    multi:(v("kills3K")+v("kills4K")+v("kills5K"))/m,
+    surv:v("survived")/rounds*100,
+    traded:v("traded")/v("deaths")*100,
+    avenger:v("tradesAvenger")/rounds*100,
+    atkKD:v("attackKDRatio"), defKD:v("defenseKDRatio"),
+    atkADR:v("attackDamagePerRound"), defADR:v("defenseDamagePerRound"),
+    mvp:v("mVPs")/m*100,
+    leg:v("dealtLegshots")/tot*100,
+    head:v("dealtHeadshots")/tot*100, body:v("dealtBodyshots")/tot*100,
+    matches:m, wins:v("matchesWon"), losses:v("matchesLost"), ties:v("matchesTied")||0
+  };
+}
+
+/* métricas do comparativo */
+const METRICS = [
+  {g:"Resultado"},
+  {k:"trn", l:"Tracker Score", t:"trn", d:0},
+  {k:"win", l:"Win %", t:"win", d:1, u:"%", p:"winP"},
+  {k:"rwin", l:"Round Win %", t:"win", d:1, u:"%", p:"rwinP"},
+  {k:"mvp", l:"MVP (% das partidas)", t:"mvp", d:1, u:"%"},
+  {g:"Combate"},
+  {k:"kd", l:"K/D", t:"kd", d:2, p:"kdP"},
+  {k:"kda", l:"KAD", t:"kda", d:2},
+  {k:"adr", l:"ADR (dano/round)", t:"adr", d:1, p:"adrP"},
+  {k:"dd", l:"DDΔ por round", t:"dd", d:1, p:"ddP", sign:true},
+  {k:"hs", l:"HS%", t:"hs", d:1, u:"%", p:"hsP"},
+  {k:"acs", l:"ACS", t:"acs", d:1, p:"acsP"},
+  {k:"multi", l:"Multi-kills por partida", t:"multi", d:2},
+  {g:"Consistência e time"},
+  {k:"kast", l:"KAST", t:"kast", d:1, u:"%", p:"kastP"},
+  {k:"surv", l:"Sobrevivência", t:"surv", d:1, u:"%"},
+  {k:"apr", l:"Assistências/round", t:"kda", d:2},
+  {k:"avenger", l:"Trocou aliado (% rounds)", t:"trade", d:1, u:"%"},
+  {g:"Entrada"},
+  {k:"fbpr", l:"First Blood/round", t:"fb", d:3},
+  {k:"fdpr", l:"First Death/round", t:"fd", d:3, low:true},
+  {k:"esr", l:"ESR (entrada vencida)", t:"esr", d:1, u:"%"},
+  {g:"Clutch"},
+  {k:"clutch", l:"Clutch %", t:"clutch", d:1, u:"%"},
+  {k:"c1v1", l:"1v1 vencidos", t:"clutch", d:1, u:"%"},
+  {g:"Por lado"},
+  {k:"atkKD", l:"K/D no ataque", t:"side", d:2},
+  {k:"defKD", l:"K/D na defesa", t:"side", d:2},
+];
+
+/* textos para pontos fortes/fracos */
+const ADVICE = {
+  trn:{good:"Impacto geral alto no ato: vence rounds, contribui e ganha trocas de dano.", bad:"Impacto geral abaixo da média.", tip:"Foque nas métricas que compõem a nota: KAST e DDΔ são as mais fáceis de subir jogando com o time."},
+  win:{good:"Ganha mais partidas do que a maioria dos jogadores do elo.", bad:"Está perdendo mais partidas do que deveria.", tip:"Jogue os mapas com melhor Win % e evite fila sozinho cansado: sessões curtas rendem mais."},
+  rwin:{good:"O time vence muitos rounds quando ele está em campo.", bad:"Round Win % baixo.", tip:"Converse sobre o plano antes do round; rounds sem plano são os mais perdidos."},
+  kd:{good:"Vence mais duelos do que perde.", bad:"Morre mais do que mata.", tip:"Pegue duelos com vantagem: com util, de trade ou contra inimigo já marcado. Evite repeek no mesmo ângulo."},
+  kda:{good:"Participa de muitas mortes do time.", bad:"Pouca participação nas mortes.", tip:"Use mais utilitária ofensiva para gerar assistências."},
+  adr:{good:"Causa muito dano por round, pressionando sempre.", bad:"Causa pouco dano por round.", tip:"Atire primeiro em vez de esperar o alvo perfeito; dano em quem fugiu também conta para o time finalizar."},
+  dd:{good:"Ganha as trocas de dano: causa bem mais do que recebe.", bad:"Recebe mais dano do que causa.", tip:"Corte ângulos um de cada vez (slice the pie) e não fique exposto depois do primeiro tiro."},
+  hs:{good:"Mira na cabeça muito acima da média.", bad:"Poucos tiros na cabeça.", tip:"10 min de Range/DM antes de jogar focando a mira na altura da cabeça (crosshair placement) e em tiros de 1–3 balas."},
+  acs:{good:"Placar de combate alto em todos os rounds.", bad:"ACS baixo para o elo.", tip:"Busque o segundo abate do round: rounds com 2K+ puxam o ACS muito mais do que abates isolados."},
+  multi:{good:"Converte bons rounds em multi-kills com frequência.", bad:"Poucos multi-kills.", tip:"Depois do primeiro abate, reposicione em vez de segurar o mesmo ângulo."},
+  kast:{good:"Contribui em quase todo round, com abate, assistência, sobrevivendo ou sendo trocado.", bad:"Muitos rounds sem contribuir.", tip:"Jogue a uma distância em que o time consiga te trocar, e use util mesmo quando não for entrar."},
+  surv:{good:"Termina vivo em muitos rounds e salva armas.", bad:"Termina vivo em poucos rounds.", tip:"Em round perdido, salve a arma; no pós-plant, jogue o tempo e não o abate."},
+  apr:{good:"Muitas assistências: joga em função do time.", bad:"Poucas assistências.", tip:"Use flashes e utilitária para os aliados antes das entradas."},
+  avenger:{good:"Sempre está perto para trocar quem morreu.", bad:"Raramente troca os aliados.", tip:"Ande perto do entry e pré-mire o ângulo de onde ele levou o tiro."},
+  fbpr:{good:"Abre rounds com o primeiro abate com frequência.", bad:"Raramente abre o round com um abate.", tip:"Em rounds de ataque, combine um timing de peek com o duelista."},
+  fdpr:{good:"Quase nunca é o primeiro a morrer.", bad:"É o primeiro a morrer com frequência, deixando o time em 4v5.", tip:"Peça flash/info antes de entrar, não dê peek seco sem informação e jogue dupla com alguém para trade."},
+  esr:{good:"Vence a maioria dos duelos de abertura.", bad:"Perde mais duelos de abertura do que ganha.", tip:"Entre só com utilitária (flash, satchel, drone) e com alguém pronto para trocar."},
+  clutch:{good:"Resolve bem quando sobra sozinho.", bad:"Converte poucos clutches.", tip:"Em clutch, isole duelos 1x1 e use o som e o tempo da bomba a seu favor."},
+  c1v1:{good:"Ganha a maioria dos 1v1.", bad:"Perde muitos 1v1.", tip:"No 1v1, não faça barulho: quem se move menos costuma vencer."},
+  atkKD:{good:"Rende muito no ataque.", bad:"Rende pouco no ataque.", tip:"No ataque, fique mais perto do grupo e entre junto com a utilitária."},
+  defKD:{good:"Segura muito bem a defesa.", bad:"Rende pouco na defesa.", tip:"Na defesa, mude a posição depois de um abate e evite a mesma posição dois rounds seguidos."},
+  mvp:{good:"Termina partidas como MVP com frequência.", bad:"Raramente é MVP.", tip:""},
+};
+const SW_KEYS = ["kd","adr","dd","hs","kast","acs","win","rwin","fbpr","fdpr","esr","clutch","c1v1","multi","surv","apr","avenger","atkKD","defKD"];
+
+function analyze(id){
+  const all = Object.fromEntries(PLAYERS.map(p=>[p.id,derive(p.id)]));
+  const me = all[id];
+  const strengths=[], weaknesses=[];
+  for(const k of SW_KEYS){
+    const m = METRICS.find(x=>x.k===k); if(!m) continue;
+    const vals = PLAYERS.map(p=>all[p.id][k]);
+    const mean = vals.reduce((a,b)=>a+b,0)/vals.length;
+    const v = me[k]; if(v==null||isNaN(v)) continue;
+    const pc = m.p? me[m.p]: null;
+    const better = m.low ? v<=Math.min(...vals) : v>=Math.max(...vals);
+    const worse = m.low ? v>=Math.max(...vals) : v<=Math.min(...vals);
+    const rel = mean? (v-mean)/Math.abs(mean)*(m.low?-1:1) : 0;
+    const val = fmt(v,m.d)+(m.u||"");
+    if(pc!=null){
+      if(pc>=70) strengths.push({k,m,val,score:pc+(better?6:0),why:`${pctText(pc)} do Tracker.gg${better?" e o melhor do trio":""}.`});
+      else if(pc<=38) weaknesses.push({k,m,val,score:100-pc+(worse?6:0),why:`${pctText(pc)} do Tracker.gg${worse?" e o mais baixo do trio":""}.`});
+      else if(better && rel>0.08) strengths.push({k,m,val,score:55+rel*100,why:`Melhor do trio (${pctText(pc)} no Tracker.gg).`});
+      else if(worse && rel<-0.08) weaknesses.push({k,m,val,score:55-rel*100,why:`O mais baixo do trio (${pctText(pc)} no Tracker.gg).`});
+    } else {
+      if(better && rel>0.07) strengths.push({k,m,val,score:60+Math.min(rel,0.6)*60,why:`Melhor do trio, ${Math.round(rel*100)}% acima da média de vocês.`});
+      else if(worse && rel<-0.07) weaknesses.push({k,m,val,score:60+Math.min(-rel,0.6)*60,why:`O mais baixo do trio, ${Math.round(-rel*100)}% abaixo da média de vocês.`});
+    }
+  }
+  /* funções e agentes */
+  const p = DATA[id];
+  const roles = (p.roles||[]).filter(r=>r.m>=8).sort((a,b)=>b.wr-a.wr);
+  if(roles.length>1){
+    const best=roles[0], worst=roles[roles.length-1];
+    if(best.wr>=55) strengths.push({k:"role",m:{l:`Função: ${ROLE_PT[best.n]||best.n}`},val:fmt(best.wr,1)+"% WR",score:58,why:`Melhor função em ${best.m} partidas (K/D ${fmt(best.kd,2)}).`,custom:"Priorize essa função quando o time permitir."});
+    if(worst.wr<45) weaknesses.push({k:"role",m:{l:`Função: ${ROLE_PT[worst.n]||worst.n}`},val:fmt(worst.wr,1)+"% WR",score:58,why:`Win % baixo em ${worst.m} partidas com essa função.`,custom:"Evite essa função na ranqueada ou treine um agente específico dela no unrated."});
+  }
+  /* quem vai bem em quase tudo ainda tem o que lapidar: os percentis mais baixos dele */
+  if(weaknesses.length<2){
+    const low = METRICS.filter(m=>m.p && me[m.p]!=null && me[m.p]<62 && !weaknesses.some(w=>w.k===m.k) && !strengths.some(s=>s.k===m.k)).sort((a,b)=>me[a.p]-me[b.p]).slice(0,2-weaknesses.length);
+    for(const m of low) weaknesses.push({k:m.k,m,val:fmt(me[m.k],m.d)+(m.u||""),score:40,why:`É o percentil mais baixo dele (${pctText(me[m.p])} no Tracker.gg): o próximo degrau de evolução.`});
+    if(me.atkKD < me.defKD*0.93 && weaknesses.length<3) weaknesses.push({k:"atkKD",m:METRICS.find(x=>x.k==="atkKD"),val:fmt(me.atkKD,2),score:38,why:`Rende menos atacando do que defendendo (K/D ${fmt(me.defKD,2)} na defesa).`});
+  }
+  strengths.sort((a,b)=>b.score-a.score); weaknesses.sort((a,b)=>b.score-a.score);
+  return {strengths:strengths.slice(0,4), weaknesses:weaknesses.slice(0,4)};
+}
+
+/* ============ RENDER ============ */
+function renderPlayers(){
+  $("#players").innerHTML = PLAYERS.map(pl=>{
+    const p = DATA[pl.id], d = derive(pl.id);
+    const tot = d.wins+d.losses+d.ties;
+    const stat=(label,t,val,pc)=>`<div><div class="stat-l">${term(t,label)}</div><div class="stat-v">${val}</div>${pc!=null?`<div class="pct ${pctClass(pc)}">${pctText(pc)}</div>`:`<div class="pct">&nbsp;</div>`}</div>`;
+    return `<article class="card pcard" style="--pc:${pl.color}">
+      <div class="pcard-top">
+        <div class="avatar" aria-hidden="true">${esc(pl.name[0])}</div>
+        <div class="pname"><b>${esc(pl.name)}</b><span class="tag">${esc(pl.nick)}#${esc(pl.tag)} · nível ${p.level}</span><br><a href="${profileUrl(pl)}" target="_blank" rel="noopener">Ver no Tracker.gg ↗</a></div>
+        <div class="rankbox">${emblem(p.rank)}<div><div class="rn">${rankPT(p.rank)}</div><div class="pk">Pico: ${rankPT(p.peak)}</div></div></div>
+      </div>
+      <div class="prow">
+        <div><div class="stat-l">Partidas</div><div class="stat-v">${d.matches}</div><small class="muted">${p.playtime?p.playtime+"h jogadas":""}</small></div>
+        <div><div class="stat-l">V – D</div><div class="stat-v">${d.wins}–${d.losses}${d.ties?`<small> · ${d.ties}E</small>`:""}</div><div class="wl"><i style="width:${d.wins/tot*100}%"></i><i style="width:${d.losses/tot*100}%;margin-left:auto"></i></div></div>
+        <div><div class="stat-l">${term("win","Win %")}</div><div class="stat-v">${fmt(d.win,1)}%</div><div class="pct ${pctClass(d.winP)}">${pctText(d.winP)}</div></div>
+      </div>
+      <div class="pstats">
+        ${stat("K/D","kd",fmt(d.kd,2),d.kdP)}
+        ${stat("ADR","adr",fmt(d.adr,1),d.adrP)}
+        ${stat("HS%","hs",fmt(d.hs,1)+"%",d.hsP)}
+        ${stat("KAST","kast",fmt(d.kast,1)+"%",d.kastP)}
+        ${stat("ACS","acs",fmt(d.acs,1),d.acsP)}
+        ${stat("DDΔ/round","dd",(d.dd>0?"+":"")+fmt(d.dd,1),d.ddP)}
+      </div>
+      <div class="trn"><div class="stat-l" style="white-space:nowrap">${term("trn","Tracker Score")}</div><div class="trn-bar"><i style="width:${d.trn/10}%"></i></div><div class="stat-v">${d.trn}<small>/1000</small></div></div>
+    </article>`;
+  }).join("");
+}
+
+function renderCompare(){
+  const all = Object.fromEntries(PLAYERS.map(p=>[p.id,derive(p.id)]));
+  const leads = Object.fromEntries(PLAYERS.map(p=>[p.id,0]));
+  let rows = `<thead><tr><th>Métrica</th>${PLAYERS.map(p=>`<th style="color:${p.color}">${esc(p.name)}</th>`).join("")}</tr></thead><tbody>`;
+  for(const m of METRICS){
+    if(m.g){ rows+=`<tr class="grp"><td colspan="${PLAYERS.length+1}">${m.g}</td></tr>`; continue; }
+    const vals = PLAYERS.map(p=>all[p.id][m.k]);
+    const best = m.low? Math.min(...vals): Math.max(...vals);
+    const max = Math.max(...vals.map(Math.abs))||1;
+    rows += `<tr><td>${term(m.t,m.l)}</td>`;
+    PLAYERS.forEach((p,i)=>{
+      const v = vals[i], isBest = v===best;
+      if(isBest) leads[p.id]++;
+      const pc = m.p? all[p.id][m.p]: null;
+      const w = m.low? (Math.min(...vals)/(v||1))*100 : Math.max(0,v)/max*100;
+      rows += `<td class="${isBest?"best":""}"><span class="cell">${pc!=null?`<span class="pp pct ${pctClass(pc)}">${pctText(pc)}</span>`:""}<span class="bar"><i style="width:${w}%;background:${p.color}"></i></span><span>${m.sign&&v>0?"+":""}${fmt(v,m.d)}${m.u||""}</span>${isBest?`<span class="crown" style="background:${p.color}" title="Melhor do trio">★</span>`:`<span class="crown"></span>`}</span></td>`;
+    });
+    rows += `</tr>`;
+  }
+  $("#cmpTable").innerHTML = rows+"</tbody>";
+  const total = METRICS.filter(m=>!m.g).length;
+  $("#scoreboard").innerHTML = PLAYERS.map(p=>`<div class="card sb" style="--pc:${p.color}"><div class="big">${leads[p.id]}</div><div><b>${esc(p.name)}</b><div class="muted" style="font-size:12px">lidera ${leads[p.id]} de ${total} métricas</div></div></div>`).join("");
+}
+
+function renderH2H(){
+  const a = $("#h2hA").value, b = $("#h2hB").value;
+  const A = PLAYERS.find(p=>p.id===a), B = PLAYERS.find(p=>p.id===b);
+  const da = derive(a), db = derive(b);
+  let sa=0, sb=0, html="";
+  for(const m of METRICS){
+    if(m.g) continue;
+    const va = da[m.k], vb = db[m.k];
+    const aw = m.low? va<vb : va>vb, bw = m.low? vb<va : vb>va;
+    if(aw) sa++; if(bw) sb++;
+    const max = Math.max(Math.abs(va),Math.abs(vb))||1;
+    let wa = Math.max(0,va)/max*100, wb = Math.max(0,vb)/max*100;
+    if(m.low){ const mn=Math.min(va,vb)||1; wa=mn/(va||1)*100; wb=mn/(vb||1)*100; }
+    if(m.k==="dd"){ const mx=Math.max(Math.abs(va),Math.abs(vb))||1; wa=Math.abs(va)/mx*100; wb=Math.abs(vb)/mx*100; }
+    html += `<div class="h2h-row"><div class="v l" style="color:${aw?A.color:"var(--muted)"}">${m.sign&&va>0?"+":""}${fmt(va,m.d)}${m.u||""}</div><div class="hb l"><i class="${aw?"win":""}" style="width:${wa}%;background:${A.color}"></i></div><div class="lab">${term(m.t,m.l)}</div><div class="hb"><i class="${bw?"win":""}" style="width:${wb}%;background:${B.color}"></i></div><div class="v" style="color:${bw?B.color:"var(--muted)"}">${m.sign&&vb>0?"+":""}${fmt(vb,m.d)}${m.u||""}</div></div>`;
+  }
+  $("#h2h").innerHTML = `<div class="h2h-score"><span style="color:${A.color}">${esc(A.name)} ${sa}</span><span class="muted">×</span><span style="color:${B.color}">${sb} ${esc(B.name)}</span></div>`+html;
+}
+
+let swFilter = "all";
+function renderSW(){
+  const seg = $("#swSeg");
+  seg.innerHTML = [{id:"all",name:"Todos"},...PLAYERS].map(p=>`<button type="button" data-id="${p.id}" aria-pressed="${swFilter===p.id}">${esc(p.name)}</button>`).join("");
+  const list = swFilter==="all"? PLAYERS : PLAYERS.filter(p=>p.id===swFilter);
+  $("#sw").className = "sw"+(list.length===1?" single":"");
+  $("#sw").innerHTML = list.map(pl=>{
+    const a = analyze(pl.id), r = (DATA.reads||{})[pl.id] || {role:"",text:""};
+    const li = (x,good)=>`<li><div class="it-top"><b>${x.m.t?term(x.m.t,x.m.l):esc(x.m.l)}</b><span style="color:${good?"var(--good)":"var(--bad)"}">${x.m.sign&&parseFloat(x.val)>0?"+":""}${esc(x.val)}</span></div><p>${esc(good?(ADVICE[x.k]?.good||""):(ADVICE[x.k]?.bad||""))} ${esc(x.why)}</p>${!good&&(ADVICE[x.k]?.tip||x.custom)?`<p class="tipline">${esc(x.custom||ADVICE[x.k].tip)}</p>`:""}${good&&x.custom?`<p class="tipline">${esc(x.custom)}</p>`:""}</li>`;
+    return `<article class="card sw-card" style="--pc:${pl.color}">
+      <div class="card-h"><b>${esc(pl.name)}</b><span class="role-tag">${esc(r.role)}</span></div>
+      <div class="card-b">
+        <p class="read">${esc(r.text)}</p>
+        <div class="list-h g"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M6 1l5 9H1z" fill="currentColor"/></svg>Pontos fortes</div>
+        <ul class="items">${a.strengths.length?a.strengths.map(x=>li(x,true)).join(""):`<li><p>Nenhum destaque claro neste ato.</p></li>`}</ul>
+        <div class="list-h b"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M6 11L1 2h10z" fill="currentColor"/></svg>Precisa melhorar</div>
+        <ul class="items">${a.weaknesses.length?a.weaknesses.map(x=>li(x,false)).join(""):`<li><p>Nenhum ponto fraco claro: está acima da média em quase tudo.</p></li>`}</ul>
+        <div class="stamp">Texto de leitura escrito com os dados de ${esc(new Date((DATA.readsAt||"")+"T12:00:00").toLocaleDateString("pt-BR"))}. As listas recalculam com os dados atuais.</div>
+      </div>
+    </article>`;
+  }).join("");
+}
+
+function renderMMR(){
+  $("#mmrCards").innerHTML = PLAYERS.map(pl=>{
+    const p = DATA[pl.id], e = estimateMMR(pl.id);
+    const lo = Math.floor(Math.min(e.lo, e.base)) - 1, hi = Math.ceil(Math.max(e.hi, e.base)) + 1;
+    const x = v=>((v-lo)/(hi-lo)*100).toFixed(2)+"%";
+    let ticks = "";
+    for(let i=lo;i<=hi;i++){ ticks += `<span class="tk" style="left:${x(i)}"></span>`; if(i<hi) ticks += `<span class="tickl ${i%3===0?"major":""}" style="left:${x(i+0.5)}">${esc(rankPT(rName(i)).replace("Platina","Plat").replace("Diamante","Diam"))}</span>`; }
+    const v = e.diff>=0.6 ? ["up","MMR acima do elo"] : e.diff<=-0.6 ? ["dn","MMR abaixo do elo"] : ["eq","MMR perto do elo"];
+    const expl = e.diff>=0.6 ? "Tendência de subir: vitórias devem render mais RR do que as derrotas tiram."
+      : e.diff<=-0.6 ? "Risco de cair: derrotas devem tirar mais RR do que as vitórias dão."
+      : "Ganhos e perdas de RR devem estar parecidos; o elo atual reflete bem o nível.";
+    const sg = n=>(n>=0?"+":"−")+fmt(Math.abs(n),2);
+    const d = derive(pl.id);
+    const saved = lsGet("squad_rr_"+pl.id)||{};
+    return `<article class="card" style="--pc:${pl.color}">
+      <div class="card-h"><h3 style="color:${pl.color}">${esc(pl.name)}</h3><span class="eyebrow">elo atual: ${esc(rankPT(p.rank))}</span></div>
+      <div class="card-b">
+        <div class="mmr-est">${emblem(rName(e.est),46)}<div><div class="sub">MMR estimado</div><div class="big">${esc(rankPT(rName(e.est)))}</div><div class="sub">${divPos(e.est)} divisão · faixa ${esc(rankPT(rName(e.lo)))} a ${esc(rankPT(rName(e.hi)))}</div></div></div>
+        <span class="verdict ${v[0]}">${v[1]}</span>
+        <div class="ladder" aria-hidden="true"><div class="track"></div>${ticks}<div class="band" style="left:${x(e.lo)};width:calc(${x(e.hi)} - ${x(e.lo)});background:${pl.color}"></div><div class="cur" style="left:${x(e.base)}"></div><div class="est" style="left:${x(e.est)};background:${pl.color}"></div></div>
+        <div class="ladder-key"><span><i style="background:var(--bg);border:2px solid var(--fg);transform:rotate(45deg)"></i>elo visível</span><span><i style="background:${pl.color};border-radius:50%"></i>MMR estimado</span></div>
+        <p class="read" style="margin-bottom:10px">${expl}</p>
+        <ul class="factors">
+          <li><span>Win % no ato (${fmt(d.win,1)}% em ${d.matches} partidas)</span><b style="color:${e.form>=0?"var(--good)":"var(--bad)"}">${sg(e.form)} div.</b></li>
+          <li><span>Desempenho em duelos (${term("dd","DDΔ")} e ${term("kd","K/D")})</span><b style="color:${e.perf>=0?"var(--good)":"var(--bad)"}">${sg(e.perf)} div.</b></li>
+          <li><span>Histórico (pico dos últimos ${e.n} atos: ${esc(rankPT(rName(e.med)))})</span><b style="color:${e.hist>=0?"var(--good)":"var(--bad)"}">${sg(e.hist)} div.</b></li>
+        </ul>
+        <div class="calc">
+          <div class="calc-row"><span>Confira no jogo, média das últimas partidas:</span></div>
+          <div class="calc-row" style="margin-top:6px"><label for="rrw-${pl.id}">Vitória +</label><input id="rrw-${pl.id}" type="number" min="0" max="50" inputmode="numeric" value="${saved.w??""}" placeholder="RR"><label for="rrl-${pl.id}">Derrota −</label><input id="rrl-${pl.id}" type="number" min="0" max="50" inputmode="numeric" value="${saved.l??""}" placeholder="RR"></div>
+          <div class="calc-out" id="rro-${pl.id}"></div>
+        </div>
+      </div>
+    </article>`;
+  }).join("");
+  PLAYERS.forEach(pl=>{
+    const upd = ()=>{
+      const w = parseFloat($("#rrw-"+pl.id).value), l = parseFloat($("#rrl-"+pl.id).value), out = $("#rro-"+pl.id);
+      lsSet("squad_rr_"+pl.id,{w:isNaN(w)?null:w,l:isNaN(l)?null:l});
+      if(isNaN(w)||isNaN(l)||l<=0){ out.textContent = "Digite quanto RR ganha numa vitória e perde numa derrota."; return; }
+      const r = w/l;
+      out.innerHTML = r>=1.25 ? `<b style="color:var(--good)">Confirma MMR acima do elo</b> (ganha ${fmt(r,2)}× o que perde). O elo deve subir.`
+        : r<=0.8 ? `<b style="color:var(--bad)">MMR abaixo do elo</b> (ganha só ${fmt(r,2)}× o que perde). Precisa de mais vitórias seguidas para segurar.`
+        : `<b style="color:var(--mid)">MMR alinhado ao elo</b> (ganha ${fmt(r,2)}× o que perde).`;
+    };
+    $("#rrw-"+pl.id).addEventListener("input",upd); $("#rrl-"+pl.id).addEventListener("input",upd); upd();
+  });
+  const tm = (DATA.teammates||{});
+  const duoCards = [];
+  for(const [id,list] of Object.entries(tm)){
+    const A = PLAYERS.find(p=>p.id===id); if(!A) continue;
+    for(const t of list){ const B = PLAYERS.find(p=>p.nick===t.nick); if(!B) continue;
+      duoCards.push(`<div class="card duo"><div class="big" style="color:${t.wr>=55?"var(--good)":t.wr<48?"var(--bad)":"var(--fg)"}">${fmt(t.wr,1)}%</div><div><b><span style="color:${A.color}">${esc(A.name)}</span> + <span style="color:${B.color}">${esc(B.name)}</span></b><div class="muted" style="font-size:12px">vitórias em ${t.m} partidas juntos</div></div></div>`); }
+  }
+  $("#duos").innerHTML = duoCards.join("");
+}
+
+function heatColor(wr){
+  const t = Math.max(0,Math.min(1,(wr-30)/45));
+  const hue = 0 + t*140;
+  return `hsl(${hue} 70% ${52+t*4}%)`;
+}
+function renderMaps(){
+  const names = [...new Set(PLAYERS.flatMap(p=>(DATA[p.id].maps||[]).map(m=>m.n)))];
+  const avg = n=>{ const xs=PLAYERS.map(p=>(DATA[p.id].maps||[]).find(m=>m.n===n)).filter(Boolean); return xs.reduce((a,m)=>a+m.wr,0)/xs.length; };
+  names.sort((a,b)=>avg(b)-avg(a));
+  let h = `<thead><tr><th>Mapa</th>${PLAYERS.map(p=>`<th style="color:${p.color};text-align:center">${esc(p.name)}</th>`).join("")}<th style="text-align:center">Média</th></tr></thead><tbody>`;
+  for(const n of names){
+    h += `<tr><td>${esc(n)}</td>`;
+    for(const p of PLAYERS){
+      const m = (DATA[p.id].maps||[]).find(x=>x.n===n);
+      h += m? `<td><span class="hc" style="background:${heatColor(m.wr)}">${fmt(m.wr,0)}%<small>${m.w}V ${m.l}D</small></span></td>` : `<td class="na">–</td>`;
+    }
+    const a = avg(n);
+    h += `<td><span class="hc" style="background:${heatColor(a)}">${fmt(a,0)}%</span></td></tr>`;
+  }
+  $("#heat").innerHTML = h+"</tbody>";
+
+  $("#agents").innerHTML = PLAYERS.map(pl=>{
+    const p = DATA[pl.id]; const ags = (p.agents||[]).slice(0,6);
+    const maxM = Math.max(...ags.map(a=>a.m),1);
+    return `<div class="card" style="--pc:${pl.color}"><div class="card-h"><h3 style="color:${pl.color}">${esc(pl.name)}</h3><span class="eyebrow">Agentes mais jogados</span></div><div class="card-b">
+      ${ags.map(a=>`<div class="ag"><div class="ag-ic" style="background:${a.c}">${esc(a.n.slice(0,2))}</div><div class="ag-n"><b>${esc(a.n)}</b><small>${esc(ROLE_PT[a.r]||a.r||"")} · ${a.m} partidas</small><div class="ag-bar"><i style="width:${a.m/maxM*100}%;background:${a.c}"></i></div></div><div class="ag-s"><b style="color:${a.wr>=55?"var(--good)":a.wr<45?"var(--bad)":"var(--fg)"}">${fmt(a.wr,1)}%</b> WR<br><span class="muted">K/D ${fmt(a.kd,2)} · ACS ${fmt(a.acs,0)}</span></div></div>`).join("")}
+      <div class="eyebrow" style="margin:14px 0 4px">Armas com mais abates</div>
+      ${(p.weapons||[]).map(w=>`<div class="weap"><span><b>${esc(w.n)}</b> <span class="muted">· ${w.k} abates</span></span><span class="muted">cabeça <b style="color:var(--fg)">${w.h}%</b> · perna ${w.l}%</span></div>`).join("")}
+    </div></div>`;
+  }).join("");
+}
+
+function renderGloss(q=""){
+  q = q.trim().toLowerCase();
+  const list = GLOSS.filter(g=>!q || (g.t+" "+g.full+" "+g.d).toLowerCase().includes(q));
+  $("#gloss").innerHTML = list.length? list.map(g=>`<div class="card g-item" id="g-${g.k}"><dt>${esc(g.t)}<small>${esc(g.full)}</small></dt><dd>${esc(g.d)}${g.good?`<em>${esc(g.good)}</em>`:""}</dd></div>`).join("") : `<p class="muted">Nenhum termo encontrado para “${esc(q)}”.</p>`;
+}
+
+/* ============ GRÁFICOS ============ */
+const charts = {};
+function chartBase(){
+  if(!window.Chart) return false;
+  Chart.defaults.color = "#8a92a6";
+  Chart.defaults.borderColor = "#262b3a";
+  Chart.defaults.font.family = "Inter, system-ui, sans-serif";
+  Chart.defaults.font.size = 12;
+  Chart.defaults.plugins.legend.display = false;
+  Chart.defaults.plugins.tooltip.backgroundColor = "#222736";
+  Chart.defaults.plugins.tooltip.borderColor = "#323a4e";
+  Chart.defaults.plugins.tooltip.borderWidth = 1;
+  Chart.defaults.plugins.tooltip.titleColor = "#e9ecf3";
+  Chart.defaults.plugins.tooltip.bodyColor = "#c9cfdc";
+  Chart.defaults.maintainAspectRatio = false;
+  return true;
+}
+function mk(id,cfg){ if(charts[id]) charts[id].destroy(); charts[id] = new Chart(document.getElementById(id),cfg); }
+const alpha = (hex,a)=>hex+Math.round(a*255).toString(16).padStart(2,"0");
+function stripes(hex){
+  const c = document.createElement("canvas"); c.width=c.height=8; const x=c.getContext("2d");
+  x.fillStyle=alpha(hex,.18); x.fillRect(0,0,8,8); x.strokeStyle=hex; x.lineWidth=2;
+  x.beginPath(); x.moveTo(0,8); x.lineTo(8,0); x.moveTo(-2,2); x.lineTo(2,-2); x.moveTo(6,10); x.lineTo(10,6); x.stroke();
+  return x.createPattern(c,"repeat");
+}
+function renderCharts(){
+  if(!chartBase()){ document.querySelectorAll(".chart").forEach(el=>el.innerHTML=`<div class="chart-fallback">Os gráficos não carregaram. Recarregue a página.</div>`); return; }
+  const D = Object.fromEntries(PLAYERS.map(p=>[p.id,derive(p.id)]));
+  const names = PLAYERS.map(p=>p.name), hexes = PLAYERS.map(p=>p.hex);
+  $("#legend").innerHTML = PLAYERS.map(p=>`<span><i style="background:${p.hex}"></i>${esc(p.name)}</span>`).join("");
+
+  const axes = [["K/D","kdP"],["ADR","adrP"],["HS%","hsP"],["KAST","kastP"],["ACS","acsP"],["DDΔ","ddP"],["Win %","winP"],["Round Win %","rwinP"]];
+  mk("cRadar",{type:"radar",data:{labels:axes.map(a=>a[0]),datasets:PLAYERS.map(p=>({label:p.name,data:axes.map(a=>D[p.id][a[1]]),borderColor:p.hex,backgroundColor:alpha(p.hex,.12),pointBackgroundColor:p.hex,borderWidth:2,pointRadius:3}))},
+    options:{plugins:{tooltip:{callbacks:{label:c=>`${c.dataset.label}: percentil ${Math.round(c.raw)} (${pctText(c.raw)})`}}},scales:{r:{min:0,max:100,ticks:{stepSize:25,backdropColor:"transparent",color:"#5d6478",font:{size:10}},grid:{color:"#262b3a"},angleLines:{color:"#262b3a"},pointLabels:{color:"#c9cfdc",font:{size:12,weight:"600"}}}}}});
+
+  mk("cEntry",{type:"bar",data:{labels:names,datasets:[
+      {label:"First Blood/round",data:PLAYERS.map(p=>D[p.id].fbpr),backgroundColor:hexes,borderRadius:3},
+      {label:"First Death/round",data:PLAYERS.map(p=>D[p.id].fdpr),backgroundColor:hexes.map(stripes),borderColor:hexes,borderWidth:1,borderRadius:3}]},
+    options:{indexAxis:"y",plugins:{legend:{display:true,labels:{boxWidth:12,color:"#c9cfdc"}},tooltip:{callbacks:{afterBody:it=>{const p=PLAYERS[it[0].dataIndex];return `ESR (entradas vencidas): ${fmt(D[p.id].esr,1)}%`;}}}},scales:{x:{beginAtZero:true,grid:{color:"#1d2230"},ticks:{callback:v=>v.toFixed(2)}},y:{grid:{display:false},ticks:{color:"#e9ecf3",font:{weight:"600"}}}}}});
+
+  mk("cHits",{type:"bar",data:{labels:names,datasets:[
+      {label:"Cabeça",data:PLAYERS.map(p=>D[p.id].head),backgroundColor:"#3ddc97"},
+      {label:"Corpo",data:PLAYERS.map(p=>D[p.id].body),backgroundColor:"#3a4258"},
+      {label:"Perna",data:PLAYERS.map(p=>D[p.id].leg),backgroundColor:"#ff5a64"}]},
+    options:{indexAxis:"y",plugins:{legend:{display:true,labels:{boxWidth:12,color:"#c9cfdc"}},tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${fmt(c.raw,1)}%`}}},scales:{x:{stacked:true,max:100,grid:{color:"#1d2230"},ticks:{callback:v=>v+"%"}},y:{stacked:true,grid:{display:false},ticks:{color:"#e9ecf3",font:{weight:"600"}}}}}});
+
+  mk("cSides",{type:"bar",data:{labels:["Ataque","Defesa"],datasets:PLAYERS.map(p=>({label:p.name,data:[D[p.id].atkKD,D[p.id].defKD],backgroundColor:p.hex,borderRadius:3}))},
+    options:{plugins:{legend:{display:true,labels:{boxWidth:12,color:"#c9cfdc"}},tooltip:{callbacks:{label:c=>{const d=D[PLAYERS[c.datasetIndex].id];return `${c.dataset.label}: K/D ${fmt(c.raw,2)} · ADR ${fmt(c.dataIndex?d.defADR:d.atkADR,1)}`;}}}},scales:{y:{beginAtZero:true,suggestedMax:1.3,grid:{color:"#1d2230"}},x:{grid:{display:false},ticks:{color:"#e9ecf3",font:{weight:"600"}}}}}});
+
+  const cl = ["1v1","1v2","1v3","1v4"];
+  mk("cClutch",{type:"bar",data:{labels:cl,datasets:PLAYERS.map(p=>{const s=DATA[p.id].s;return {label:p.name,data:cl.map(k=>{const w=V(s["clutches"+k]),l=V(s["clutchesLost"+k]);return w+l?w/(w+l)*100:0;}),backgroundColor:p.hex,borderRadius:3,_raw:cl.map(k=>[V(s["clutches"+k]),V(s["clutchesLost"+k])])};})},
+    options:{plugins:{legend:{display:true,labels:{boxWidth:12,color:"#c9cfdc"}},tooltip:{callbacks:{label:c=>{const r=c.dataset._raw[c.dataIndex];return `${c.dataset.label}: ${fmt(c.raw,0)}% (${r[0]} de ${r[0]+r[1]})`;}}}},scales:{y:{beginAtZero:true,max:100,grid:{color:"#1d2230"},ticks:{callback:v=>v+"%"}},x:{grid:{display:false},ticks:{color:"#e9ecf3",font:{weight:"600"}}}}}});
+  $("#clutchNote").textContent = "Total no ato: "+PLAYERS.map(p=>{const s=DATA[p.id].s;return `${p.name} ${V(s.clutches)} vencidos de ${V(s.clutches)+V(s.clutchesLost)}`;}).join(" · ")+".";
+
+  const roleOrder = ["Duelist","Initiator","Controller","Sentinel"];
+  mk("cRoles",{type:"bar",data:{labels:roleOrder.map(r=>ROLE_PT[r]),datasets:PLAYERS.map(p=>{const rs=DATA[p.id].roles||[];return {label:p.name,data:roleOrder.map(r=>{const x=rs.find(y=>y.n===r);return x?x.wr:null;}),_m:roleOrder.map(r=>{const x=rs.find(y=>y.n===r);return x?x.m:0;}),backgroundColor:p.hex,borderRadius:3};})},
+    options:{plugins:{legend:{display:true,labels:{boxWidth:12,color:"#c9cfdc"}},tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${fmt(c.raw,1)}% em ${c.dataset._m[c.dataIndex]} partidas`}}},scales:{y:{beginAtZero:true,max:100,grid:{color:"#1d2230"},ticks:{callback:v=>v+"%"}},x:{grid:{display:false},ticks:{color:"#e9ecf3",font:{weight:"600"}}}}}});
+
+  const withRecent = PLAYERS.filter(p=>(DATA[p.id].recent||[]).length);
+  const n = Math.max(0,...withRecent.map(p=>DATA[p.id].recent.length));
+  mk("cForm",{type:"line",data:{labels:Array.from({length:n},(_,i)=>i===n-1?"mais recente":`${n-i}`),datasets:withRecent.map(p=>{const r=[...DATA[p.id].recent].reverse();return {label:p.name,data:r.map(x=>x[9]),_m:r,borderColor:p.hex,backgroundColor:alpha(p.hex,.1),fill:true,tension:.3,pointRadius:3,pointBackgroundColor:r.map(x=>x[1]>x[2]?p.hex:"#0b0d12"),pointBorderColor:p.hex};})},
+    options:{interaction:{mode:"index",intersect:false},plugins:{legend:{display:true,labels:{boxWidth:12,color:"#c9cfdc"}},tooltip:{callbacks:{title:it=>{const x=it[0].dataset._m[it[0].dataIndex];return `${x[0]} · ${x[1]}:${x[2]}`;},label:c=>{const x=c.dataset._m[c.dataIndex];return `${c.dataset.label}: ACS ${x[9]} · ${x[4]}/${x[5]}/${x[6]} · ${x[3]}`;}}}},scales:{y:{grid:{color:"#1d2230"},suggestedMin:100},x:{grid:{display:false},title:{display:true,text:"partidas (da mais antiga para a mais recente) · ponto cheio = vitória",color:"#5d6478"}}}}});
+  const missing = PLAYERS.filter(p=>!(DATA[p.id].recent||[]).length).map(p=>p.name);
+  const avgAcs = p=>{const r=DATA[p.id].recent;return r.reduce((a,x)=>a+x[9],0)/r.length;};
+  $("#formNote").textContent = withRecent.map(p=>`${p.name}: ACS médio ${fmt(avgAcs(p),0)} nas últimas ${DATA[p.id].recent.length} (no ato: ${fmt(derive(p.id).acs,0)})`).join(" · ")+(missing.length?`. ${missing.join(", ")} sem partidas recentes listadas no Tracker.gg.`:".");
+
+  /* histórico de elo por ato */
+  const acts = [...new Set(PLAYERS.flatMap(p=>(DATA[p.id].history||[]).map(h=>h[0])))].sort((a,b)=>actKey(a)-actKey(b));
+  const allIdx = PLAYERS.flatMap(p=>(DATA[p.id].history||[]).map(h=>rIdx(h[1]))).filter(x=>x!=null);
+  const yMin = Math.max(0,Math.min(...allIdx)-1), yMax = Math.max(...allIdx)+1;
+  mk("cHist",{type:"line",data:{labels:acts,datasets:PLAYERS.map(p=>{const m=Object.fromEntries((DATA[p.id].history||[]).map(h=>[h[0],h]));return {label:p.name,data:acts.map(a=>m[a]?rIdx(m[a][1]):null),_h:acts.map(a=>m[a]||null),borderColor:p.hex,backgroundColor:p.hex,tension:.25,spanGaps:true,pointRadius:acts.map(a=>a===DATA.act?6:2.5),pointHoverRadius:6,borderWidth:2};})},
+    options:{interaction:{mode:"nearest",intersect:false},plugins:{legend:{display:true,labels:{boxWidth:12,color:"#c9cfdc"}},tooltip:{callbacks:{label:c=>{const h=c.dataset._h[c.dataIndex];return h?`${c.dataset.label}: ${rankPT(h[1])} · ${fmt(h[2],1)}% WR`:"";}}}},
+      scales:{y:{min:yMin,max:yMax,ticks:{stepSize:1,callback:v=>rankPT(rName(v)),color:"#8a92a6",font:{size:11}},grid:{color:c=>c.tick&&c.tick.value%3===0?"#323a4e":"#1a1f2b"}},x:{grid:{display:false},ticks:{maxRotation:60,minRotation:45,autoSkip:true,font:{size:10}}}}}});
+}
+
+/* ============ TOOLTIP DE SIGLAS ============ */
+const tip = $("#tip");
+function showTip(el){
+  const g = G[el.dataset.term]; if(!g) return;
+  tip.innerHTML = `<b>${esc(g.t)}</b>${esc(g.d)}`;
+  tip.hidden = false;
+  const r = el.getBoundingClientRect(), tw = tip.offsetWidth, th = tip.offsetHeight;
+  let x = Math.min(window.innerWidth-tw-12, Math.max(12, r.left + r.width/2 - tw/2));
+  let y = r.top - th - 8; if(y<8) y = r.bottom + 8;
+  tip.style.left = x+"px"; tip.style.top = y+"px";
+}
+document.addEventListener("mouseover",e=>{const t=e.target.closest(".term"); if(t) showTip(t);});
+document.addEventListener("mouseout",e=>{if(e.target.closest(".term")) tip.hidden=true;});
+document.addEventListener("focusin",e=>{const t=e.target.closest(".term"); if(t) showTip(t);});
+document.addEventListener("focusout",e=>{if(e.target.closest(".term")) tip.hidden=true;});
+document.addEventListener("click",e=>{const t=e.target.closest(".term"); if(t){ tip.hidden=true; const el=document.getElementById("g-"+t.dataset.term); if(el){ location.hash="g-"+t.dataset.term; el.scrollIntoView({behavior:"smooth",block:"center"}); } }});
+window.addEventListener("scroll",()=>{tip.hidden=true;},{passive:true});
+
+/* ============ ATUALIZAÇÃO AO VIVO (navegador do app Claude) ============ */
+const BROWSER = "host:claude_browser";
+let mcp = null, busy = false;
+function setStatus(kind,text){ $("#statusDot").className = "dot "+(kind||""); $("#statusText").textContent = text; }
+function banner(html){ const b=$("#banner"); if(!html){b.classList.remove("on");b.innerHTML="";return;} b.innerHTML=html; b.classList.add("on"); }
+function ago(ts){ const m = Math.round((Date.now()-ts)/60000); if(m<1) return "agora"; if(m<60) return `há ${m} min`; const h=Math.round(m/60); if(h<24) return `há ${h} h`; return new Date(ts).toLocaleDateString("pt-BR"); }
+function statusIdle(){
+  if(LIVE_AT) setStatus("ok",`Ao vivo · atualizado ${ago(LIVE_AT)}`);
+  else if(SNAP){ const t = Date.parse(SNAP.updatedAt); setStatus(Date.now()-t < 36*3600000 ? "ok" : "", `Atualizado ${ago(t)}`); }
+}
+
+function parseOverview(raw){
+  const L = raw.split("\n").map(s=>s.trim()).filter(Boolean);
+  const idx=(lab,from=0)=>{for(let i=from;i<L.length;i++) if(L[i]===lab) return i; return -1;};
+  const num=s=>{ if(s==null) return null; const m=String(s).replace(/,/g,"").match(/-?\d+(\.\d+)?/); return m?parseFloat(m[0]):null; };
+  const pctOf=s=>{ const m=/(Top|Bottom)\s+([\d.]+)%/.exec(s||""); if(!m) return null; const x=parseFloat(m[2]); return m[1]==="Top"?100-x:x; };
+  const out = {};
+  const actLine = L.find(l=>/COMPETITIVE OVERVIEW$/i.test(l));
+  if(!actLine) return null;
+  out.act = actLine.replace(/\s*COMPETITIVE OVERVIEW$/i,"");
+  const ov = L.indexOf(actLine);
+  const pm = /(\d+)h Playtime\s+(\d+) Matches/i.exec(L[ov+1]||"");
+  if(pm){ out.playtime=+pm[1]; out.matches=+pm[2]; }
+  const cr = idx("CURRENT RATING");
+  if(cr>=0){ const r=idx("Rating",cr); if(r>=0) out.rank=L[r+1]; const pk=idx("Peak Rating",cr); if(pk>=0){ out.peak=L[pk+1]; out.peakAct=L[pk+2]; } }
+  const lv = idx("Level",ov); if(lv>=0) out.level = num(L[lv+1]);
+  const w = idx("W",ov); if(w>0) out.wins = num(L[w-1]);
+  const l = idx("L",ov); if(l>0) out.losses = num(L[l-1]);
+  const stat = lab=>{ const j=idx(lab,ov); if(j<0) return null; return {v:num(L[j+1]), p:pctOf(L[j+2])}; };
+  out.stats = {
+    damagePerRound:stat("Damage/Round"), kDRatio:stat("K/D Ratio"), headshotsPercentage:stat("Headshot %"),
+    matchesWinPct:stat("Win %"), kAST:stat("KAST"), damageDeltaPerRound:stat("DDΔ/Round"),
+    kills:stat("Kills"), deaths:stat("Deaths"), assists:stat("Assists"), scorePerRound:stat("ACS"),
+    firstBloods:stat("First Bloods"), flawless:stat("Flawless Rounds"), aces:stat("Aces"), roundsWinPct:stat("Round Win %")
+  };
+  const ts = idx("Tracker Score",ov); if(ts>=0) out.trn = num(L[ts+1]);
+  /* funções */
+  const ro = idx("ROLES"), tw = idx("TOP WEAPONS");
+  if(ro>=0 && tw>ro){ out.roles=[]; for(let k=ro+1;k<tw;k++){ if(/^WR\s/.test(L[k])){ const wl=/(\d+)W\s*-\s*(\d+)L/.exec(L[k+1]||""); const kda=(L[k+3]||"").split("/").map(num); out.roles.push({n:L[k-1],wr:num(L[k]),m:wl?(+wl[1])+(+wl[2]):0,kd:kda.length===3&&kda[1]?kda[0]/kda[1]:null}); } } }
+  /* armas */
+  const vw = idx("View All Weapons");
+  if(tw>=0 && vw>tw){ out.weapons=[]; for(let k=tw+1;k<vw;k++){ if(L[k]==="Kills"){ out.weapons.push({n:L[k-5],h:num(L[k-3]),b:num(L[k-2]),l:num(L[k-1]),k:num(L[k+1])}); } } }
+  /* mapas */
+  const tm = idx("TOP MAPS"), vm = idx("View All Maps");
+  if(tm>=0 && vm>tm){ out.maps=[]; for(let k=tm+1;k<vm;k++){ const m=/^(\d+)W\s*-\s*(\d+)L$/.exec(L[k]); if(m) out.maps.push({n:L[k-2],wr:num(L[k-1]),w:+m[1],l:+m[2]}); } }
+  /* agentes do topo */
+  const bm = idx("Best Map");
+  if(bm>=0){ out.agents=[]; for(let k=bm+1;k<L.length && k<bm+60;k++){ if(/% WR$/.test(L[k])){ out.agents.push({n:L[k-9],m:num(L[k-7]),wr:num(L[k-6]),kd:num(L[k-5]),adr:num(L[k-4]),acs:num(L[k-3])}); } if(/^LAST/.test(L[k])) break; } }
+  /* partidas recentes */
+  const lm = L.findIndex(x=>/^LAST( 20)? MATCHES$/.test(x));
+  if(lm>=0){ out.recent=[]; for(let k=lm;k<L.length-18;k++){ if(L[k]==="Competitive" && L[k+4]===":"){ const f=(lab)=>{for(let j=k;j<k+24&&j<L.length;j++) if(L[j]===lab) return j; return -1;}; const a=f("K/D/A"), d=f("DDΔ"), h=f("HS%"), c=f("ACS"); if(a<0||c<0) continue; out.recent.push([L[k+1],num(L[k+3]),num(L[k+5]),L[k+6],num(L[a+1]),num(L[a+2]),num(L[a+3]),d>=0?num(L[d+1]):0,h>=0?num(L[h+1]):0,num(L[c+1])]); } } }
+  return out;
+}
+
+function applyLive(id, lv){
+  const p = DATA[id], s = p.s;
+  if(lv.rank) p.rank = lv.rank;
+  if(lv.peak){ p.peak = lv.peak; p.peakAct = lv.peakAct; }
+  if(lv.level) p.level = lv.level;
+  if(lv.playtime) p.playtime = lv.playtime;
+  if(lv.matches) s.matchesPlayed = lv.matches;
+  if(lv.wins!=null) s.matchesWon = [lv.wins, P(s.matchesWon)];
+  if(lv.losses!=null){ s.matchesLost = lv.losses; if(lv.matches) s.matchesTied = Math.max(0, lv.matches-lv.wins-lv.losses); }
+  for(const [k,o] of Object.entries(lv.stats||{})){ if(o && o.v!=null) s[k] = [o.v, o.p!=null? o.p : P(s[k])]; }
+  if(lv.trn!=null) s.trnPerformanceScore = lv.trn;
+  if(lv.roles && lv.roles.length) p.roles = lv.roles;
+  if(lv.weapons && lv.weapons.length) p.weapons = lv.weapons;
+  if(lv.maps && lv.maps.length) p.maps = lv.maps;
+  if(lv.recent && lv.recent.length) p.recent = lv.recent;
+  if(lv.agents && lv.agents.length){
+    for(const a of lv.agents){ const ex = p.agents.find(x=>x.n===a.n); if(ex) Object.assign(ex,{m:a.m,wr:a.wr,kd:a.kd,adr:a.adr,acs:a.acs}); else p.agents.push({...a,r:"",c:"#8a92a6"}); }
+    p.agents.sort((a,b)=>b.m-a.m);
+  }
+  if(lv.act) DATA.act = lv.act;
+}
+
+function resultText(r){
+  if(typeof r?.payload==="string") return r.payload;
+  const t = (r?.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("\n");
+  return t || (r?.payload? JSON.stringify(r.payload): "");
+}
+const FATAL = {
+  server_not_connected:"A atualização ao vivo só funciona com esta página aberta no app Claude desktop, que tem o navegador integrado. Mostrando os dados salvos.",
+  not_in_manifest:"O acesso ao navegador foi negado para esta página. Para liberar, use o menu de Permissões do artifact e tente de novo.",
+  approval_required:"O app precisa da sua aprovação para abrir o Tracker.gg. Clique em “Atualizar do Tracker.gg” e aprove.",
+  cancelled:"Você recusou a abertura do Tracker.gg no navegador. Nada foi alterado.",
+  blocked_by_policy:"Sua organização bloqueia o uso do navegador por páginas. Mostrando os dados salvos.",
+  not_granted:"Esta visualização não tem acesso ao navegador. Mostrando os dados salvos.",
+  capability_disabled:"Esta visualização não tem acesso ao navegador. Mostrando os dados salvos.",
+};
+const sleep = ms=>new Promise(r=>setTimeout(r,ms));
+async function browser(tool,input){ return mcp.callTool(BROWSER, tool, input, {cache:false}); }
+
+async function fetchPlayer(pl, tabRef){
+  const url = profileUrl(pl);
+  if(!tabRef.id){
+    const r = await browser("preview_start",{url});
+    const txt = resultText(r);
+    tabRef.id = r?.payload?.tabId || (txt.match(/"tabId"\s*:\s*"([^"]+)"/)||[])[1] || null;
+  } else {
+    await browser("navigate",{url, tabId:tabRef.id});
+  }
+  const want = (pl.nick+"#"+pl.tag).toLowerCase();
+  for(let i=0;i<14;i++){
+    await sleep(i===0?1800:1500);
+    try{
+      const r = await browser("get_page_text", tabRef.id? {tabId:tabRef.id, max_chars:20000} : {max_chars:20000});
+      const txt = resultText(r);
+      const title = (txt.match(/^Title:\s*(.*)$/m)||[])[1]||"";
+      if(title.toLowerCase().includes(want) && /Tracker Score/.test(txt)){
+        const parsed = parseOverview(txt);
+        if(parsed) return parsed;
+      }
+    }catch(e){ if(FATAL[e?.code]) throw e; }
+  }
+  throw {code:"timeout", message:`A página de ${pl.name} não terminou de carregar.`};
+}
+
+async function refreshLive(){
+  if(!mcp || busy) return;
+  busy = true; $("#refreshBtn").disabled = true; banner("");
+  const tabRef = {id:null};
+  const got = {}, failed = [];
+  try{
+    for(let i=0;i<PLAYERS.length;i++){
+      const pl = PLAYERS[i];
+      setStatus("busy",`Lendo ${pl.name} no Tracker.gg (${i+1}/${PLAYERS.length})…`);
+      try{ got[pl.id] = await fetchPlayer(pl, tabRef); }
+      catch(e){ if(FATAL[e?.code]) throw e; failed.push(pl.name); }
+    }
+    if(Object.keys(got).length){
+      DATA = JSON.parse(JSON.stringify(SNAP));
+      for(const [id,lv] of Object.entries(got)) applyLive(id,lv);
+      LIVE_AT = Date.now();
+      lsSet("squad_live_v1",{at:LIVE_AT, got, season:SNAP.seasonId});
+      renderAll();
+    }
+    if(failed.length) banner(`Não consegui ler ${failed.join(" e ")} agora (a página demorou demais ou mudou). Os números de ${failed.length>1?"deles":"dele"} são os da última coleta.`);
+    else if(got && Object.values(got).some(g=>g.act && g.act!==SNAP.act)) banner(`Começou um ato novo (${esc(Object.values(got)[0].act)}). Os números principais são do ato atual; clutches, entrada e ataque/defesa ainda são do ato ${SNAP.act}.`);
+  }catch(e){
+    const msg = FATAL[e?.code] || `Não foi possível atualizar agora (${esc(e?.code||"erro")}). Mostrando os dados salvos.`;
+    banner(msg);
+    if(e?.code==="server_not_connected"||e?.code==="not_granted"||e?.code==="capability_disabled"||e?.code==="blocked_by_policy") $("#refreshBtn").hidden = true;
+  }finally{
+    busy = false; $("#refreshBtn").disabled = false; statusIdle();
+  }
+}
+
+function renderAll(){
+  $("#actLabel").textContent = DATA.act;
+  renderPlayers(); renderMMR(); renderCompare(); renderH2H(); renderSW(); renderMaps(); renderCharts();
+  $("#foot").innerHTML = `Fonte: perfis públicos no <a href="https://tracker.gg/valorant" target="_blank" rel="noopener">Tracker.gg</a> (modo Competitivo, PC). Dados completos coletados em ${esc(fmtDate(SNAP.updatedAt))}${SNAP.schedule?` · atualização automática ${esc(SNAP.schedule)}`:""}${LIVE_AT?`; números principais, mapas, armas, funções e partidas atualizados ao vivo ${ago(LIVE_AT)}`:""}. Percentis comparam com todos os jogadores do Tracker.gg no mesmo ato. O MMR é uma estimativa do Squad Tracker, não um número oficial da Riot. Projeto independente, sem ligação com Riot Games ou Tracker Network.`;
+  statusIdle();
+}
+
+/* ============ BOOT ============ */
+async function loadData(){
+  const r = await fetch("squad-data.json", {cache:"no-store"});
+  if(!r.ok) throw new Error("HTTP "+r.status);
+  const j = await r.json();
+  const flat = {act:j.act, seasonId:j.seasonId, updatedAt:j.updatedAt, schedule:j.schedule, reads:j.reads, readsAt:j.readsAt, teammates:j.teammates};
+  for(const [id,p] of Object.entries(j.players||{})) flat[id] = p;
+  return flat;
+}
+async function boot(){
+  try{ SNAP = await loadData(); }
+  catch(e){ $("#players").innerHTML = `<div class="card card-b">Não consegui carregar os dados (${esc(e.message||e)}). Recarregue a página.</div>`; setStatus("err","Dados indisponíveis"); return; }
+  DATA = JSON.parse(JSON.stringify(SNAP));
+  const opts = PLAYERS.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join("");
+  $("#h2hA").innerHTML = opts; $("#h2hB").innerHTML = opts;
+  $("#h2hA").value = "l4"; $("#h2hB").value = "mt";
+  $("#h2hA").addEventListener("change",renderH2H); $("#h2hB").addEventListener("change",renderH2H);
+  $("#swSeg").addEventListener("click",e=>{const b=e.target.closest("button"); if(!b) return; swFilter=b.dataset.id; lsSet("squad_sw",swFilter); renderSW();});
+  $("#gSearch").addEventListener("input",e=>renderGloss(e.target.value));
+  $("#refreshBtn").addEventListener("click",refreshLive);
+  const f = lsGet("squad_sw"); if(f && (f==="all"||PLAYERS.some(p=>p.id===f))) swFilter=f;
+  const cached = lsGet("squad_live_v1");
+  if(cached && cached.at && cached.got && cached.at > Date.parse(SNAP.updatedAt) && cached.season===SNAP.seasonId){ for(const [id,lv] of Object.entries(cached.got)) if(DATA[id]) applyLive(id,lv); LIVE_AT = cached.at; }
+  renderGloss(); renderAll();
+  initLive();
+}
+async function initLive(){
+  try{ mcp = window.claude && window.claude.use ? await window.claude.use("mcp") : null; }catch(e){ mcp = null; }
+  if(!mcp){ statusIdle(); return; }
+  $("#refreshBtn").hidden = false;
+  const newest = Math.max(LIVE_AT||0, Date.parse(SNAP.updatedAt)||0);
+  if(Date.now()-newest > 3*3600000) refreshLive();
+}
+boot();
+</script>
