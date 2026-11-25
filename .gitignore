@@ -8,3 +8,6 @@ site/dist/
 site/.claude/
 *.log
 .env
+
+# app portátil baixado para testar (o oficial fica na Release do GitHub)
+/SquadTracker.exe
