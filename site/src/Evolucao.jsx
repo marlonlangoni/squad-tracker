@@ -16,10 +16,15 @@ function Reveal({ className = '', children, delay = 0 }) {
 }
 
 /* ---------------- histórico de elo ---------------- */
+const RECENT_ACTS = 10;
+
 function EloChart({ players }) {
   const [hidden, setHidden] = useState(() => new Set());
-  const acts = useMemo(() => [...new Set(players.flatMap(p => (p.history || []).map(h => h[0])))].sort((a, b) => actKey(a) - actKey(b)), [players]);
-  const series = players.map(p => ({ p, pts: (p.history || []).map(h => ({ act: h[0], r: rIdx(h[1]), rank: h[1], wr: h[2] })).filter(x => x.r != null).sort((a, b) => actKey(a.act) - actKey(b.act)) }));
+  // no celular o gráfico começa só com os últimos atos, para os rótulos ficarem legíveis
+  const [showAll, setShowAll] = useState(() => !window.matchMedia?.('(max-width: 820px)').matches);
+  const allActs = useMemo(() => [...new Set(players.flatMap(p => (p.history || []).map(h => h[0])))].sort((a, b) => actKey(a) - actKey(b)), [players]);
+  const acts = showAll ? allActs : allActs.slice(-RECENT_ACTS);
+  const series = players.map(p => ({ p, pts: (p.history || []).map(h => ({ act: h[0], r: rIdx(h[1]), rank: h[1], wr: h[2] })).filter(x => x.r != null && acts.includes(x.act)).sort((a, b) => actKey(a.act) - actKey(b.act)) }));
   const all = series.flatMap(s => s.pts.map(x => x.r));
   const lo = Math.max(0, Math.floor((Math.min(...all) - 1) / 3) * 3), hi = Math.min(24, Math.ceil((Math.max(...all) + 2) / 3) * 3);
   const W = 1000, H = 380, L = 96, R = 24, T = 18, B = 44;
@@ -37,9 +42,14 @@ function EloChart({ players }) {
             <i />{p.nick}<em>{rankPT(p.rank)} · pico {rankPT(p.peak)}</em>
           </button>
         ))}
+        {allActs.length > RECENT_ACTS && (
+          <button type="button" className="elo-range" onClick={() => setShowAll(v => !v)}>
+            {showAll ? `Só os últimos ${RECENT_ACTS} atos` : `Ver todos os ${allActs.length} atos`}
+          </button>
+        )}
       </div>
-      <div className="elo-wrap">
-        <svg viewBox={`0 0 ${W} ${H}`} className="elo-svg" role="img" aria-label="Elo de cada jogador ao longo dos atos">
+      <div className={'elo-wrap' + (showAll ? ' all' : '')}>
+        <svg key={showAll ? 'all' : 'recent'} viewBox={`0 0 ${W} ${H}`} className="elo-svg" role="img" aria-label="Elo de cada jogador ao longo dos atos">
           {ticks.map(t => (
             <g key={t}>
               <rect x={L} y={y(t + 2.5)} width={W - L - R} height={y(t - 0.5) - y(t + 2.5)} className={(t / 3) % 2 ? 'band b' : 'band'} />
@@ -145,6 +155,7 @@ function Goals({ p, setAt }) {
                   <span>Ato agora: <b>{val(g.now)}</b></span>
                   {g.recent != null && <span>Últimas partidas: <b>{val(g.recent)}</b></span>}
                 </span>
+                {g.recent == null && <small className="goal-wait">Essa métrica não aparece nas partidas recentes: o anel anda a cada atualização dos números do ato.</small>}
                 <p className="goal-tip">{g.tip}</p>
               </div>
             </motion.article>

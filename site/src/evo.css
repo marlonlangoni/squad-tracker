@@ -35,8 +35,12 @@
 .elo-legend button i { width: 18px; height: 3px; background: var(--pc); box-shadow: 0 0 8px var(--pc); }
 .elo-legend button em { font-style: normal; font-family: var(--body); font-weight: 400; font-size: 11.5px; letter-spacing: 0; text-transform: none; color: var(--muted); }
 .elo-legend button.off { opacity: 0.4; background: transparent; }
+.elo-range { margin-left: auto; padding: 7px 12px; border: 1px solid var(--line-2); background: transparent; cursor: pointer; font-family: var(--hud); font-weight: 600; font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); transition: color 0.2s, border-color 0.2s; }
+.elo-range:hover { color: var(--text); border-color: var(--focus); }
 .elo-wrap { overflow-x: auto; }
-.elo-svg { width: 100%; min-width: 640px; height: auto; display: block; }
+.elo-svg { width: 100%; height: auto; display: block; }
+.elo-wrap.all .elo-svg { min-width: 640px; }
+.goal-wait { display: block; margin-top: 6px; font-family: var(--body) !important; font-size: 11.5px !important; letter-spacing: 0 !important; text-transform: none !important; font-weight: 400 !important; color: var(--muted); font-style: italic; }
 .elo-svg .band { fill: rgba(255, 255, 255, 0.015); }
 .elo-svg .band.b { fill: rgba(255, 255, 255, 0.04); }
 .elo-tier { fill: var(--muted); font-family: var(--hud); font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
@@ -44,7 +48,8 @@
 .elo-pt { cursor: help; transform-box: fill-box; transform-origin: center; transition: r 0.2s; outline: none; }
 .elo-pt:hover, .elo-pt:focus-visible { r: 9; }
 
-.form-row { display: grid; grid-template-columns: 200px 1fr auto; align-items: center; gap: 20px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.form-id small { display: block; font-family: var(--body) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 12px !important; white-space: nowrap; }
+.form-row { display: grid; grid-template-columns: 250px 1fr auto; align-items: center; gap: 20px; padding: 14px 0; border-bottom: 1px solid var(--line); }
 .form-row:last-child { border-bottom: 0; }
 .form-id { display: flex; align-items: center; gap: 12px; }
 .form-id img { width: 46px; height: 46px; object-fit: cover; border: 1px solid var(--pc); }

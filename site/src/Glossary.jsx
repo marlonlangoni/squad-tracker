@@ -9,8 +9,10 @@ export function TipLayer() {
   const [tip, setTip] = useState(null);
   const timer = useRef(null);
   useEffect(() => {
+    let shownAt = 0;
     const show = el => {
       const r = el.getBoundingClientRect();
+      shownAt = window.scrollY;
       const above = r.top > 120;
       setTip({ text: el.dataset.tip, x: Math.min(Math.max(r.left + r.width / 2, 150), window.innerWidth - 150), y: above ? r.top - 10 : r.bottom + 10, above });
     };
@@ -24,19 +26,21 @@ export function TipLayer() {
     };
     const focus = e => { const el = e.target.closest?.('[data-tip]'); if (el) show(el); };
     const hide = () => setTip(null);
+    // só some se a página rolar de verdade (uns poucos pixels de tremida não contam)
+    const onScroll = () => { if (Math.abs(window.scrollY - shownAt) > 24) setTip(null); };
     document.addEventListener('pointerover', over);
     document.addEventListener('pointerout', out);
     document.addEventListener('pointerdown', down);
     document.addEventListener('focusin', focus);
     document.addEventListener('focusout', hide);
-    window.addEventListener('scroll', hide, { passive: true });
+    window.addEventListener('scroll', onScroll, { passive: true });
     return () => {
       document.removeEventListener('pointerover', over);
       document.removeEventListener('pointerout', out);
       document.removeEventListener('pointerdown', down);
       document.removeEventListener('focusin', focus);
       document.removeEventListener('focusout', hide);
-      window.removeEventListener('scroll', hide);
+      window.removeEventListener('scroll', onScroll);
     };
   }, []);
   return (
