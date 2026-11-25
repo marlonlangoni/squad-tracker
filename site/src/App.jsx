@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { loadSquad, ago, actLabel, go } from './data.js';
 import Background from './Background.jsx';
@@ -55,6 +55,16 @@ export default function App() {
   const bgMap = focus ? focus.bestMap.n : squad?.squadMap?.n;
 
   const lock = useCallback(id => setLocked(cur => (cur === id ? null : id)), []);
+
+  // Ao sair de um cartão, espera um instante antes de limpar o foco: passando direto para o cartão
+  // vizinho, a cor vai de um jogador para o outro sem voltar ao vermelho no meio.
+  const leaveTimer = useRef(null);
+  const onCardHover = useCallback(id => {
+    clearTimeout(leaveTimer.current);
+    if (id) setHover(id);
+    else leaveTimer.current = setTimeout(() => setHover(null), 220);
+  }, []);
+  useEffect(() => () => clearTimeout(leaveTimer.current), []);
 
   useEffect(() => {
     const onKey = e => {
@@ -121,7 +131,7 @@ export default function App() {
               {players.map((p, i) => (
                 <PlayerCard key={p.id} p={p} index={i}
                   dim={(hover && hover !== p.id && !locked) || (locked && locked !== p.id)}
-                  locked={locked === p.id} onHover={setHover} onLock={lock} />
+                  locked={locked === p.id} onHover={onCardHover} onLock={lock} />
               ))}
             </div>
 

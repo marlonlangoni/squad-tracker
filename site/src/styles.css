@@ -1,3 +1,11 @@
+/* Cor de destaque do jogador em foco. Registrada como cor para o navegador conseguir animar a troca
+   (inclusive dentro de degradês, sombras e partículas). */
+@property --focus {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #ff4655;
+}
+
 :root {
   --bg: #0b0f1a;
   --bg-2: #111727;
@@ -37,7 +45,7 @@ button { font: inherit; color: inherit; }
 .state-msg { min-height: 100dvh; display: grid; place-items: center; color: var(--muted); padding: 24px; text-align: center; }
 
 /* ---------- fundo ---------- */
-.app { position: relative; min-height: 100dvh; isolation: isolate; display: flex; flex-direction: column; }
+.app { position: relative; min-height: 100dvh; isolation: isolate; display: flex; flex-direction: column; transition: --focus 0.9s cubic-bezier(0.33, 0, 0.2, 1); }
 .bg { position: fixed; inset: 0; z-index: -1; overflow: hidden; background: var(--bg); }
 .bg-map { position: absolute; inset: -2%; background-size: cover; background-position: center; filter: saturate(0.85) brightness(0.62); }
 .bg-tint {
