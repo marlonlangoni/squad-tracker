@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-11-26T17:31:31+00:00",
+ "updatedAt": "2026-11-26T18:32:30+00:00",
  "act": "V26: A6",
  "seasonId": "d816f426-48ea-f052-117f-9697a155b319",
  "readsAt": "2026-11-25",
@@ -1222,30 +1222,30 @@
    "peak": "Platinum 1",
    "peakAct": "EPISODE 5: ACT III",
    "level": 499,
-   "playtime": 44,
+   "playtime": 45,
    "s": {
-    "matchesPlayed": 76,
-    "matchesWon": 39,
+    "matchesPlayed": 77,
+    "matchesWon": 40,
     "matchesLost": 32,
     "matchesTied": 5,
     "mVPs": 3,
-    "roundsPlayed": 1604,
-    "kills": 1007,
-    "deaths": 1261,
+    "roundsPlayed": 1621,
+    "kills": 1018,
+    "deaths": 1270,
     "assists": 431,
-    "dealtHeadshots": 665,
-    "dealtBodyshots": 3040,
-    "dealtLegshots": 323,
-    "firstBloods": 216,
-    "firstDeaths": 274,
-    "survived": 351,
+    "dealtHeadshots": 676,
+    "dealtBodyshots": 3064,
+    "dealtLegshots": 325,
+    "firstBloods": 218,
+    "firstDeaths": 277,
+    "survived": 359,
     "traded": 137,
     "tradesAvenger": 84,
-    "flawless": 63,
+    "flawless": 64,
     "aces": 1,
     "clutches": 21,
     "clutchesLost": 116,
-    "kills3K": 46,
+    "kills3K": 47,
     "kills4K": 9,
     "kills5K": 1,
     "clutches1v1": 12,
@@ -1258,35 +1258,35 @@
     "clutchesLost1v4": 36,
     "clutches1v5": 0,
     "clutchesLost1v5": 14,
-    "scorePerRound": 195.304,
-    "damagePerRound": 131.836,
-    "damageDeltaPerRound": -13.171,
-    "kAST": 63.588,
-    "roundsWinPct": 51.372,
-    "plantsPerRound": 0.023,
-    "attackKDRatio": 0.729,
-    "attackRoundsWinPct": 49.518,
-    "attackDamagePerRound": 127.593,
-    "attackKAST": 60.255,
+    "scorePerRound": 195.088,
+    "damagePerRound": 131.721,
+    "damageDeltaPerRound": -12.773,
+    "kAST": 63.476,
+    "roundsWinPct": 51.635,
+    "plantsPerRound": 0.024,
+    "attackKDRatio": 0.734,
+    "attackRoundsWinPct": 50.008,
+    "attackDamagePerRound": 127.548,
+    "attackKAST": 60.217,
     "attackFirstBloodsPerRound": 0.138,
-    "attackFirstDeathsPerRound": 0.193,
-    "defenseKDRatio": 0.877,
-    "defenseRoundsWinPct": 53.234,
-    "defenseDamagePerRound": 139.754,
-    "defenseKAST": 66.921,
-    "defenseFirstBloodsPerRound": 0.132,
-    "defenseFirstDeathsPerRound": 0.15,
-    "matchesWinPct": 51.316,
+    "attackFirstDeathsPerRound": 0.194,
+    "defenseKDRatio": 0.879,
+    "defenseRoundsWinPct": 53.288,
+    "defenseDamagePerRound": 139.55,
+    "defenseKAST": 66.757,
+    "defenseFirstBloodsPerRound": 0.131,
+    "defenseFirstDeathsPerRound": 0.149,
+    "matchesWinPct": 51.948,
     "mostKillsInMatch": 25,
     "killsPerRound": 0.628,
-    "deathsPerRound": 0.786,
-    "assistsPerRound": 0.269,
-    "kDRatio": 0.799,
-    "kDARatio": 1.14,
-    "headshotsPercentage": 16.509,
-    "firstBloodsPerRound": 0.135,
+    "deathsPerRound": 0.783,
+    "assistsPerRound": 0.266,
+    "kDRatio": 0.802,
+    "kDARatio": 1.141,
+    "headshotsPercentage": 16.63,
+    "firstBloodsPerRound": 0.134,
     "firstDeathsPerRound": 0.171,
-    "esr": 0.441
+    "esr": 0.44
    },
    "agentCount": 10,
    "agents": [
@@ -1314,11 +1314,11 @@
      "n": "Killjoy",
      "r": "Sentinel",
      "c": "#FEC0CB",
-     "m": 4,
-     "wr": 0,
-     "kd": 0.56,
-     "adr": 106.3,
-     "acs": 144.5
+     "m": 5,
+     "wr": 20,
+     "kd": 0.69,
+     "adr": 109.2,
+     "acs": 150.5
     },
     {
      "n": "Reyna",
@@ -1360,9 +1360,9 @@
     },
     {
      "n": "Sentinel",
-     "m": 13,
-     "wr": 46.2,
-     "kd": 0.71
+     "m": 14,
+     "wr": 50,
+     "kd": 0.74
     },
     {
      "n": "Initiator",
@@ -1397,16 +1397,16 @@
      "l": 3
     },
     {
+     "n": "Summit",
+     "wr": 46.2,
+     "w": 6,
+     "l": 6
+    },
+    {
      "n": "Corrode",
      "wr": 44.4,
      "w": 4,
      "l": 4
-    },
-    {
-     "n": "Summit",
-     "wr": 41.7,
-     "w": 5,
-     "l": 6
     },
     {
      "n": "Sunset",
@@ -1421,14 +1421,14 @@
      "h": 34,
      "b": 61,
      "l": 5,
-     "k": 336
+     "k": 342
     },
     {
      "n": "Phantom",
      "h": 22,
      "b": 69,
      "l": 9,
-     "k": 184
+     "k": 186
     },
     {
      "n": "Ghost",
@@ -1439,6 +1439,18 @@
     }
    ],
    "recent": [
+    [
+     "Summit",
+     13,
+     4,
+     "7th",
+     11,
+     9,
+     0,
+     25,
+     30,
+     175
+    ],
     [
      "Bind",
      11,
@@ -1666,18 +1678,6 @@
      11,
      17,
      244
-    ],
-    [
-     "Summit",
-     9,
-     13,
-     "10th",
-     8,
-     18,
-     6,
-     -76,
-     15,
-     106
     ]
    ],
    "history": [
@@ -1844,7 +1844,7 @@
     [
      "V26: A6",
      "Gold 3",
-     51.3
+     51.9
     ]
    ]
   }
