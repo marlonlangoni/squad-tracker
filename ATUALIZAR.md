@@ -22,6 +22,7 @@ Para rodar no PC: a chave fica no arquivo `.env` da raiz (`HENRIK_API_KEY=HDEV-.
 2. `node tools/build-data.mjs` (e os passos 7 a 10 abaixo, se quiser)
 
 `match-cache.json` guarda um resumo de cada partida já baixada, para cada execução só buscar as novas. Ele vai para o git.
+O resumo inclui o RR que cada um ganhou ou perdeu na partida (`rr`) e o elo depois dela (`elo`), vindos do histórico de RR da API. A API só guarda as partidas mais recentes; no cache elas ficam. O painel "Elo e MMR" usa a média de RR por vitória e por derrota do ato para estimar o MMR.
 
 `trn-baseline.json` é o ponto de partida do ato atual: os números do Tracker.gg de 25/11/2026. A lista de partidas da Riot não volta até o começo do ato, então a coleta soma só as partidas jogadas depois desse momento. No ato seguinte esse arquivo deixa de valer sozinho, e tudo passa a vir da HenrikDev.
 

@@ -128,7 +128,9 @@ function MMR({ p }) {
   const lo = Math.max(0, Math.floor(Math.min(m.base, m.est)) - 2), hi = Math.min(24, Math.max(lo + 6, Math.ceil(Math.max(m.base, m.est)) + 2));
   const steps = Array.from({ length: hi - lo + 1 }, (_, i) => lo + i);
   const pos = x => `${((x - lo) / (hi - lo + 1)) * 100}%`;
-  const verdict = m.verdict === 'acima' ? 'MMR acima do elo: tendência de subir rápido' : m.verdict === 'abaixo' ? 'MMR abaixo do elo: ganha pouco RR por vitória' : 'MMR perto do elo atual';
+  const verdict = m.src === 'rr'
+    ? (m.verdict === 'acima' ? 'MMR acima do elo: ganha mais RR do que perde' : m.verdict === 'abaixo' ? 'MMR abaixo do elo: perde mais RR do que ganha' : 'MMR perto do elo: ganha e perde parecido')
+    : (m.verdict === 'acima' ? 'MMR acima do elo: tendência de subir rápido' : m.verdict === 'abaixo' ? 'MMR abaixo do elo: ganha pouco RR por vitória' : 'MMR perto do elo atual');
   return (
     <Reveal className="span-4 mmr" delay={0.1}>
       <PanelHead title="Elo e MMR" hint="estimativa" />
@@ -152,9 +154,16 @@ function MMR({ p }) {
       <ul className="mmr-facts">
         <li><span>Elo atual</span><b>{rankPT(p.rank)}</b></li>
         <li><span>Pico</span><b>{rankPT(p.peak)}</b><em>{p.peakAct}</em></li>
+        {m.src === 'rr' && <>
+          <li><span>RR por vitória</span><b className="w">+{fmt(m.rrW, 1)}</b></li>
+          <li><span>RR por derrota</span><b className="l">−{fmt(m.rrL, 1)}</b></li>
+          <li data-tip="Com esse ganho e essa perda de RR, é a porcentagem de vitórias que deixa o elo parado."><span>Vitórias para manter o elo</span><b>{fmt(m.keep, 0)}%</b></li>
+        </>}
         <li><span>Posição estimada</span><b>{m.pos} de {m.rankPT.replace(/ \d$/, '')}</b></li>
       </ul>
-      <p className="note">Estimativa feita com vitórias, desempenho em duelo e o histórico de elo. O Tracker não mostra o RR por partida.</p>
+      <p className="note">{m.src === 'rr'
+        ? `Estimativa feita com o RR ganho e perdido em ${m.n} partidas do ato. A Riot não mostra o MMR; quem ganha mais RR do que perde tem MMR acima do elo. Até Diamante o desempenho na partida também mexe no RR.`
+        : 'Estimativa feita com vitórias, desempenho em duelo e o histórico de elo. Ainda não há partidas com RR suficientes no ato.'}</p>
     </Reveal>
   );
 }
@@ -329,13 +338,16 @@ function Spark({ values, color }) {
 }
 
 function Matches({ p }) {
-  const rows = (p.recent || []).map(r => ({ map: r[0], us: r[1], them: r[2], place: r[3], k: r[4], dd: r[5], a: r[6], ddd: r[7], hs: r[8], acs: r[9] }))
+  const rows = (p.recent || []).map(r => ({ map: r[0], us: r[1], them: r[2], place: r[3], k: r[4], dd: r[5], a: r[6], ddd: r[7], hs: r[8], acs: r[9], rr: r[10] ?? null }))
     .map(r => ({ ...r, res: r.us > r.them ? 'w' : r.us < r.them ? 'l' : 't' }));
   const wins = rows.filter(r => r.res === 'w').length;
   const avg = rows.reduce((a, r) => a + r.acs, 0) / (rows.length || 1);
+  const hasRR = rows.some(r => r.rr != null);
+  const net = rows.reduce((a, r) => a + (r.rr || 0), 0);
+  const sign = n => (n > 0 ? '+' : n < 0 ? '−' : '') + Math.abs(n);
   return (
-    <Reveal className="span-12 matches">
-      <PanelHead title="Últimas partidas" hint={`${wins} vitórias em ${rows.length} · ACS médio ${fmt(avg, 0)} (no ato: ${fmt(p.d.acs, 0)})`} />
+    <Reveal className={'span-12 matches' + (hasRR ? ' has-rr' : '')}>
+      <PanelHead title="Últimas partidas" hint={`${wins} vitórias em ${rows.length}${hasRR ? ` · saldo ${sign(net)} RR` : ''} · ACS médio ${fmt(avg, 0)} (no ato: ${fmt(p.d.acs, 0)})`} />
       <Spark values={[...rows].reverse().map(r => r.acs)} color={p.color} />
       <div className="match-list">
         {rows.map((r, i) => (
@@ -344,9 +356,10 @@ function Matches({ p }) {
             <span className="match-score"><b>{r.us}</b><i>:</i><b>{r.them}</b></span>
             <span className={'match-place' + (r.place === 'MVP' ? ' mvp' : '')}>{r.place === 'MVP' ? 'MVP' : r.place.replace('th', 'º').replace('nd', 'º').replace('rd', 'º').replace('st', 'º')}</span>
             <span className="match-kda"><small>K / D / A</small><b>{r.k} / {r.dd} / {r.a}</b></span>
-            <span className="match-stat"><small>DDΔ</small><b className={r.ddd >= 0 ? 'w' : 'l'}>{r.ddd > 0 ? '+' : ''}{r.ddd}</b></span>
+            <span className={'match-stat' + (hasRR ? ' hide-sm' : '')}><small>DDΔ</small><b className={r.ddd >= 0 ? 'w' : 'l'}>{r.ddd > 0 ? '+' : ''}{r.ddd}</b></span>
             <span className="match-stat hide-sm"><small>HS%</small><b>{r.hs}%</b></span>
             <span className="match-stat"><small>ACS</small><b>{r.acs}</b></span>
+            {hasRR && <span className="match-stat match-rr"><small>RR</small><b className={r.rr > 0 ? 'w' : r.rr < 0 ? 'l' : ''}>{r.rr == null ? '—' : sign(r.rr)}</b></span>}
           </motion.div>
         ))}
       </div>

@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-11-26T16:24:42+00:00",
+ "updatedAt": "2026-11-26T16:55:10-03:00",
  "act": "V26: A6",
  "seasonId": "d816f426-48ea-f052-117f-9697a155b319",
  "readsAt": "2026-11-25",
@@ -276,7 +276,8 @@
      4,
      40,
      33,
-     189
+     189,
+     13
     ],
     [
      "Haven",
@@ -288,7 +289,8 @@
      5,
      63,
      23,
-     231
+     231,
+     15
     ],
     [
      "Bind",
@@ -300,7 +302,8 @@
      6,
      -61,
      21,
-     142
+     142,
+     -27
     ],
     [
      "Summit",
@@ -312,7 +315,8 @@
      9,
      -34,
      10,
-     175
+     175,
+     -23
     ],
     [
      "Abyss",
@@ -324,7 +328,8 @@
      9,
      19,
      16,
-     246
+     246,
+     13
     ],
     [
      "Haven",
@@ -336,7 +341,8 @@
      8,
      -20,
      11,
-     140
+     140,
+     13
     ],
     [
      "Bind",
@@ -348,7 +354,8 @@
      6,
      41,
      17,
-     256
+     256,
+     17
     ],
     [
      "Corrode",
@@ -360,7 +367,8 @@
      5,
      127,
      26,
-     408
+     408,
+     20
     ],
     [
      "Lotus",
@@ -372,7 +380,8 @@
      5,
      17,
      24,
-     206
+     206,
+     -23
     ],
     [
      "Haven",
@@ -384,7 +393,8 @@
      6,
      3,
      31,
-     184
+     184,
+     13
     ],
     [
      "Corrode",
@@ -396,7 +406,8 @@
      8,
      26,
      13,
-     201
+     201,
+     15
     ],
     [
      "Summit",
@@ -408,7 +419,8 @@
      2,
      -43,
      17,
-     170
+     170,
+     -22
     ],
     [
      "Abyss",
@@ -420,7 +432,8 @@
      7,
      87,
      26,
-     310
+     310,
+     19
     ],
     [
      "Bind",
@@ -432,7 +445,8 @@
      7,
      60,
      17,
-     239
+     239,
+     17
     ],
     [
      "Bind",
@@ -444,7 +458,8 @@
      5,
      27,
      19,
-     231
+     231,
+     14
     ],
     [
      "Summit",
@@ -456,7 +471,8 @@
      4,
      13,
      35,
-     197
+     197,
+     -21
     ],
     [
      "Corrode",
@@ -468,7 +484,8 @@
      11,
      60,
      32,
-     260
+     260,
+     -20
     ],
     [
      "Sunset",
@@ -480,7 +497,8 @@
      12,
      9,
      11,
-     172
+     172,
+     -21
     ],
     [
      "Haven",
@@ -492,7 +510,8 @@
      16,
      42,
      16,
-     232
+     232,
+     0
     ],
     [
      "Corrode",
@@ -504,7 +523,8 @@
      6,
      43,
      28,
-     196
+     196,
+     15
     ]
    ],
    "history": [
@@ -603,7 +623,14 @@
      "Platinum 3",
      54.4
     ]
-   ]
+   ],
+   "rr": {
+    "w": 16.6,
+    "l": 21.2,
+    "nw": 24,
+    "nl": 17,
+    "now": 46
+   }
   },
   "mt": {
    "rank": "Platinum 2",
@@ -843,7 +870,8 @@
      19,
      52,
      24,
-     225
+     225,
+     17
     ],
     [
      "Haven",
@@ -855,7 +883,8 @@
      5,
      2,
      20,
-     176
+     176,
+     14
     ],
     [
      "Bind",
@@ -867,7 +896,8 @@
      6,
      52,
      31,
-     284
+     284,
+     -21
     ],
     [
      "Summit",
@@ -879,7 +909,8 @@
      2,
      18,
      40,
-     212
+     212,
+     -21
     ],
     [
      "Abyss",
@@ -891,7 +922,8 @@
      11,
      14,
      38,
-     250
+     250,
+     14
     ],
     [
      "Haven",
@@ -903,7 +935,8 @@
      17,
      3,
      33,
-     234
+     234,
+     16
     ],
     [
      "Bind",
@@ -915,7 +948,8 @@
      16,
      -15,
      49,
-     199
+     199,
+     14
     ],
     [
      "Corrode",
@@ -927,7 +961,8 @@
      3,
      37,
      29,
-     214
+     214,
+     16
     ],
     [
      "Lotus",
@@ -939,7 +974,8 @@
      10,
      51,
      31,
-     222
+     222,
+     -20
     ],
     [
      "Haven",
@@ -951,7 +987,8 @@
      3,
      2,
      23,
-     169
+     169,
+     13
     ],
     [
      "Corrode",
@@ -963,7 +1000,8 @@
      7,
      43,
      24,
-     184
+     184,
+     16
     ],
     [
      "Summit",
@@ -975,7 +1013,8 @@
      6,
      -43,
      13,
-     128
+     128,
+     -24
     ],
     [
      "Abyss",
@@ -987,7 +1026,8 @@
      4,
      -28,
      28,
-     180
+     180,
+     14
     ],
     [
      "Bind",
@@ -999,7 +1039,8 @@
      12,
      -33,
      29,
-     108
+     108,
+     13
     ],
     [
      "Bind",
@@ -1011,7 +1052,8 @@
      8,
      57,
      38,
-     232
+     232,
+     16
     ],
     [
      "Summit",
@@ -1023,7 +1065,8 @@
      14,
      9,
      33,
-     223
+     223,
+     -19
     ],
     [
      "Corrode",
@@ -1035,7 +1078,8 @@
      5,
      -19,
      40,
-     142
+     142,
+     -21
     ],
     [
      "Sunset",
@@ -1047,7 +1091,8 @@
      4,
      7,
      33,
-     169
+     169,
+     -20
     ],
     [
      "Haven",
@@ -1059,7 +1104,8 @@
      13,
      74,
      27,
-     282
+     282,
+     2
     ],
     [
      "Corrode",
@@ -1071,7 +1117,8 @@
      4,
      8,
      35,
-     169
+     169,
+     14
     ]
    ],
    "history": [
@@ -1215,78 +1262,85 @@
      "Platinum 2",
      54
     ]
-   ]
+   ],
+   "rr": {
+    "w": 16.8,
+    "l": 20.3,
+    "nw": 24,
+    "nl": 17,
+    "now": 77
+   }
   },
   "sd": {
    "rank": "Gold 3",
    "peak": "Platinum 1",
    "peakAct": "EPISODE 5: ACT III",
    "level": 499,
-   "playtime": 44,
+   "playtime": 46,
    "s": {
-    "matchesPlayed": 75,
-    "matchesWon": 39,
-    "matchesLost": 31,
+    "matchesPlayed": 78,
+    "matchesWon": 41,
+    "matchesLost": 32,
     "matchesTied": 5,
     "mVPs": 3,
-    "roundsPlayed": 1580,
-    "kills": 991,
-    "deaths": 1242,
-    "assists": 428,
-    "dealtHeadshots": 657,
-    "dealtBodyshots": 2986,
-    "dealtLegshots": 320,
-    "firstBloods": 214,
-    "firstDeaths": 270,
-    "survived": 346,
-    "traded": 131,
+    "roundsPlayed": 1643,
+    "kills": 1027,
+    "deaths": 1284,
+    "assists": 445,
+    "dealtHeadshots": 679,
+    "dealtBodyshots": 3087,
+    "dealtLegshots": 329,
+    "firstBloods": 218,
+    "firstDeaths": 278,
+    "survived": 367,
+    "traded": 139,
     "tradesAvenger": 84,
-    "flawless": 63,
+    "flawless": 64,
     "aces": 1,
-    "clutches": 21,
-    "clutchesLost": 111,
-    "kills3K": 46,
+    "clutches": 22,
+    "clutchesLost": 118,
+    "kills3K": 48,
     "kills4K": 9,
     "kills5K": 1,
-    "clutches1v1": 12,
-    "clutchesLost1v1": 5,
+    "clutches1v1": 13,
+    "clutchesLost1v1": 7,
     "clutches1v2": 8,
     "clutchesLost1v2": 25,
     "clutches1v3": 0,
-    "clutchesLost1v3": 31,
+    "clutchesLost1v3": 35,
     "clutches1v4": 0,
-    "clutchesLost1v4": 36,
+    "clutchesLost1v4": 37,
     "clutches1v5": 0,
     "clutchesLost1v5": 14,
-    "scorePerRound": 195.583,
-    "damagePerRound": 131.859,
-    "damageDeltaPerRound": -13.172,
-    "kAST": 63.415,
-    "roundsWinPct": 51.456,
-    "plantsPerRound": 0.02,
-    "attackKDRatio": 0.729,
-    "attackRoundsWinPct": 49.887,
-    "attackDamagePerRound": 127.46,
-    "attackKAST": 60.283,
-    "attackFirstBloodsPerRound": 0.138,
-    "attackFirstDeathsPerRound": 0.192,
-    "defenseKDRatio": 0.875,
-    "defenseRoundsWinPct": 53.031,
-    "defenseDamagePerRound": 140,
-    "defenseKAST": 66.537,
-    "defenseFirstBloodsPerRound": 0.133,
-    "defenseFirstDeathsPerRound": 0.151,
-    "matchesWinPct": 52,
+    "scorePerRound": 194.099,
+    "damagePerRound": 130.777,
+    "damageDeltaPerRound": -13.274,
+    "kAST": 63.479,
+    "roundsWinPct": 51.735,
+    "plantsPerRound": 0.026,
+    "attackKDRatio": 0.732,
+    "attackRoundsWinPct": 50.12,
+    "attackDamagePerRound": 126.725,
+    "attackKAST": 59.87,
+    "attackFirstBloodsPerRound": 0.136,
+    "attackFirstDeathsPerRound": 0.193,
+    "defenseKDRatio": 0.876,
+    "defenseRoundsWinPct": 53.367,
+    "defenseDamagePerRound": 138.424,
+    "defenseKAST": 67.131,
+    "defenseFirstBloodsPerRound": 0.129,
+    "defenseFirstDeathsPerRound": 0.146,
+    "matchesWinPct": 52.564,
     "mostKillsInMatch": 25,
-    "killsPerRound": 0.627,
-    "deathsPerRound": 0.786,
+    "killsPerRound": 0.625,
+    "deathsPerRound": 0.781,
     "assistsPerRound": 0.271,
-    "kDRatio": 0.798,
-    "kDARatio": 1.143,
-    "headshotsPercentage": 16.578,
-    "firstBloodsPerRound": 0.135,
-    "firstDeathsPerRound": 0.171,
-    "esr": 0.442
+    "kDRatio": 0.8,
+    "kDARatio": 1.146,
+    "headshotsPercentage": 16.581,
+    "firstBloodsPerRound": 0.133,
+    "firstDeathsPerRound": 0.169,
+    "esr": 0.44
    },
    "agentCount": 10,
    "agents": [
@@ -1294,11 +1348,11 @@
      "n": "Raze",
      "r": "Duelist",
      "c": "#FF5589",
-     "m": 54,
-     "wr": 57.4,
+     "m": 55,
+     "wr": 56.4,
      "kd": 0.83,
-     "adr": 138.7,
-     "acs": 206.1
+     "adr": 138.6,
+     "acs": 205.5
     },
     {
      "n": "Vyse",
@@ -1314,11 +1368,11 @@
      "n": "Killjoy",
      "r": "Sentinel",
      "c": "#FEC0CB",
-     "m": 4,
-     "wr": 0,
-     "kd": 0.56,
-     "adr": 106.3,
-     "acs": 144.5
+     "m": 5,
+     "wr": 20,
+     "kd": 0.69,
+     "adr": 109.2,
+     "acs": 150.5
     },
     {
      "n": "Reyna",
@@ -1354,29 +1408,35 @@
    "roles": [
     {
      "n": "Duelist",
-     "m": 58,
-     "wr": 55.2,
+     "m": 59,
+     "wr": 54.2,
      "kd": 0.83
     },
     {
      "n": "Sentinel",
-     "m": 13,
-     "wr": 46.2,
-     "kd": 0.71
+     "m": 14,
+     "wr": 50,
+     "kd": 0.74
     },
     {
      "n": "Initiator",
      "m": 4,
      "wr": 25,
      "kd": 0.65
+    },
+    {
+     "n": "Controller",
+     "m": 1,
+     "wr": 100,
+     "kd": 0.64
     }
    ],
    "maps": [
     {
      "n": "Bind",
-     "wr": 71.4,
+     "wr": 62.5,
      "w": 5,
-     "l": 2
+     "l": 3
     },
     {
      "n": "Abyss",
@@ -1397,16 +1457,16 @@
      "l": 3
     },
     {
+     "n": "Summit",
+     "wr": 50,
+     "w": 7,
+     "l": 6
+    },
+    {
      "n": "Corrode",
      "wr": 44.4,
      "w": 4,
      "l": 4
-    },
-    {
-     "n": "Summit",
-     "wr": 41.7,
-     "w": 5,
-     "l": 6
     },
     {
      "n": "Sunset",
@@ -1421,14 +1481,14 @@
      "h": 34,
      "b": 61,
      "l": 5,
-     "k": 331
+     "k": 347
     },
     {
      "n": "Phantom",
      "h": 22,
      "b": 69,
      "l": 9,
-     "k": 184
+     "k": 188
     },
     {
      "n": "Ghost",
@@ -1440,6 +1500,45 @@
    ],
    "recent": [
     [
+     "Summit",
+     13,
+     9,
+     "9th",
+     9,
+     14,
+     14,
+     -50,
+     10,
+     121,
+     13
+    ],
+    [
+     "Summit",
+     13,
+     4,
+     "7th",
+     11,
+     9,
+     0,
+     25,
+     30,
+     175,
+     21
+    ],
+    [
+     "Bind",
+     11,
+     13,
+     "8th",
+     16,
+     19,
+     3,
+     -13,
+     12,
+     177,
+     -17
+    ],
+    [
      "Sunset",
      8,
      13,
@@ -1449,7 +1548,8 @@
      3,
      -20,
      20,
-     198
+     198,
+     -18
     ],
     [
      "Bind",
@@ -1461,7 +1561,8 @@
      6,
      34,
      30,
-     203
+     203,
+     22
     ],
     [
      "Haven",
@@ -1473,7 +1574,8 @@
      2,
      -95,
      21,
-     125
+     125,
+     -21
     ],
     [
      "Summit",
@@ -1485,7 +1587,8 @@
      7,
      4,
      11,
-     149
+     149,
+     17
     ],
     [
      "Haven",
@@ -1497,7 +1600,8 @@
      10,
      -2,
      9,
-     218
+     218,
+     20
     ],
     [
      "Bind",
@@ -1509,7 +1613,8 @@
      3,
      -37,
      24,
-     185
+     185,
+     -19
     ],
     [
      "Summit",
@@ -1521,7 +1626,8 @@
      8,
      12,
      15,
-     225
+     225,
+     -17
     ],
     [
      "Abyss",
@@ -1533,7 +1639,8 @@
      10,
      0,
      8,
-     185
+     185,
+     18
     ],
     [
      "Haven",
@@ -1545,7 +1652,8 @@
      8,
      -17,
      5,
-     197
+     197,
+     17
     ],
     [
      "Lotus",
@@ -1557,7 +1665,8 @@
      6,
      -58,
      20,
-     141
+     141,
+     -21
     ],
     [
      "Haven",
@@ -1569,7 +1678,8 @@
      10,
      71,
      14,
-     318
+     318,
+     23
     ],
     [
      "Corrode",
@@ -1581,7 +1691,8 @@
      5,
      14,
      15,
-     169
+     169,
+     18
     ],
     [
      "Summit",
@@ -1593,7 +1704,8 @@
      1,
      -31,
      14,
-     212
+     212,
+     -17
     ],
     [
      "Abyss",
@@ -1605,7 +1717,8 @@
      7,
      -37,
      10,
-     202
+     202,
+     15
     ],
     [
      "Bind",
@@ -1617,7 +1730,8 @@
      5,
      -57,
      6,
-     143
+     143,
+     16
     ],
     [
      "Lotus",
@@ -1629,7 +1743,8 @@
      1,
      52,
      15,
-     119
+     119,
+     21
     ],
     [
      "Haven",
@@ -1641,43 +1756,8 @@
      8,
      -39,
      13,
-     186
-    ],
-    [
-     "Bind",
-     13,
-     10,
-     "2nd",
-     18,
-     20,
-     5,
-     11,
-     17,
-     244
-    ],
-    [
-     "Summit",
-     9,
-     13,
-     "10th",
-     8,
-     18,
-     6,
-     -76,
-     15,
-     106
-    ],
-    [
-     "Corrode",
-     11,
-     13,
-     "6th",
-     16,
-     20,
-     9,
-     -1,
-     26,
-     220
+     186,
+     -18
     ]
    ],
    "history": [
@@ -1844,9 +1924,16 @@
     [
      "V26: A6",
      "Gold 3",
-     52
+     52.6
     ]
-   ]
+   ],
+   "rr": {
+    "w": 18.4,
+    "l": 18.5,
+    "nw": 12,
+    "nl": 8,
+    "now": 92
+   }
   }
  },
  "goalsBase": {

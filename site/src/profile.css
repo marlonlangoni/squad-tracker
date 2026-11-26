@@ -197,6 +197,7 @@ a { color: inherit; }
 .spark { width: 100%; height: 70px; margin: -6px 0 12px; display: block; }
 .match-list { display: grid; gap: 6px; }
 .match { display: grid; grid-template-columns: minmax(120px, 1.4fr) 90px 64px 1.1fr 0.7fr 0.7fr 0.7fr; align-items: center; gap: 12px; padding-right: 14px; background: rgba(255, 255, 255, 0.025); border-left: 3px solid var(--muted); transition: background 0.2s; }
+.has-rr .match { grid-template-columns: minmax(120px, 1.4fr) 90px 64px 1.1fr 0.7fr 0.7fr 0.7fr 0.6fr; }
 .match:hover { background: rgba(255, 255, 255, 0.05); }
 .match.w { border-color: var(--win); background: linear-gradient(90deg, rgba(63, 224, 168, 0.1), rgba(255, 255, 255, 0.02) 40%); }
 .match.l { border-color: var(--loss); background: linear-gradient(90deg, rgba(255, 93, 108, 0.1), rgba(255, 255, 255, 0.02) 40%); }
@@ -232,6 +233,7 @@ a { color: inherit; }
   .ring { align-self: center; }
   .sw-cols { grid-template-columns: 1fr; }
   .match { grid-template-columns: 78px 50px 1fr 36px 34px; gap: 8px; padding-right: 10px; }
+  .has-rr .match { grid-template-columns: 78px 50px 1fr 36px 38px; }
   .match-place, .match .hide-sm { display: none; }
   .match-map { height: 46px; padding-left: 8px; }
   .match-map b { font-size: 14px; }

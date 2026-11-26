@@ -52,6 +52,7 @@ for (const id of Object.keys(IDS)) {
     if (ov.maps?.length) cur.maps = ov.maps;
     if (ov.weapons?.length) cur.weapons = ov.weapons;
     if (ov.recent?.length) cur.recent = ov.recent;
+    if (ov.rr && (ov.rr.nw || ov.rr.nl)) cur.rr = ov.rr; // RR médio por vitória e derrota (só a HenrikDev tem)
     log.push(`overview ${id}: ${ov.maps?.length || 0} mapas, ${ov.recent?.length || 0} partidas`);
   } else if (ov) log.push(`overview ${id}: ignorado (página incompleta)`);
   const pf = readJSON(`raw/performance-${id}.json`);
