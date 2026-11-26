@@ -36,7 +36,22 @@ const rIdx = r => { const [t, d] = String(r || '').split(' '); const ti = TIERS.
 const rName = i => { i = Math.floor(i); if (i >= 24) return 'Radiant'; i = Math.max(0, i); return TIERS[Math.floor(i / 3)] + ' ' + ((i % 3) + 1); };
 const actKey = a => { const m = /^(E|V)(\d+):\s*A(\d+)/.exec(a || ''); if (!m) return 0; return m[1] === 'E' ? +m[2] * 10 + +m[3] : 100 + (+m[2] - 25) * 10 + +m[3]; };
 
+const posIn = est => { const f = est - Math.floor(est); return f < 0.34 ? 'começo' : f < 0.67 ? 'meio' : 'final'; };
+
 function estimateMMR(p, act, d) {
+  // Com o RR por partida (HenrikDev): parte do RR de agora e anda pela diferença entre o que ganha e o que perde.
+  // Com MMR igual ao elo, vitória e derrota valem parecido; cada 10 RR de diferença vale mais ou menos uma divisão.
+  const rr = p.rr;
+  if (rr && rr.nw >= 5 && rr.nl >= 5 && rr.w && rr.l) {
+    const now = rIdx(p.rank) + clamp((rr.now ?? 50) / 100, 0, 0.99);
+    const gap = clamp((rr.w - rr.l) / 10, -1.5, 1.5);
+    const est = clamp(now + gap, 0, 24.99);
+    return {
+      est, diff: gap, rank: rName(est), rankPT: rankPT(rName(est)), pos: posIn(est),
+      verdict: gap >= 0.3 ? 'acima' : gap <= -0.3 ? 'abaixo' : 'perto',
+      src: 'rr', rrW: rr.w, rrL: rr.l, n: rr.nw + rr.nl, keep: rr.l / (rr.w + rr.l) * 100,
+    };
+  }
   const base = rIdx(p.rank) + 0.5;
   const form = clamp((d.win - 50) * 0.15, -1, 1);
   const perf = clamp((((d.ddP ?? 50) + (d.kdP ?? 50)) / 2 - 50) / 50 * 0.6, -0.6, 0.6);
@@ -49,7 +64,7 @@ function estimateMMR(p, act, d) {
   return {
     est, diff, rank: rName(est), rankPT: rankPT(rName(est)),
     verdict: diff >= 0.6 ? 'acima' : diff <= -0.6 ? 'abaixo' : 'perto',
-    pos: (() => { const f = est - Math.floor(est); return f < 0.34 ? 'começo' : f < 0.67 ? 'meio' : 'final'; })(),
+    pos: posIn(est),
   };
 }
 
@@ -92,6 +107,12 @@ function derive(p, act) {
   d.mmr = estimateMMR(p, act, d);
   d.mmr.base = rIdx(p.rank);
   d.mmr.peak = rIdx(p.peak);
+  // Caminho até o próximo elo: cada divisão vai de 0 a 100 RR (de Imortal para cima a conta é outra).
+  const rrNow = p.rr?.now, cur = rIdx(p.rank);
+  if (typeof rrNow === 'number' && cur != null && cur < 21) {
+    const left = Math.max(0, 100 - rrNow), win = p.rr.w || 20;
+    d.prog = { rr: rrNow, left, next: rName(cur + 1), nextPT: rankPT(rName(cur + 1)), wins: Math.max(1, Math.ceil(left / win)) };
+  }
   return d;
 }
 

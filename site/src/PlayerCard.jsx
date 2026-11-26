@@ -89,6 +89,12 @@ export default function PlayerCard({ p, index, dim, locked, onHover, onLock }) {
               <span className={'pcard-mmr' + (mmrUp ? ' up' : mmrDown ? ' down' : '')}>
                 MMR ≈ {d.mmr.rankPT}{mmrUp ? ' ▲' : mmrDown ? ' ▼' : ''}
               </span>
+              {d.prog && <>
+                <span className="rr-bar" aria-hidden="true">
+                  <motion.i initial={{ scaleX: 0 }} animate={{ scaleX: d.prog.rr / 100 }} transition={{ delay: 1 + index * 0.13, duration: 1.2, ease: EASE }} />
+                </span>
+                <span className="pcard-rr">{d.prog.rr}/100 RR · faltam {d.prog.left}</span>
+              </>}
             </span>
           </span>
           <span className="pcard-nick">{p.nick}</span>

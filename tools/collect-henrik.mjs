@@ -384,6 +384,28 @@ for (const [id, a] of Object.entries(accounts)) {
   }
 }
 
+// 2b) RR ganho ou perdido em cada partida. A API só guarda as mais recentes; no cache elas ficam para sempre.
+let rrSet = 0;
+for (const [id, a] of Object.entries(accounts)) {
+  let hist = [];
+  try { hist = (await get(`/valorant/v1/stored-mmr-history/${a.region}/${riotPath(a.riot)}`)).data || []; }
+  catch (e) { console.log(`   aviso: histórico de RR de ${id} falhou: ${e.message}`); }
+  // Partidas do ato que estão no histórico de RR mas não vieram nas listas de partidas.
+  const missing = hist.filter(h => h.season?.id === season && h.match_id && !cache.matches[h.match_id]?.p[id]).map(h => h.match_id);
+  if (missing.length) console.log(`${id}: baixando ${missing.length} partidas que só apareceram no histórico de RR`);
+  for (const mid of missing) {
+    if (cache.matches[mid]?.p[id]) continue;
+    try { if (add((await get(`/valorant/v4/match/${a.region}/${mid}`)).data)) fetched++; }
+    catch (e) { console.log(`   aviso: partida ${mid} falhou: ${e.message}`); }
+  }
+  for (const h of hist) {
+    const s = cache.matches[h.match_id]?.p[id];
+    if (!s || typeof h.last_mmr_change !== 'number') continue;
+    if (s.rr !== h.last_mmr_change || s.elo !== h.elo) { s.rr = h.last_mmr_change; s.elo = h.elo; rrSet++; }
+  }
+}
+if (rrSet) console.log(`RR por partida: ${rrSet} partidas atualizadas`);
+
 // Grava o cache (uma partida por linha, para o diff do git ficar legível).
 const ids = Object.keys(cache.matches).sort((x, y) => String(cache.matches[y].at).localeCompare(String(cache.matches[x].at)));
 fs.writeFileSync(P(cacheFile), '{"matches":{\n' + ids.map(k => JSON.stringify(k) + ':' + JSON.stringify(cache.matches[k])).join(',\n') + '\n}}\n');
@@ -452,12 +474,19 @@ for (const [id, a] of Object.entries(accounts)) {
   }
   const wpn = new Map((b?.weapons || []).map(w => [w.n, { ...w }]));
   for (const { s: x } of fresh.ms) for (const [n, k] of Object.entries(x.wpn)) { const w = wpn.get(n) || { n, k: 0 }; w.k += k; wpn.set(n, w); }
+  // RR médio por vitória e por derrota no ato: a diferença entre os dois mostra se o MMR está acima ou abaixo do elo.
+  // Derrota sem perda (proteção de queda) e empate ficam de fora.
+  const avg = xs => (xs.length ? r1(xs.reduce((t, x) => t + x, 0) / xs.length) : null);
+  const won = all.filter(({ s: x }) => x.res === 'W' && x.rr > 0).map(({ s: x }) => x.rr);
+  const lost = all.filter(({ s: x }) => x.res === 'L' && x.rr < 0).map(({ s: x }) => -x.rr);
+  const rrNow = typeof mmr.current?.rr === 'number' ? mmr.current.rr : all.find(({ s: x }) => x.elo != null)?.s.elo % 100;
   writeJSON(`raw/overview-${id}.json`, {
     ok: true, kind: 'overview', source: 'henrikdev', act,
+    rr: { w: avg(won), l: avg(lost), nw: won.length, nl: lost.length, now: rrNow ?? null },
     maps: [...maps.values()].sort((x, y) => y.wr - x.wr).map(({ n, wr, w, l }) => ({ n, wr, w, l })),
     weapons: [...wpn.values()].sort((x, y) => y.k - x.k).slice(0, 3),
     recent: all.slice(0, 20).map(({ s: x, m }) => [m.map, x.us, x.them, ord(x.place), x.k, x.d, x.a,
-      Math.round(div(x.dmg - x.dmgIn, x.rounds)), Math.round(div(x.hs, x.hs + x.bs + x.ls) * 100), Math.round(div(x.score, x.rounds))]),
+      Math.round(div(x.dmg - x.dmgIn, x.rounds)), Math.round(div(x.hs, x.hs + x.bs + x.ls) * 100), Math.round(div(x.score, x.rounds)), x.rr ?? null]),
   });
   console.log(`${id}: ${mmr.current?.tier?.name}, ${V(s.matchesPlayed)} partidas no ato (${fresh.ms.length} da HenrikDev), K/D ${V(s.kDRatio)}`);
 }
