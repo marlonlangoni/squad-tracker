@@ -1,0 +1,51 @@
+name: App para Windows
+
+# Compila o app portátil (um .exe que abre direto, sem instalar) com Tauri.
+# - Em PR que mexe em desktop/: compila e guarda o .exe como artefato, para testar.
+# - Numa tag app-v*: compila e publica o .exe numa Release. O link fixo de download fica
+#   https://github.com/marlonlangoni/squad-tracker/releases/latest/download/SquadTracker.exe
+on:
+  pull_request:
+    paths: ['desktop/**', '.github/workflows/app-windows.yml']
+  push:
+    tags: ['app-v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: desktop
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Rust (já vem na máquina do GitHub)
+        run: rustup default stable
+      - name: CLI do Tauri
+        run: npm install --no-audit --no-fund
+      - name: Compilar
+        run: npm run build
+      - name: Separar o .exe
+        shell: pwsh
+        run: |
+          Copy-Item src-tauri/target/release/squad-tracker.exe SquadTracker.exe
+          "{0:N1} MB" -f ((Get-Item SquadTracker.exe).Length / 1MB)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: SquadTracker-windows
+          path: desktop/SquadTracker.exe
+      - name: Publicar na Release
+        if: startsWith(github.ref, 'refs/tags/app-v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: pwsh
+        run: |
+          gh release create "${{ github.ref_name }}" SquadTracker.exe `
+            --title "Squad Tracker para Windows (${{ github.ref_name }})" `
+            --notes "App portátil: baixe o SquadTracker.exe e abra com dois cliques, sem instalar. Na primeira vez o Windows pode avisar 'O Windows protegeu o computador': clique em Mais informações > Executar assim mesmo."

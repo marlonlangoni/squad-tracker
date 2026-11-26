@@ -1,0 +1,12 @@
+{
+  "name": "squad-tracker-desktop",
+  "private": true,
+  "description": "App portátil do Squad Tracker para Windows (Tauri). Abre o site publicado numa janela própria.",
+  "scripts": {
+    "icons": "tauri icon ../site/public/icon-512.png",
+    "build": "tauri build --no-bundle"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "2.12.4"
+  }
+}
