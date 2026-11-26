@@ -142,6 +142,22 @@ function MMR({ p }) {
           <span className={'verdict ' + m.verdict}>{verdict}</span>
         </div>
       </div>
+      {d.prog && (
+        <div className="rr-next">
+          <div className="rr-next-h">
+            <span>Até {d.prog.nextPT}</span>
+            <b>{d.prog.rr}<small>/100 RR</small></b>
+          </div>
+          {/* o gatilho fica no trilho: o preenchimento começa com largura zero e nunca "entraria" na tela */}
+          <motion.span className="rr-bar" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={d.prog.rr} aria-label={`RR em ${rankPT(p.rank)}`}
+            initial="h" whileInView="s" viewport={{ once: true }}>
+            <motion.i variants={{ h: { scaleX: 0 }, s: { scaleX: d.prog.rr / 100, transition: { duration: 1.4, ease: EASE, delay: 0.3 } } }} />
+          </motion.span>
+          <p className="rr-next-f">Faltam <b>{d.prog.left} RR</b>{d.prog.left > 0 && (d.prog.wins === 1
+            ? <>: uma vitória já deve bastar, pelo RR médio que ganha.</>
+            : <>: umas {d.prog.wins} vitórias seguidas, pelo RR médio que ganha.</>)}</p>
+        </div>
+      )}
       <div className="ladder" aria-hidden="true">
         {steps.map(i => (
           <span key={i} className={'step' + (i === m.base ? ' cur' : '')} style={{ left: pos(i) , width: `${100 / (hi - lo + 1)}%` }}>

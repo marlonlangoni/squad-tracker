@@ -107,6 +107,12 @@ function derive(p, act) {
   d.mmr = estimateMMR(p, act, d);
   d.mmr.base = rIdx(p.rank);
   d.mmr.peak = rIdx(p.peak);
+  // Caminho até o próximo elo: cada divisão vai de 0 a 100 RR (de Imortal para cima a conta é outra).
+  const rrNow = p.rr?.now, cur = rIdx(p.rank);
+  if (typeof rrNow === 'number' && cur != null && cur < 21) {
+    const left = Math.max(0, 100 - rrNow), win = p.rr.w || 20;
+    d.prog = { rr: rrNow, left, next: rName(cur + 1), nextPT: rankPT(rName(cur + 1)), wins: Math.max(1, Math.ceil(left / win)) };
+  }
   return d;
 }
 
