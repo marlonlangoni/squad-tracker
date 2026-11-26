@@ -223,7 +223,8 @@ export const TIER_LIST = TIERS;
 export { rIdx, rName, actKey };
 
 export async function loadSquad() {
-  const r = await fetch(`${BASE}squad-data.json`, { cache: 'no-store' });
+  // ?t= fura também o cache da CDN do GitHub Pages (até 10 min), não só o do navegador.
+  const r = await fetch(`${BASE}squad-data.json?t=${Date.now()}`, { cache: 'no-store' });
   if (!r.ok) throw new Error('HTTP ' + r.status);
   const j = await r.json();
   // fotos de perfil dos jogadores (opcional; ver scripts/optimize-assets.mjs)
