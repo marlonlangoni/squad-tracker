@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-11-26T16:24:42+00:00",
+ "updatedAt": "2026-11-26T17:31:31+00:00",
  "act": "V26: A6",
  "seasonId": "d816f426-48ea-f052-117f-9697a155b319",
  "readsAt": "2026-11-25",
@@ -1224,69 +1224,69 @@
    "level": 499,
    "playtime": 44,
    "s": {
-    "matchesPlayed": 75,
+    "matchesPlayed": 76,
     "matchesWon": 39,
-    "matchesLost": 31,
+    "matchesLost": 32,
     "matchesTied": 5,
     "mVPs": 3,
-    "roundsPlayed": 1580,
-    "kills": 991,
-    "deaths": 1242,
-    "assists": 428,
-    "dealtHeadshots": 657,
-    "dealtBodyshots": 2986,
-    "dealtLegshots": 320,
-    "firstBloods": 214,
-    "firstDeaths": 270,
-    "survived": 346,
-    "traded": 131,
+    "roundsPlayed": 1604,
+    "kills": 1007,
+    "deaths": 1261,
+    "assists": 431,
+    "dealtHeadshots": 665,
+    "dealtBodyshots": 3040,
+    "dealtLegshots": 323,
+    "firstBloods": 216,
+    "firstDeaths": 274,
+    "survived": 351,
+    "traded": 137,
     "tradesAvenger": 84,
     "flawless": 63,
     "aces": 1,
     "clutches": 21,
-    "clutchesLost": 111,
+    "clutchesLost": 116,
     "kills3K": 46,
     "kills4K": 9,
     "kills5K": 1,
     "clutches1v1": 12,
-    "clutchesLost1v1": 5,
+    "clutchesLost1v1": 6,
     "clutches1v2": 8,
     "clutchesLost1v2": 25,
     "clutches1v3": 0,
-    "clutchesLost1v3": 31,
+    "clutchesLost1v3": 35,
     "clutches1v4": 0,
     "clutchesLost1v4": 36,
     "clutches1v5": 0,
     "clutchesLost1v5": 14,
-    "scorePerRound": 195.583,
-    "damagePerRound": 131.859,
-    "damageDeltaPerRound": -13.172,
-    "kAST": 63.415,
-    "roundsWinPct": 51.456,
-    "plantsPerRound": 0.02,
+    "scorePerRound": 195.304,
+    "damagePerRound": 131.836,
+    "damageDeltaPerRound": -13.171,
+    "kAST": 63.588,
+    "roundsWinPct": 51.372,
+    "plantsPerRound": 0.023,
     "attackKDRatio": 0.729,
-    "attackRoundsWinPct": 49.887,
-    "attackDamagePerRound": 127.46,
-    "attackKAST": 60.283,
+    "attackRoundsWinPct": 49.518,
+    "attackDamagePerRound": 127.593,
+    "attackKAST": 60.255,
     "attackFirstBloodsPerRound": 0.138,
-    "attackFirstDeathsPerRound": 0.192,
-    "defenseKDRatio": 0.875,
-    "defenseRoundsWinPct": 53.031,
-    "defenseDamagePerRound": 140,
-    "defenseKAST": 66.537,
-    "defenseFirstBloodsPerRound": 0.133,
-    "defenseFirstDeathsPerRound": 0.151,
-    "matchesWinPct": 52,
+    "attackFirstDeathsPerRound": 0.193,
+    "defenseKDRatio": 0.877,
+    "defenseRoundsWinPct": 53.234,
+    "defenseDamagePerRound": 139.754,
+    "defenseKAST": 66.921,
+    "defenseFirstBloodsPerRound": 0.132,
+    "defenseFirstDeathsPerRound": 0.15,
+    "matchesWinPct": 51.316,
     "mostKillsInMatch": 25,
-    "killsPerRound": 0.627,
+    "killsPerRound": 0.628,
     "deathsPerRound": 0.786,
-    "assistsPerRound": 0.271,
-    "kDRatio": 0.798,
-    "kDARatio": 1.143,
-    "headshotsPercentage": 16.578,
+    "assistsPerRound": 0.269,
+    "kDRatio": 0.799,
+    "kDARatio": 1.14,
+    "headshotsPercentage": 16.509,
     "firstBloodsPerRound": 0.135,
     "firstDeathsPerRound": 0.171,
-    "esr": 0.442
+    "esr": 0.441
    },
    "agentCount": 10,
    "agents": [
@@ -1294,11 +1294,11 @@
      "n": "Raze",
      "r": "Duelist",
      "c": "#FF5589",
-     "m": 54,
-     "wr": 57.4,
+     "m": 55,
+     "wr": 56.4,
      "kd": 0.83,
-     "adr": 138.7,
-     "acs": 206.1
+     "adr": 138.6,
+     "acs": 205.5
     },
     {
      "n": "Vyse",
@@ -1354,8 +1354,8 @@
    "roles": [
     {
      "n": "Duelist",
-     "m": 58,
-     "wr": 55.2,
+     "m": 59,
+     "wr": 54.2,
      "kd": 0.83
     },
     {
@@ -1374,9 +1374,9 @@
    "maps": [
     {
      "n": "Bind",
-     "wr": 71.4,
+     "wr": 62.5,
      "w": 5,
-     "l": 2
+     "l": 3
     },
     {
      "n": "Abyss",
@@ -1421,7 +1421,7 @@
      "h": 34,
      "b": 61,
      "l": 5,
-     "k": 331
+     "k": 336
     },
     {
      "n": "Phantom",
@@ -1439,6 +1439,18 @@
     }
    ],
    "recent": [
+    [
+     "Bind",
+     11,
+     13,
+     "8th",
+     16,
+     19,
+     3,
+     -13,
+     12,
+     177
+    ],
     [
      "Sunset",
      8,
@@ -1666,18 +1678,6 @@
      -76,
      15,
      106
-    ],
-    [
-     "Corrode",
-     11,
-     13,
-     "6th",
-     16,
-     20,
-     9,
-     -1,
-     26,
-     220
     ]
    ],
    "history": [
@@ -1844,7 +1844,7 @@
     [
      "V26: A6",
      "Gold 3",
-     52
+     51.3
     ]
    ]
   }
