@@ -51,6 +51,35 @@ export default function App() {
   }, []);
 
   useEffect(() => { loadSquad().then(setSquad).catch(e => setError(String(e))); }, []);
+
+  // Atualizar sem fechar o app: pelo botão do topo, ou sozinho quando a janela volta a ficar visível
+  // depois de 5 minutos fora. Só troca os dados se a coleta publicou números novos (updatedAt mudou).
+  const [refreshing, setRefreshing] = useState(false);
+  const [toast, setToast] = useState(null);
+  const squadRef = useRef(null);
+  const busy = useRef(false);
+  const loadedAt = useRef(Date.now());
+  useEffect(() => { squadRef.current = squad; }, [squad]);
+  const refresh = useCallback(async ({ silent = false } = {}) => {
+    if (busy.current) return;
+    busy.current = true; setRefreshing(true);
+    try {
+      const s = await loadSquad();
+      const changed = squadRef.current?.updatedAt !== s.updatedAt;
+      if (changed) setSquad(s);
+      loadedAt.current = Date.now();
+      if (!silent || changed) setToast(changed ? 'Dados atualizados' : 'Nenhuma partida nova');
+    } catch {
+      if (!silent) setToast('Não consegui atualizar. Confira a internet.');
+    } finally { busy.current = false; setRefreshing(false); }
+  }, []);
+  useEffect(() => {
+    const onBack = () => { if (document.visibilityState === 'visible' && Date.now() - loadedAt.current > 5 * 60 * 1000) refresh({ silent: true }); };
+    document.addEventListener('visibilitychange', onBack);
+    window.addEventListener('focus', onBack);
+    return () => { document.removeEventListener('visibilitychange', onBack); window.removeEventListener('focus', onBack); };
+  }, [refresh]);
+  useEffect(() => { if (!toast) return; const t = setTimeout(() => setToast(null), 2600); return () => clearTimeout(t); }, [toast]);
   useEffect(() => {
     const on = () => { setRoute(parseHash()); setLocked(null); setHover(null); window.scrollTo({ top: 0 }); };
     window.addEventListener('hashchange', on);
@@ -113,6 +142,9 @@ export default function App() {
           <motion.div className="topbar-meta" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4, duration: 0.8 }}>
             <span className="chip"><span className="dot" /><span className="hide-sm">Competitivo · </span>{actLabel(squad.act)}</span>
             <span className="muted">Dados {ago(squad.updatedAt)}</span>
+            <button type="button" className={'gloss-btn refresh-btn' + (refreshing ? ' is-busy' : '')} onClick={() => refresh()} disabled={refreshing} aria-label="Atualizar os dados" data-tip="Buscar partidas novas">
+              <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 11a8 8 0 1 0-2.3 5.7" /><path d="M20 4v7h-7" /></svg>
+            </button>
             <InstallButton inst={inst} onOpen={() => setInstOpen(true)} />
             <button type="button" className="gloss-btn" onClick={() => setGloss(true)} aria-label="Abrir glossário" data-tip="Glossário: o que significa cada sigla">?</button>
           </motion.div>
@@ -168,6 +200,14 @@ export default function App() {
 
       <AnimatePresence>
         {lockedPlayer && routeKey === 'select' && <LockPanel key="panel" p={lockedPlayer} onClose={() => setLocked(null)} onOpen={() => go(`#/perfil/${lockedPlayer.id}`)} />}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {toast && (
+          <motion.div key={toast} className="toast" role="status" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }} transition={{ duration: 0.35, ease: EASE }}>
+            {toast}
+          </motion.div>
+        )}
       </AnimatePresence>
 
       <GlossaryDrawer open={gloss} onClose={() => setGloss(false)} />
