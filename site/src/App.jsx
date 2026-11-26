@@ -14,6 +14,23 @@ import { useInstall, InstallButton, InstallDrawer } from './Install.jsx';
 
 const EASE = [0.16, 1, 0.3, 1];
 
+// Compara o script principal que está rodando com o da página publicada agora. Se mudou, recarrega.
+// O nome do script muda a cada publicação (index-<hash>.js). Recarrega uma vez só por versão, para nunca entrar em laço.
+async function reloadIfNewVersion() {
+  if (import.meta.env.DEV) return false;
+  try {
+    const cur = document.querySelector('script[type="module"][src*="/assets/index-"]')?.getAttribute('src');
+    if (!cur) return false;
+    const r = await fetch(`${import.meta.env.BASE_URL}?v=${Date.now()}`, { cache: 'no-store' });
+    if (!r.ok) return false;
+    const live = /src="([^"]*\/assets\/index-[^"]+\.js)"/.exec(await r.text())?.[1];
+    if (!live || live === cur) return false;
+    try { if (sessionStorage.getItem('reloadedFor') === live) return false; sessionStorage.setItem('reloadedFor', live); } catch {}
+    setTimeout(() => location.reload(), 500);
+    return true;
+  } catch { return false; }
+}
+
 // Rotas por hash (funciona no GitHub Pages sem configuração):
 // #/  ·  #/perfil/<id>  ·  #/versus/<a>/<b>  ·  #/ranking  ·  #/evolucao
 function parseHash() {
@@ -50,7 +67,11 @@ export default function App() {
     if (url.searchParams.has('instalar')) { url.searchParams.delete('instalar'); history.replaceState(null, '', url.pathname + url.search + url.hash); }
   }, []);
 
-  useEffect(() => { loadSquad().then(setSquad).catch(e => setError(String(e))); }, []);
+  useEffect(() => {
+    loadSquad().then(setSquad).catch(e => setError(String(e)));
+    // O app pode abrir com a página guardada no cache (o GitHub Pages manda guardar por 10 min): confere se já tem versão nova.
+    reloadIfNewVersion();
+  }, []);
 
   // Atualizar sem fechar o app: pelo botão do topo, ou sozinho quando a janela volta a ficar visível
   // depois de 5 minutos fora. Só troca os dados se a coleta publicou números novos (updatedAt mudou).
@@ -64,6 +85,8 @@ export default function App() {
     if (busy.current) return;
     busy.current = true; setRefreshing(true);
     try {
+      // Versão nova do site (telas novas, correções): recarrega a página inteira em vez de só trocar os dados.
+      if (await reloadIfNewVersion()) { setToast('Versão nova do app: recarregando…'); return; }
       const s = await loadSquad();
       const changed = squadRef.current?.updatedAt !== s.updatedAt;
       if (changed) setSquad(s);
