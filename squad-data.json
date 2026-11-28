@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-11-28T05:01:30+00:00",
+ "updatedAt": "2026-11-28T05:31:30+00:00",
  "act": "V26: A6",
  "seasonId": "d816f426-48ea-f052-117f-9697a155b319",
  "readsAt": "2026-11-25",
@@ -22,10 +22,10 @@
    {
     "nick": "Mattin",
     "tag": "1993",
-    "m": 138,
+    "m": 139,
     "kd": 1.1,
-    "place": 5.3,
-    "wr": 56
+    "place": 5.4,
+    "wr": 55.6
    },
    {
     "nick": "Snoop Dogglas",
@@ -45,66 +45,66 @@
    "level": 385,
    "playtime": 82,
    "s": {
-    "matchesPlayed": 140,
+    "matchesPlayed": 141,
     "matchesWon": 76,
-    "matchesLost": 60,
+    "matchesLost": 61,
     "matchesTied": 4,
     "mVPs": 18,
-    "roundsPlayed": 2955,
-    "kills": 2234,
-    "deaths": 1968,
-    "assists": 824,
-    "dealtHeadshots": 1418,
-    "dealtBodyshots": 4985,
-    "dealtLegshots": 327,
-    "firstBloods": 276,
-    "firstDeaths": 194,
-    "survived": 995,
-    "traded": 230,
-    "tradesAvenger": 228,
+    "roundsPlayed": 2972,
+    "kills": 2246,
+    "deaths": 1983,
+    "assists": 830,
+    "dealtHeadshots": 1425,
+    "dealtBodyshots": 5019,
+    "dealtLegshots": 328,
+    "firstBloods": 277,
+    "firstDeaths": 195,
+    "survived": 996,
+    "traded": 233,
+    "tradesAvenger": 229,
     "flawless": 103,
     "aces": 2,
     "clutches": 86,
-    "clutchesLost": 375,
-    "kills3K": 130,
+    "clutchesLost": 379,
+    "kills3K": 131,
     "kills4K": 33,
     "kills5K": 3,
     "clutches1v1": 54,
     "clutchesLost1v1": 28,
     "clutches1v2": 21,
-    "clutchesLost1v2": 73,
+    "clutchesLost1v2": 75,
     "clutches1v3": 8,
-    "clutchesLost1v3": 106,
+    "clutchesLost1v3": 108,
     "clutches1v4": 3,
     "clutchesLost1v4": 113,
     "clutches1v5": 0,
     "clutchesLost1v5": 55,
-    "scorePerRound": 218.362,
-    "damagePerRound": 145.132,
-    "damageDeltaPerRound": 17.789,
-    "kAST": 71.671,
-    "roundsWinPct": 51.438,
-    "plantsPerRound": 0.23,
-    "attackKDRatio": 1.085,
-    "attackRoundsWinPct": 52.086,
-    "attackDamagePerRound": 141.704,
-    "attackKAST": 72.138,
+    "scorePerRound": 218.556,
+    "damagePerRound": 145.408,
+    "damageDeltaPerRound": 18.009,
+    "kAST": 71.632,
+    "roundsWinPct": 51.278,
+    "plantsPerRound": 0.228,
+    "attackKDRatio": 1.08,
+    "attackRoundsWinPct": 51.984,
+    "attackDamagePerRound": 141.537,
+    "attackKAST": 71.959,
     "attackFirstBloodsPerRound": 0.079,
     "attackFirstDeathsPerRound": 0.058,
-    "defenseKDRatio": 1.187,
-    "defenseRoundsWinPct": 50.783,
-    "defenseDamagePerRound": 150.618,
-    "defenseKAST": 71.213,
+    "defenseKDRatio": 1.185,
+    "defenseRoundsWinPct": 50.579,
+    "defenseDamagePerRound": 152.006,
+    "defenseKAST": 71.302,
     "defenseFirstBloodsPerRound": 0.108,
     "defenseFirstDeathsPerRound": 0.073,
-    "matchesWinPct": 54.286,
+    "matchesWinPct": 53.901,
     "mostKillsInMatch": 33,
     "killsPerRound": 0.756,
-    "deathsPerRound": 0.666,
+    "deathsPerRound": 0.667,
     "assistsPerRound": 0.279,
-    "kDRatio": 1.135,
-    "kDARatio": 1.554,
-    "headshotsPercentage": 21.07,
+    "kDRatio": 1.133,
+    "kDARatio": 1.551,
+    "headshotsPercentage": 21.043,
     "firstBloodsPerRound": 0.093,
     "firstDeathsPerRound": 0.066,
     "esr": 0.587
@@ -165,11 +165,11 @@
      "n": "Raze",
      "r": "Duelist",
      "c": "#FF5589",
-     "m": 8,
-     "wr": 62.5,
-     "kd": 1.24,
-     "adr": 154,
-     "acs": 234.4
+     "m": 9,
+     "wr": 55.5,
+     "kd": 1.14,
+     "adr": 158.5,
+     "acs": 236.4
     }
    ],
    "roles": [
@@ -187,9 +187,9 @@
     },
     {
      "n": "Duelist",
-     "m": 25,
-     "wr": 52,
-     "kd": 1.06
+     "m": 26,
+     "wr": 50,
+     "kd": 1.05
     },
     {
      "n": "Controller",
@@ -201,9 +201,9 @@
    "maps": [
     {
      "n": "Lotus",
-     "wr": 68.4,
+     "wr": 65,
      "w": 13,
-     "l": 5
+     "l": 6
     },
     {
      "n": "Bind",
@@ -248,24 +248,37 @@
      "h": 31,
      "b": 65,
      "l": 3,
-     "k": 900
+     "k": 901
     },
     {
      "n": "Phantom",
      "h": 27,
      "b": 69,
      "l": 3,
-     "k": 334
+     "k": 335
     },
     {
      "n": "Operator",
      "h": 14,
      "b": 84,
      "l": 3,
-     "k": 194
+     "k": 199
     }
    ],
    "recent": [
+    [
+     "Lotus",
+     4,
+     13,
+     "2nd",
+     12,
+     15,
+     6,
+     56,
+     17,
+     252,
+     null
+    ],
     [
      "Summit",
      11,
@@ -512,19 +525,6 @@
      10,
      175,
      -23
-    ],
-    [
-     "Abyss",
-     13,
-     11,
-     "3rd",
-     21,
-     18,
-     9,
-     19,
-     16,
-     246,
-     13
     ]
    ],
    "history": [
@@ -621,7 +621,7 @@
     [
      "V26: A6",
      "Platinum 3",
-     54.3
+     53.9
     ]
    ],
    "rr": {
@@ -629,7 +629,7 @@
     "l": 21.4,
     "nw": 31,
     "nl": 20,
-    "now": 26
+    "now": 4
    }
   },
   "mt": {
@@ -637,71 +637,71 @@
    "peak": "Diamond 2",
    "peakAct": "V25: ACT VI",
    "level": 392,
-   "playtime": 81,
+   "playtime": 82,
    "s": {
-    "matchesPlayed": 140,
+    "matchesPlayed": 141,
     "matchesWon": 76,
-    "matchesLost": 60,
+    "matchesLost": 61,
     "matchesTied": 4,
     "mVPs": 18,
-    "roundsPlayed": 2952,
-    "kills": 2180,
-    "deaths": 1984,
-    "assists": 903,
-    "dealtHeadshots": 1808,
-    "dealtBodyshots": 3897,
+    "roundsPlayed": 2969,
+    "kills": 2189,
+    "deaths": 1999,
+    "assists": 906,
+    "dealtHeadshots": 1816,
+    "dealtBodyshots": 3915,
     "dealtLegshots": 209,
-    "firstBloods": 209,
+    "firstBloods": 210,
     "firstDeaths": 172,
-    "survived": 975,
-    "traded": 238,
+    "survived": 977,
+    "traded": 240,
     "tradesAvenger": 318,
     "flawless": 105,
     "aces": 2,
     "clutches": 71,
-    "clutchesLost": 354,
+    "clutchesLost": 357,
     "kills3K": 118,
     "kills4K": 31,
     "kills5K": 4,
     "clutches1v1": 45,
-    "clutchesLost1v1": 24,
+    "clutchesLost1v1": 25,
     "clutches1v2": 15,
     "clutchesLost1v2": 75,
     "clutches1v3": 6,
-    "clutchesLost1v3": 112,
+    "clutchesLost1v3": 113,
     "clutches1v4": 5,
     "clutchesLost1v4": 93,
     "clutches1v5": 0,
-    "clutchesLost1v5": 50,
-    "scorePerRound": 205.534,
-    "damagePerRound": 137.884,
-    "damageDeltaPerRound": 9.749,
-    "kAST": 71.48,
-    "roundsWinPct": 51.355,
+    "clutchesLost1v5": 51,
+    "scorePerRound": 205.296,
+    "damagePerRound": 137.703,
+    "damageDeltaPerRound": 9.424,
+    "kAST": 71.441,
+    "roundsWinPct": 51.196,
     "plantsPerRound": 0.239,
-    "attackKDRatio": 1.121,
-    "attackRoundsWinPct": 52.126,
-    "attackDamagePerRound": 137.469,
-    "attackKAST": 72.362,
+    "attackKDRatio": 1.118,
+    "attackRoundsWinPct": 52.016,
+    "attackDamagePerRound": 137.261,
+    "attackKAST": 72.316,
     "attackFirstBloodsPerRound": 0.068,
     "attackFirstDeathsPerRound": 0.058,
-    "defenseKDRatio": 1.079,
-    "defenseRoundsWinPct": 50.581,
-    "defenseDamagePerRound": 138.971,
-    "defenseKAST": 70.578,
+    "defenseKDRatio": 1.074,
+    "defenseRoundsWinPct": 50.372,
+    "defenseDamagePerRound": 138.785,
+    "defenseKAST": 70.549,
     "defenseFirstBloodsPerRound": 0.074,
-    "defenseFirstDeathsPerRound": 0.059,
-    "matchesWinPct": 54.286,
+    "defenseFirstDeathsPerRound": 0.058,
+    "matchesWinPct": 53.901,
     "mostKillsInMatch": 29,
-    "killsPerRound": 0.738,
-    "deathsPerRound": 0.672,
-    "assistsPerRound": 0.306,
-    "kDRatio": 1.099,
-    "kDARatio": 1.554,
+    "killsPerRound": 0.737,
+    "deathsPerRound": 0.673,
+    "assistsPerRound": 0.305,
+    "kDRatio": 1.095,
+    "kDARatio": 1.548,
     "headshotsPercentage": 30.572,
     "firstBloodsPerRound": 0.071,
     "firstDeathsPerRound": 0.058,
-    "esr": 0.549
+    "esr": 0.55
    },
    "agentCount": 14,
    "agents": [
@@ -749,10 +749,10 @@
      "n": "Sova",
      "r": "Initiator",
      "c": "#2688FF",
-     "m": 10,
-     "wr": 50,
-     "kd": 0.74,
-     "adr": 116.7,
+     "m": 11,
+     "wr": 45.5,
+     "kd": 0.73,
+     "adr": 115.7,
      "acs": 163.7
     },
     {
@@ -775,9 +775,9 @@
     },
     {
      "n": "Initiator",
-     "m": 37,
-     "wr": 54,
-     "kd": 1.06
+     "m": 38,
+     "wr": 52.6,
+     "kd": 1.05
     },
     {
      "n": "Duelist",
@@ -801,9 +801,9 @@
     },
     {
      "n": "Lotus",
-     "wr": 66.7,
+     "wr": 63.2,
      "w": 12,
-     "l": 5
+     "l": 6
     },
     {
      "n": "Sunset",
@@ -842,14 +842,14 @@
      "h": 43,
      "b": 54,
      "l": 3,
-     "k": 1071
+     "k": 1075
     },
     {
      "n": "Phantom",
      "h": 37,
      "b": 61,
      "l": 2,
-     "k": 495
+     "k": 497
     },
     {
      "n": "Bulldog",
@@ -860,6 +860,19 @@
     }
    ],
    "recent": [
+    [
+     "Lotus",
+     4,
+     13,
+     "8th",
+     9,
+     15,
+     3,
+     -47,
+     31,
+     164,
+     null
+    ],
     [
      "Summit",
      11,
@@ -1106,19 +1119,6 @@
      31,
      284,
      -21
-    ],
-    [
-     "Summit",
-     12,
-     14,
-     "5th",
-     20,
-     19,
-     2,
-     18,
-     40,
-     212,
-     -21
     ]
    ],
    "history": [
@@ -1260,7 +1260,7 @@
     [
      "V26: A6",
      "Platinum 2",
-     54.3
+     53.9
     ]
    ],
    "rr": {
@@ -1268,7 +1268,7 @@
     "l": 20.8,
     "nw": 32,
     "nl": 20,
-    "now": 81
+    "now": 57
    }
   },
   "sd": {
